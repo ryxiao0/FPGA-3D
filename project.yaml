@@ -1,0 +1,37 @@
+---
+cores:
+
+  project_io_core:
+    type: io
+
+    inputs:
+      val1_in: 32
+      val2_in: 32
+      val3_in: 32
+      val4_in: 32
+      val5_in: 32
+      val6_in: 32
+      val7_in: 32
+      val8_in: 32
+      val9_in: 32
+      val10_in: 32
+      val11_in: 32
+      val12_in: 32
+      val13_in: 32
+      val14_in: 32
+      val15_in: 32
+      val16_in: 32
+      val17_in: 32
+      val18_in: 32
+      val19_in: 32
+      val20_in: 32
+
+    outputs:
+      val21_out: 32
+      val22_out: 32
+      val23_out: 32
+      val24_out: 32
+uart:
+  port: "/dev/cu.usbserial-88742923004D1"
+  baudrate: 3000000
+  clock_freq: 100000000
