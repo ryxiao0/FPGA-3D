@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ns/1ps
 /*
-This module was generated with Manta v0.0.5 on 21 Nov 2023 at 21:25:57 by ryanxiao
+This module was generated with Manta v0.0.5 on 21 Nov 2023 at 23:09:59 by ryanxiao
 
 If this breaks or if you've got spicy formal verification memes, contact fischerm [at] mit.edu
 
@@ -16,30 +16,30 @@ manta manta_inst (
     .rx(rx),
     .tx(tx),
     
-    .val1_in(val1_in), 
-    .val2_in(val2_in), 
-    .val3_in(val3_in), 
-    .val4_in(val4_in), 
-    .val5_in(val5_in), 
-    .val6_in(val6_in), 
-    .val7_in(val7_in), 
-    .val8_in(val8_in), 
-    .val9_in(val9_in), 
-    .val10_in(val10_in), 
-    .val11_in(val11_in), 
-    .val12_in(val12_in), 
-    .val13_in(val13_in), 
-    .val14_in(val14_in), 
-    .val15_in(val15_in), 
-    .val16_in(val16_in), 
-    .val17_in(val17_in), 
-    .val18_in(val18_in), 
-    .val19_in(val19_in), 
-    .val20_in(val20_in), 
-    .val21_out(val21_out), 
-    .val22_out(val22_out), 
-    .val23_out(val23_out), 
-    .val24_out(val24_out));
+    .val21_in(val21_in), 
+    .val22_in(val22_in), 
+    .val23_in(val23_in), 
+    .val24_in(val24_in), 
+    .val1_out(val1_out), 
+    .val2_out(val2_out), 
+    .val3_out(val3_out), 
+    .val4_out(val4_out), 
+    .val5_out(val5_out), 
+    .val6_out(val6_out), 
+    .val7_out(val7_out), 
+    .val8_out(val8_out), 
+    .val9_out(val9_out), 
+    .val10_out(val10_out), 
+    .val11_out(val11_out), 
+    .val12_out(val12_out), 
+    .val13_out(val13_out), 
+    .val14_out(val14_out), 
+    .val15_out(val15_out), 
+    .val16_out(val16_out), 
+    .val17_out(val17_out), 
+    .val18_out(val18_out), 
+    .val19_out(val19_out), 
+    .val20_out(val20_out));
 
 */
 
@@ -49,30 +49,30 @@ module manta (
     input wire rx,
     output reg tx,
     
-    input wire [31:0] val1_in,
-    input wire [31:0] val2_in,
-    input wire [31:0] val3_in,
-    input wire [31:0] val4_in,
-    input wire [31:0] val5_in,
-    input wire [31:0] val6_in,
-    input wire [31:0] val7_in,
-    input wire [31:0] val8_in,
-    input wire [31:0] val9_in,
-    input wire [31:0] val10_in,
-    input wire [31:0] val11_in,
-    input wire [31:0] val12_in,
-    input wire [31:0] val13_in,
-    input wire [31:0] val14_in,
-    input wire [31:0] val15_in,
-    input wire [31:0] val16_in,
-    input wire [31:0] val17_in,
-    input wire [31:0] val18_in,
-    input wire [31:0] val19_in,
-    input wire [31:0] val20_in,
-    output reg [31:0] val21_out,
-    output reg [31:0] val22_out,
-    output reg [31:0] val23_out,
-    output reg [31:0] val24_out);
+    input wire [31:0] val21_in,
+    input wire [31:0] val22_in,
+    input wire [31:0] val23_in,
+    input wire [31:0] val24_in,
+    output reg [31:0] val1_out,
+    output reg [31:0] val2_out,
+    output reg [31:0] val3_out,
+    output reg [31:0] val4_out,
+    output reg [31:0] val5_out,
+    output reg [31:0] val6_out,
+    output reg [31:0] val7_out,
+    output reg [31:0] val8_out,
+    output reg [31:0] val9_out,
+    output reg [31:0] val10_out,
+    output reg [31:0] val11_out,
+    output reg [31:0] val12_out,
+    output reg [31:0] val13_out,
+    output reg [31:0] val14_out,
+    output reg [31:0] val15_out,
+    output reg [31:0] val16_out,
+    output reg [31:0] val17_out,
+    output reg [31:0] val18_out,
+    output reg [31:0] val19_out,
+    output reg [31:0] val20_out);
 
 
     uart_rx #(.CLOCKS_PER_BAUD(33)) urx (
@@ -106,30 +106,30 @@ module manta (
         .user_clk(clk),
     
         // ports
-        .val1_in(val1_in),
-        .val2_in(val2_in),
-        .val3_in(val3_in),
-        .val4_in(val4_in),
-        .val5_in(val5_in),
-        .val6_in(val6_in),
-        .val7_in(val7_in),
-        .val8_in(val8_in),
-        .val9_in(val9_in),
-        .val10_in(val10_in),
-        .val11_in(val11_in),
-        .val12_in(val12_in),
-        .val13_in(val13_in),
-        .val14_in(val14_in),
-        .val15_in(val15_in),
-        .val16_in(val16_in),
-        .val17_in(val17_in),
-        .val18_in(val18_in),
-        .val19_in(val19_in),
-        .val20_in(val20_in),
-        .val21_out(val21_out),
-        .val22_out(val22_out),
-        .val23_out(val23_out),
-        .val24_out(val24_out),
+        .val21_in(val21_in),
+        .val22_in(val22_in),
+        .val23_in(val23_in),
+        .val24_in(val24_in),
+        .val1_out(val1_out),
+        .val2_out(val2_out),
+        .val3_out(val3_out),
+        .val4_out(val4_out),
+        .val5_out(val5_out),
+        .val6_out(val6_out),
+        .val7_out(val7_out),
+        .val8_out(val8_out),
+        .val9_out(val9_out),
+        .val10_out(val10_out),
+        .val11_out(val11_out),
+        .val12_out(val12_out),
+        .val13_out(val13_out),
+        .val14_out(val14_out),
+        .val15_out(val15_out),
+        .val16_out(val16_out),
+        .val17_out(val17_out),
+        .val18_out(val18_out),
+        .val19_out(val19_out),
+        .val20_out(val20_out),
     
         // input port
         .addr_i(brx_project_io_core_addr),
@@ -382,30 +382,30 @@ module project_io_core (
     input wire user_clk,
 
     // ports
-    input wire [31:0] val1_in,
-    input wire [31:0] val2_in,
-    input wire [31:0] val3_in,
-    input wire [31:0] val4_in,
-    input wire [31:0] val5_in,
-    input wire [31:0] val6_in,
-    input wire [31:0] val7_in,
-    input wire [31:0] val8_in,
-    input wire [31:0] val9_in,
-    input wire [31:0] val10_in,
-    input wire [31:0] val11_in,
-    input wire [31:0] val12_in,
-    input wire [31:0] val13_in,
-    input wire [31:0] val14_in,
-    input wire [31:0] val15_in,
-    input wire [31:0] val16_in,
-    input wire [31:0] val17_in,
-    input wire [31:0] val18_in,
-    input wire [31:0] val19_in,
-    input wire [31:0] val20_in,
-    output reg [31:0] val21_out,
-    output reg [31:0] val22_out,
-    output reg [31:0] val23_out,
-    output reg [31:0] val24_out,
+    input wire [31:0] val21_in,
+    input wire [31:0] val22_in,
+    input wire [31:0] val23_in,
+    input wire [31:0] val24_in,
+    output reg [31:0] val1_out,
+    output reg [31:0] val2_out,
+    output reg [31:0] val3_out,
+    output reg [31:0] val4_out,
+    output reg [31:0] val5_out,
+    output reg [31:0] val6_out,
+    output reg [31:0] val7_out,
+    output reg [31:0] val8_out,
+    output reg [31:0] val9_out,
+    output reg [31:0] val10_out,
+    output reg [31:0] val11_out,
+    output reg [31:0] val12_out,
+    output reg [31:0] val13_out,
+    output reg [31:0] val14_out,
+    output reg [31:0] val15_out,
+    output reg [31:0] val16_out,
+    output reg [31:0] val17_out,
+    output reg [31:0] val18_out,
+    output reg [31:0] val19_out,
+    output reg [31:0] val20_out,
 
     // input port
     input wire [15:0] addr_i,
@@ -425,71 +425,87 @@ module project_io_core (
     reg strobe = 0;
 
     // input probe buffers
-    reg [31:0] val1_in_buf = 0;
-    reg [31:0] val2_in_buf = 0;
-    reg [31:0] val3_in_buf = 0;
-    reg [31:0] val4_in_buf = 0;
-    reg [31:0] val5_in_buf = 0;
-    reg [31:0] val6_in_buf = 0;
-    reg [31:0] val7_in_buf = 0;
-    reg [31:0] val8_in_buf = 0;
-    reg [31:0] val9_in_buf = 0;
-    reg [31:0] val10_in_buf = 0;
-    reg [31:0] val11_in_buf = 0;
-    reg [31:0] val12_in_buf = 0;
-    reg [31:0] val13_in_buf = 0;
-    reg [31:0] val14_in_buf = 0;
-    reg [31:0] val15_in_buf = 0;
-    reg [31:0] val16_in_buf = 0;
-    reg [31:0] val17_in_buf = 0;
-    reg [31:0] val18_in_buf = 0;
-    reg [31:0] val19_in_buf = 0;
-    reg [31:0] val20_in_buf = 0;
+    reg [31:0] val21_in_buf = 0;
+    reg [31:0] val22_in_buf = 0;
+    reg [31:0] val23_in_buf = 0;
+    reg [31:0] val24_in_buf = 0;
 
     // output probe buffers
-    reg [31:0] val21_out_buf = 0;
-    reg [31:0] val22_out_buf = 0;
-    reg [31:0] val23_out_buf = 0;
-    reg [31:0] val24_out_buf = 0;
+    reg [31:0] val1_out_buf = 0;
+    reg [31:0] val2_out_buf = 0;
+    reg [31:0] val3_out_buf = 0;
+    reg [31:0] val4_out_buf = 0;
+    reg [31:0] val5_out_buf = 0;
+    reg [31:0] val6_out_buf = 0;
+    reg [31:0] val7_out_buf = 0;
+    reg [31:0] val8_out_buf = 0;
+    reg [31:0] val9_out_buf = 0;
+    reg [31:0] val10_out_buf = 0;
+    reg [31:0] val11_out_buf = 0;
+    reg [31:0] val12_out_buf = 0;
+    reg [31:0] val13_out_buf = 0;
+    reg [31:0] val14_out_buf = 0;
+    reg [31:0] val15_out_buf = 0;
+    reg [31:0] val16_out_buf = 0;
+    reg [31:0] val17_out_buf = 0;
+    reg [31:0] val18_out_buf = 0;
+    reg [31:0] val19_out_buf = 0;
+    reg [31:0] val20_out_buf = 0;
 
     // output probe initial values
     initial begin
-        val21_out = 0;
-        val22_out = 0;
-        val23_out = 0;
-        val24_out = 0;
+        val1_out = 0;
+        val2_out = 0;
+        val3_out = 0;
+        val4_out = 0;
+        val5_out = 0;
+        val6_out = 0;
+        val7_out = 0;
+        val8_out = 0;
+        val9_out = 0;
+        val10_out = 0;
+        val11_out = 0;
+        val12_out = 0;
+        val13_out = 0;
+        val14_out = 0;
+        val15_out = 0;
+        val16_out = 0;
+        val17_out = 0;
+        val18_out = 0;
+        val19_out = 0;
+        val20_out = 0;
     end
 
     // synchronize buffers and probes on strobe
     always @(posedge user_clk) begin
         if(strobe) begin
             // update input buffers from input probes
-            val1_in_buf <= val1_in;
-            val2_in_buf <= val2_in;
-            val3_in_buf <= val3_in;
-            val4_in_buf <= val4_in;
-            val5_in_buf <= val5_in;
-            val6_in_buf <= val6_in;
-            val7_in_buf <= val7_in;
-            val8_in_buf <= val8_in;
-            val9_in_buf <= val9_in;
-            val10_in_buf <= val10_in;
-            val11_in_buf <= val11_in;
-            val12_in_buf <= val12_in;
-            val13_in_buf <= val13_in;
-            val14_in_buf <= val14_in;
-            val15_in_buf <= val15_in;
-            val16_in_buf <= val16_in;
-            val17_in_buf <= val17_in;
-            val18_in_buf <= val18_in;
-            val19_in_buf <= val19_in;
-            val20_in_buf <= val20_in;
+            val21_in_buf <= val21_in;
+            val22_in_buf <= val22_in;
+            val23_in_buf <= val23_in;
+            val24_in_buf <= val24_in;
 
             // update output buffers from output probes
-            val21_out <= val21_out_buf;
-            val22_out <= val22_out_buf;
-            val23_out <= val23_out_buf;
-            val24_out <= val24_out_buf;
+            val1_out <= val1_out_buf;
+            val2_out <= val2_out_buf;
+            val3_out <= val3_out_buf;
+            val4_out <= val4_out_buf;
+            val5_out <= val5_out_buf;
+            val6_out <= val6_out_buf;
+            val7_out <= val7_out_buf;
+            val8_out <= val8_out_buf;
+            val9_out <= val9_out_buf;
+            val10_out <= val10_out_buf;
+            val11_out <= val11_out_buf;
+            val12_out <= val12_out_buf;
+            val13_out <= val13_out_buf;
+            val14_out <= val14_out_buf;
+            val15_out <= val15_out_buf;
+            val16_out <= val16_out_buf;
+            val17_out <= val17_out_buf;
+            val18_out <= val18_out_buf;
+            val19_out <= val19_out_buf;
+            val20_out <= val20_out_buf;
         end
     end
 
@@ -508,54 +524,54 @@ module project_io_core (
                 case (addr_i)
                     BASE_ADDR + 0: data_o <= strobe;
 
-                    BASE_ADDR + 1: data_o <= val1_in_buf[15:0];
-                    BASE_ADDR + 2: data_o <= val1_in_buf[31:16];
-                    BASE_ADDR + 3: data_o <= val2_in_buf[15:0];
-                    BASE_ADDR + 4: data_o <= val2_in_buf[31:16];
-                    BASE_ADDR + 5: data_o <= val3_in_buf[15:0];
-                    BASE_ADDR + 6: data_o <= val3_in_buf[31:16];
-                    BASE_ADDR + 7: data_o <= val4_in_buf[15:0];
-                    BASE_ADDR + 8: data_o <= val4_in_buf[31:16];
-                    BASE_ADDR + 9: data_o <= val5_in_buf[15:0];
-                    BASE_ADDR + 10: data_o <= val5_in_buf[31:16];
-                    BASE_ADDR + 11: data_o <= val6_in_buf[15:0];
-                    BASE_ADDR + 12: data_o <= val6_in_buf[31:16];
-                    BASE_ADDR + 13: data_o <= val7_in_buf[15:0];
-                    BASE_ADDR + 14: data_o <= val7_in_buf[31:16];
-                    BASE_ADDR + 15: data_o <= val8_in_buf[15:0];
-                    BASE_ADDR + 16: data_o <= val8_in_buf[31:16];
-                    BASE_ADDR + 17: data_o <= val9_in_buf[15:0];
-                    BASE_ADDR + 18: data_o <= val9_in_buf[31:16];
-                    BASE_ADDR + 19: data_o <= val10_in_buf[15:0];
-                    BASE_ADDR + 20: data_o <= val10_in_buf[31:16];
-                    BASE_ADDR + 21: data_o <= val11_in_buf[15:0];
-                    BASE_ADDR + 22: data_o <= val11_in_buf[31:16];
-                    BASE_ADDR + 23: data_o <= val12_in_buf[15:0];
-                    BASE_ADDR + 24: data_o <= val12_in_buf[31:16];
-                    BASE_ADDR + 25: data_o <= val13_in_buf[15:0];
-                    BASE_ADDR + 26: data_o <= val13_in_buf[31:16];
-                    BASE_ADDR + 27: data_o <= val14_in_buf[15:0];
-                    BASE_ADDR + 28: data_o <= val14_in_buf[31:16];
-                    BASE_ADDR + 29: data_o <= val15_in_buf[15:0];
-                    BASE_ADDR + 30: data_o <= val15_in_buf[31:16];
-                    BASE_ADDR + 31: data_o <= val16_in_buf[15:0];
-                    BASE_ADDR + 32: data_o <= val16_in_buf[31:16];
-                    BASE_ADDR + 33: data_o <= val17_in_buf[15:0];
-                    BASE_ADDR + 34: data_o <= val17_in_buf[31:16];
-                    BASE_ADDR + 35: data_o <= val18_in_buf[15:0];
-                    BASE_ADDR + 36: data_o <= val18_in_buf[31:16];
-                    BASE_ADDR + 37: data_o <= val19_in_buf[15:0];
-                    BASE_ADDR + 38: data_o <= val19_in_buf[31:16];
-                    BASE_ADDR + 39: data_o <= val20_in_buf[15:0];
-                    BASE_ADDR + 40: data_o <= val20_in_buf[31:16];
-                    BASE_ADDR + 41: data_o <= val21_out_buf[15:0];
-                    BASE_ADDR + 42: data_o <= val21_out_buf[31:16];
-                    BASE_ADDR + 43: data_o <= val22_out_buf[15:0];
-                    BASE_ADDR + 44: data_o <= val22_out_buf[31:16];
-                    BASE_ADDR + 45: data_o <= val23_out_buf[15:0];
-                    BASE_ADDR + 46: data_o <= val23_out_buf[31:16];
-                    BASE_ADDR + 47: data_o <= val24_out_buf[15:0];
-                    BASE_ADDR + 48: data_o <= val24_out_buf[31:16];
+                    BASE_ADDR + 1: data_o <= val21_in_buf[15:0];
+                    BASE_ADDR + 2: data_o <= val21_in_buf[31:16];
+                    BASE_ADDR + 3: data_o <= val22_in_buf[15:0];
+                    BASE_ADDR + 4: data_o <= val22_in_buf[31:16];
+                    BASE_ADDR + 5: data_o <= val23_in_buf[15:0];
+                    BASE_ADDR + 6: data_o <= val23_in_buf[31:16];
+                    BASE_ADDR + 7: data_o <= val24_in_buf[15:0];
+                    BASE_ADDR + 8: data_o <= val24_in_buf[31:16];
+                    BASE_ADDR + 9: data_o <= val1_out_buf[15:0];
+                    BASE_ADDR + 10: data_o <= val1_out_buf[31:16];
+                    BASE_ADDR + 11: data_o <= val2_out_buf[15:0];
+                    BASE_ADDR + 12: data_o <= val2_out_buf[31:16];
+                    BASE_ADDR + 13: data_o <= val3_out_buf[15:0];
+                    BASE_ADDR + 14: data_o <= val3_out_buf[31:16];
+                    BASE_ADDR + 15: data_o <= val4_out_buf[15:0];
+                    BASE_ADDR + 16: data_o <= val4_out_buf[31:16];
+                    BASE_ADDR + 17: data_o <= val5_out_buf[15:0];
+                    BASE_ADDR + 18: data_o <= val5_out_buf[31:16];
+                    BASE_ADDR + 19: data_o <= val6_out_buf[15:0];
+                    BASE_ADDR + 20: data_o <= val6_out_buf[31:16];
+                    BASE_ADDR + 21: data_o <= val7_out_buf[15:0];
+                    BASE_ADDR + 22: data_o <= val7_out_buf[31:16];
+                    BASE_ADDR + 23: data_o <= val8_out_buf[15:0];
+                    BASE_ADDR + 24: data_o <= val8_out_buf[31:16];
+                    BASE_ADDR + 25: data_o <= val9_out_buf[15:0];
+                    BASE_ADDR + 26: data_o <= val9_out_buf[31:16];
+                    BASE_ADDR + 27: data_o <= val10_out_buf[15:0];
+                    BASE_ADDR + 28: data_o <= val10_out_buf[31:16];
+                    BASE_ADDR + 29: data_o <= val11_out_buf[15:0];
+                    BASE_ADDR + 30: data_o <= val11_out_buf[31:16];
+                    BASE_ADDR + 31: data_o <= val12_out_buf[15:0];
+                    BASE_ADDR + 32: data_o <= val12_out_buf[31:16];
+                    BASE_ADDR + 33: data_o <= val13_out_buf[15:0];
+                    BASE_ADDR + 34: data_o <= val13_out_buf[31:16];
+                    BASE_ADDR + 35: data_o <= val14_out_buf[15:0];
+                    BASE_ADDR + 36: data_o <= val14_out_buf[31:16];
+                    BASE_ADDR + 37: data_o <= val15_out_buf[15:0];
+                    BASE_ADDR + 38: data_o <= val15_out_buf[31:16];
+                    BASE_ADDR + 39: data_o <= val16_out_buf[15:0];
+                    BASE_ADDR + 40: data_o <= val16_out_buf[31:16];
+                    BASE_ADDR + 41: data_o <= val17_out_buf[15:0];
+                    BASE_ADDR + 42: data_o <= val17_out_buf[31:16];
+                    BASE_ADDR + 43: data_o <= val18_out_buf[15:0];
+                    BASE_ADDR + 44: data_o <= val18_out_buf[31:16];
+                    BASE_ADDR + 45: data_o <= val19_out_buf[15:0];
+                    BASE_ADDR + 46: data_o <= val19_out_buf[31:16];
+                    BASE_ADDR + 47: data_o <= val20_out_buf[15:0];
+                    BASE_ADDR + 48: data_o <= val20_out_buf[31:16];
                 endcase
             end
 
@@ -564,14 +580,46 @@ module project_io_core (
                 case (addr_i)
                     BASE_ADDR + 0: strobe <= data_i;
 
-                    BASE_ADDR + 41: val21_out_buf[15:0] <= data_i;
-                    BASE_ADDR + 42: val21_out_buf[31:16] <= data_i;
-                    BASE_ADDR + 43: val22_out_buf[15:0] <= data_i;
-                    BASE_ADDR + 44: val22_out_buf[31:16] <= data_i;
-                    BASE_ADDR + 45: val23_out_buf[15:0] <= data_i;
-                    BASE_ADDR + 46: val23_out_buf[31:16] <= data_i;
-                    BASE_ADDR + 47: val24_out_buf[15:0] <= data_i;
-                    BASE_ADDR + 48: val24_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 9: val1_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 10: val1_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 11: val2_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 12: val2_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 13: val3_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 14: val3_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 15: val4_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 16: val4_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 17: val5_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 18: val5_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 19: val6_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 20: val6_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 21: val7_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 22: val7_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 23: val8_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 24: val8_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 25: val9_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 26: val9_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 27: val10_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 28: val10_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 29: val11_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 30: val11_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 31: val12_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 32: val12_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 33: val13_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 34: val13_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 35: val14_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 36: val14_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 37: val15_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 38: val15_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 39: val16_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 40: val16_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 41: val17_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 42: val17_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 43: val18_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 44: val18_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 45: val19_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 46: val19_out_buf[31:16] <= data_i;
+                    BASE_ADDR + 47: val20_out_buf[15:0] <= data_i;
+                    BASE_ADDR + 48: val20_out_buf[31:16] <= data_i;
                 endcase
             end
         end

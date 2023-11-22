@@ -2,38 +2,73 @@ import time
 from manta import Manta
 import random
 import struct
-m = Manta('lab08.yaml') # create manta python instance using yaml
+m = Manta('project.yaml') # create manta python instance using yaml
 
-val3s = [random.randint(1, 100) for a in range(10)]
-val4s = [random.randint(1, 100) for a in range(10)]
+m1 = [
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+]
 
-# for i in range(len(val3s)):
-#     val3 = val3s[i]
-#     val4 = val4s[i]
-#     m.lab8_io_core.val3_out.set(val3) # set the value val3_out to be val3
-#     m.lab8_io_core.val4_out.set(val4) # set the value val4_out to be val4
-#     time.sleep(0.01) # wait a little amount...though honestly this is isn't needed since Python is slow.
-#     a = m.lab8_io_core.val1_in.get() # read in the output from our divider
-#     b = m.lab8_io_core.val2_in.get() # read in the output from our divider
-#     print("Division Test ", i)
-#     print(f"Values in were {val3} and {val4} with results {val4}//{val3}={val4//val3} and {val4}%{val3}={val4%val3}.")
-#     print(f"Actual results were: {a} and {b}!\n")
+m2 = [1, 2, 3, 4]
 
-val3s = [random.randint(100, 10000)/random.randint(1, 50) for a in range(5)]
-val4s = [random.randint(100, 10000)/random.randint(1, 50) for a in range(5)]
+val1 = struct.unpack("i", struct.pack("f", m1[0][0]))[0]
+val2 = struct.unpack("i", struct.pack("f", m1[0][1]))[0]
+val3 = struct.unpack("i", struct.pack("f", m1[0][2]))[0]
+val4 = struct.unpack("i", struct.pack("f", m1[0][3]))[0]
+val5 = struct.unpack("i", struct.pack("f", m1[1][0]))[0]
+val6 = struct.unpack("i", struct.pack("f", m1[1][1]))[0]
+val7 = struct.unpack("i", struct.pack("f", m1[1][2]))[0]
+val8 = struct.unpack("i", struct.pack("f", m1[1][3]))[0]
+val9 = struct.unpack("i", struct.pack("f", m1[2][0]))[0]
+val10 = struct.unpack("i", struct.pack("f", m1[2][1]))[0]
+val11 = struct.unpack("i", struct.pack("f", m1[2][2]))[0]
+val12 = struct.unpack("i", struct.pack("f", m1[2][3]))[0]
+val13 = struct.unpack("i", struct.pack("f", m1[3][0]))[0]
+val14 = struct.unpack("i", struct.pack("f", m1[3][1]))[0]
+val15 = struct.unpack("i", struct.pack("f", m1[3][2]))[0]
+val16 = struct.unpack("i", struct.pack("f", m1[3][3]))[0]
 
-for j in range(len(val3s)):
-    val3 = struct.unpack("i", struct.pack("f", val3s[j]))[0]
-    val4 = struct.unpack("i", struct.pack("f", val4s[j]))[0]
+val17 = struct.unpack("i", struct.pack("f", m2[0]))[0]
+val18 = struct.unpack("i", struct.pack("f", m2[1]))[0]
+val19 = struct.unpack("i", struct.pack("f", m2[2]))[0]
+val20 = struct.unpack("i", struct.pack("f", m2[3]))[0]
 
-    m.lab8_io_core.val3_out.set(val3) # set the value val3_out to be val3
-    m.lab8_io_core.val4_out.set(val4) # set the value val4_out to be val4
-    time.sleep(0.01) # wait a little amount...though honestly this is isn't needed since Python is slow.
-    a = m.lab8_io_core.val1_in.get() # read in the output from our divider
-    b = m.lab8_io_core.val2_in.get() # read in the output from our divider
+m.project_io_core.val1_out.set(val1)
+m.project_io_core.val2_out.set(val2)
+m.project_io_core.val3_out.set(val3)
+m.project_io_core.val4_out.set(val4)
+m.project_io_core.val5_out.set(val5)
+m.project_io_core.val6_out.set(val6)
+m.project_io_core.val7_out.set(val7)
+m.project_io_core.val8_out.set(val8)
+m.project_io_core.val9_out.set(val9)
+m.project_io_core.val10_out.set(val10)
+m.project_io_core.val11_out.set(val11)
+m.project_io_core.val12_out.set(val12)
+m.project_io_core.val13_out.set(val13)
+m.project_io_core.val14_out.set(val14)
+m.project_io_core.val15_out.set(val15)
+m.project_io_core.val16_out.set(val16)
+m.project_io_core.val17_out.set(val17)
+m.project_io_core.val18_out.set(val18)
+m.project_io_core.val19_out.set(val19)
+m.project_io_core.val20_out.set(val20)
 
-    afloat = struct.unpack("f", struct.pack("i", a))[0]
-    bfloat = struct.unpack("f", struct.pack("i", b))[0]
-    print("Float Test ", j)
-    print(f"Values in were {val3s[j]} and {val4s[j]} with results {val3s[j]**2 + val4s[j]**2} and {1/((val3s[j]**2 + val4s[j]**2)**.5)}.")
-    print(f"Actual results were: {afloat} and {bfloat}!\n")
+time.sleep(0.01)
+
+a = m.project_io_core.val21_in.get()
+b = m.project_io_core.val22_in.get()
+c = m.project_io_core.val23_in.get()
+d = m.project_io_core.val24_in.get()
+
+afloat = struct.unpack("f", struct.pack("i", a))[0]
+bfloat = struct.unpack("f", struct.pack("i", b))[0]
+cfloat = struct.unpack("f", struct.pack("i", c))[0]
+dfloat = struct.unpack("f", struct.pack("i", d))[0]
+
+print("Matrix Multiplication Test")
+print(f"The outputed matrix is [{afloat}, {bfloat}, {cfloat}, {dfloat}]")
+print(f"The expected output should be ")
+

@@ -89,11 +89,15 @@ module top_level(
         .mat_out(mat_out)
     );
     
+    assign val21 = mat_out[0];
+    assign val22 = mat_out[1];
+    assign val23 = mat_out[2];
+    assign val24 = mat_out[3];
 
     manta matrix_mult (
         .clk(clk_100mhz),
         .tx(uart_txd),
-        .rx(uart_rx),
+        .rx(uart_rxd),
         .val1_out(val1),
         .val2_out(val2),
         .val3_out(val3),

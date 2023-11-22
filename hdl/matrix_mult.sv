@@ -11,31 +11,32 @@ module matrix_mult
 
     logic idle;
 
+
     logic [31:0] row0 [3:0];
-    logic [31:0] row1 [3:0];
-    logic [31:0] row2 [3:0];
-    logic [31:0] row3 [3:0];
+    // logic [31:0] row1 [3:0];
+    // logic [31:0] row2 [3:0];
+    // logic [31:0] row3 [3:0];
 
     logic [31:0] out0;
-    logic [31:0] out1;
-    logic [31:0] out2;
-    logic [31:0] out3;
+    // logic [31:0] out1;
+    // logic [31:0] out2;
+    // logic [31:0] out3;
 
     logic [31:0] temp [3:0];
 
-    assign row0 = mat1_in[0];
-    assign row1 = mat1_in[1];
-    assign row2 = mat1_in[2];
-    assign row3 = mat1_in[3];
+    // assign row0 = mat1_in[0];
+    // assign row1 = mat1_in[1];
+    // assign row2 = mat1_in[2];
+    // assign row3 = mat1_in[3];
 
     logic v0;
-    logic v1;
-    logic v2;
-    logic v3;
+    // logic v1;
+    // logic v2;
+    // logic v3;
     logic r0;
-    logic r1;
-    logic r2;
-    logic r3;
+    // logic r1;
+    // logic r2;
+    // logic r3;
 
     matrix_mult_single mms_a (
         .clk_in(clk_in),
@@ -44,38 +45,38 @@ module matrix_mult
         .col_in(mat2_in),
         .valid_in(valid_in),
         .valid_out(v0),
-        .mat_out(out0)
+        .val_out(out0)
     );
 
-    matrix_mult_single mms_b (
-        .clk_in(clk_in),
-        .rst_in(rst_in),
-        .row_in(row1),
-        .col_in(mat2_in),
-        .valid_in(valid_in),
-        .valid_out(v1),
-        .mat_out(out1)
-    );
+    // matrix_mult_single mms_b (
+    //     .clk_in(clk_in),
+    //     .rst_in(rst_in),
+    //     .row_in(row1),
+    //     .col_in(mat2_in),
+    //     .valid_in(valid_in),
+    //     .valid_out(v1),
+    //     .val_out(out1)
+    // );
 
-    matrix_mult_single mms_c (
-        .clk_in(clk_in),
-        .rst_in(rst_in),
-        .row_in(row2),
-        .col_in(mat2_in),
-        .valid_in(valid_in),
-        .valid_out(v2),
-        .mat_out(out2)
-    );
+    // matrix_mult_single mms_c (
+    //     .clk_in(clk_in),
+    //     .rst_in(rst_in),
+    //     .row_in(row2),
+    //     .col_in(mat2_in),
+    //     .valid_in(valid_in),
+    //     .valid_out(v2),
+    //     .val_out(out2)
+    // );
 
-    matrix_mult_single mms_d (
-        .clk_in(clk_in),
-        .rst_in(rst_in),
-        .row_in(row3),
-        .col_in(mat2_in),
-        .valid_in(valid_in),
-        .valid_out(v3),
-        .mat_out(out3)
-    );
+    // matrix_mult_single mms_d (
+    //     .clk_in(clk_in),
+    //     .rst_in(rst_in),
+    //     .row_in(row3),
+    //     .col_in(mat2_in),
+    //     .valid_in(valid_in),
+    //     .valid_out(v3),
+    //     .val_out(out3)
+    // );
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
