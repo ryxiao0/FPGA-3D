@@ -30,6 +30,8 @@ set_part $partNum
 read_ip ./ip/multiplier/multiplier.xci
 read_ip ./ip/adder/adder.xci
 read_ip ./ip/inv_sqrt/inv_sqrt.xci
+read_ip ./ip/fifo/fifo.xci
+read_ip ./ip/reciprocal/reciprocal.xci
 generate_target all [get_ips]
 synth_ip [get_ips]
 
