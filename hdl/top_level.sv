@@ -50,21 +50,34 @@ module top_level(
         end else begin
             if (sw[0]) begin 
                 roll <= (roll + 1) % 5760;
-            end 
-            if (sw[1]) begin
-                pitch <= (pitch + 1) % 5760;
-            end 
+            end else if (sw[1]) begin
+                roll <= (roll - 1) % 5760;
+            end
             if (sw[2]) begin
+                pitch <= (pitch + 1) % 5760;
+            end else if(sw[3]) begin
+                pitch <= (pitch - 1) % 5760;
+            end
+            if (sw[4]) begin
                 yaw <= (yaw + 1) % 5760;
-            end
-            if (sw[13]) begin
-                input_x <= (input_x + 1) % (OUTPUT_WIDTH * 4);
+            end else if (sw[5]) begin 
+                yaw <= (yaw - 1) % 5760;
             end 
-            if (sw[14]) begin
-                input_y <= (input_y + 1) % (OUTPUT_HEIGHT * 4);
+
+            if (sw[10]) begin
+                input_x <= (input_x + 1) % (OUTPUT_WIDTH * 4);
+            end else if(sw[11]) begin
+                input_x <= (input_x - 1) % (OUTPUT_WIDTH * 4);
             end
-            if (sw[15]) begin
+            if (sw[12]) begin
+                input_y <= (input_y + 1) % (OUTPUT_HEIGHT * 4);
+            end else if(sw[13]) begin 
+                input_y <= (input_y - 1) % (OUTPUT_HEIGHT * 4);
+            end
+            if (sw[14]) begin
                 input_z <= (input_z + 1) % (OUTPUT_WIDTH * 4);
+            end else if(sw[15]) begin 
+                input_z <= (input_z - 1) % (OUTPUT_WIDTH * 4);
             end
         end 
     end
