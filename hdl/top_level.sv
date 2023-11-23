@@ -22,6 +22,53 @@ module top_level(
     output logic uart_txd,
     input wire uart_rxd
 );
+    localparam OUTPUT_WIDTH = 540;
+    localparam OUTPUT_HEIGHT = 540;
+
+    // inputs 
+    // angle: roll, pitch and yaw — integers from 0 to 5760. (1/16 of a degree)
+    logic [12:0] roll;
+    logic [12:0] pitch;
+    logic [12:0] yaw; 
+
+    // position: x, y, z - integers from 0 to output_width/height * 4 (4 increases per pixel)
+    // x and y relative to COM 
+    // z for zooming later
+    logic [11:0] input_x;
+    logic [11:0] input_y;
+    logic [11:0] input_z;
+
+    always_ff @(posedge clk_100mhz) begin
+        if(btn[0]) begin
+            // sys reset signal 
+            input_x <= OUTPUT_WIDTH/2;
+            input_y <= OUTPUT_HEIGHT/2;
+            input_z <= 0;
+            roll <= 0;
+            pitch <= 0; 
+            yaw <= 0;
+        end else begin
+            if (sw[0]) begin 
+                roll <= (roll + 1) % 5760;
+            end 
+            if (sw[1]) begin
+                pitch <= (pitch + 1) % 5760;
+            end 
+            if (sw[2]) begin
+                yaw <= (yaw + 1) % 5760;
+            end
+            if (sw[13]) begin
+                input_x <= (input_x + 1) % (OUTPUT_WIDTH * 4);
+            end 
+            if (sw[14]) begin
+                input_y <= (input_y + 1) % (OUTPUT_HEIGHT * 4);
+            end
+            if (sw[15]) begin
+                input_z <= (input_z + 1) % (OUTPUT_WIDTH * 4);
+            end
+        end 
+    end
+
 
     logic [31:0] val1;
     logic [31:0] val2;
@@ -123,6 +170,36 @@ module top_level(
         .val23_in(val23),
         .val24_in(val24)
     );
+
+    logic fifo_in_valid;
+    logic fifo_in_ready;
+    logic [8:0] fifo_in_data; // 32 bit integers [2:0][3:0] 
+    logic fifo_out_valid;
+    logic fifo_out_ready;
+    logic [8:0] fifo_out_data; // 32 bit integers [2:0][3:0]
+
+
+    manta fifo (
+        .s_axis_aresetn(btn[0]),
+        .s_axis_aclk(clk_100mhz),
+        .s_axis_tvalid(fifo_in_valid),
+        .s_axis_tready(fifo_in_ready),
+        .s_axis_tdata(fifo_in_data),
+        .m_axis_tvalid(fifo_out_valid),
+        .m_axis_tready(fifo_out_ready),
+        .m_axis_tdata(fifo_out_data)
+    );
+
+    // manta reciprocal (
+    //     .aclk(clk_100mhz),
+    //     .s_axis_aclk(clk_100mhz),
+    //     .s_axis_a_tvalid(recip_in_valid),
+    //     .s_axis_a_tready(recip_in_ready),
+    //     .s_axis_a_tdata(recip_in_data),
+    //     .m_axis_result_tvalid(recip_out_valid),
+    //     .m_axis_result_tready(recip_out_ready),
+    //     .m_axis_result_tdata(recip_out_data)
+    // );
 
 endmodule //top_level
 
