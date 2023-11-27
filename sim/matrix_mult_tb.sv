@@ -5,7 +5,7 @@ module matrix_mult_tb;
 
     logic clk;
     logic rst;
-    logic valid;
+    logic valid_in;
     logic [31:0] mat1_in [3:0] [3:0];
     logic [31:0] mat2_in [3:0];
     logic valid_out;
@@ -38,15 +38,16 @@ module matrix_mult_tb;
         rst = 0;
         #5;
         for (integer i=0;i<4;i=i+1) begin
-            mat2_in[i] = 1;
+            mat2_in[i] = 32'h3f800000;
             for (integer j=0;j<4;j=j+1) begin
-                mat1_in[i][j] = i == j;
+                if (i == j) mat1_in[i][j] = 32'h3f800000;
+                else mat1_in[i][j] = 0;
             end
         end
         valid_in = 1;
         #10;
         valid_in = 0;
-        #500;
+        #1000;
         $display("Finishing Sim");
         $finish;
     end

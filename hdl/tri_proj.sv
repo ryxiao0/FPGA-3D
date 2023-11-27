@@ -11,7 +11,7 @@ module tri_proj (
         for (integer i=0;i<4;i=i+1) begin
             for (integer j=0;j<4;j=j+1) begin
                 if (i == j && i != 3) proj_mat[i][j] = 1;
-                else if (i == 3 && j == 2) proj_mat[i][j] = // 1/d
+                else if (i == 3 && j == 2) proj_mat[i][j] = 1;// 1/d
             end
         end
     end

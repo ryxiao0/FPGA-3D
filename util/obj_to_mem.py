@@ -36,13 +36,14 @@ if __name__ == "__main__":
                         elif l[i] == " ":
                             val = ""
                             dont = False
-                            addec = False
+                            added = False
                         elif not dont:
                             val += l[i]
-                    xVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][0]))[0] + (1 << 32)) % (1 << 32))
-                    yVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][1]))[0] + (1 << 32)) % (1 << 32))
-                    zVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][2]))[0] + (1 << 32)) % (1 << 32))
-                    facets.append(xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8))
+                    # xVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][0]))[0] + (1 << 32)) % (1 << 32))
+                    # yVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][1]))[0] + (1 << 32)) % (1 << 32))
+                    # zVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][2]))[0] + (1 << 32)) % (1 << 32))
+                    # facets.append(xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8))
+                    facets.append(str(ind[0])+str(ind[1])+str(ind[2]))
 
                     # hex((val + (1 << nbits)) % (1 << nbits)) to get hex of twos complement
 
@@ -56,11 +57,20 @@ if __name__ == "__main__":
         zVal = hex((struct.unpack("i", struct.pack("f", zCOM))[0] + (1 << 32)) % (1 << 32))
         hexCOM = xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8)
 
-        facets.insert(0, hexCOM)
+        vert_str = [hexCOM]
+        for v in vertices:
+            xVal = hex((struct.unpack("i", struct.pack("f", v[0]))[0] + (1 << 32)) % (1 << 32))
+            yVal = hex((struct.unpack("i", struct.pack("f", v[1]))[0] + (1 << 32)) % (1 << 32))
+            zVal = hex((struct.unpack("i", struct.pack("f", v[2]))[0] + (1 << 32)) % (1 << 32))
+            vert_str.append(xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8))
 
-        newFileName = "data/"+input_fname[5:len(input_fname)-4] + ".mem"
+        newFileName = "data/"+input_fname[5:len(input_fname)-4] + "_vertices.mem"
         with open(newFileName, "w") as f:
-            f.write("\n".join([f for f in facets]))
+            f.write("\n".join([v for v in vert_str]))
+
+        newFileName = "data/"+input_fname[5:len(input_fname)-4] + "_facets.mem"
+        with open(newFileName, "w") as f:
+            f.write("\n".join([fa for fa in facets]))
 
         print("Output saved to", newFileName)
                 

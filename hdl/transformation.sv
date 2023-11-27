@@ -2,8 +2,9 @@ module transformation
     (
         input wire clk_in,
         input wire rst_in,
-        input wire [1:0] sel,
+        input wire [2:0] sel,
         input wire [31:0] pos [3:0],
+        input wire [31:0] com [3:0],
         input wire [31:0] x_trans,
         input wire [31:0] y_trans,
         input wire [31:0] z_trans,
@@ -21,11 +22,22 @@ module transformation
     logic [31:0] pitch_mat [3:0] [3:0];
     logic [31:0] roll_mat [3:0] [3:0];
     logic [31:0] yaw_mat [3:0] [3:0];
+    logic [31:0] id_mat [3:0] [3:0];
     
     logic [31:0] mat [3:0] [3:0];
     logic v_in;
     logic v_out;
     logic [31:0] out [3:0];
+
+    // Identity
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == j) id_mat[i][j] = 1;
+                else id_mat[i][j] = 0;
+            end
+        end
+    end
 
     // Translation
     always_comb begin
@@ -99,6 +111,12 @@ module transformation
         end
     end
 
+    assign mat = (sel == 3'b000)? trans_mat:
+                 (sel == 3'b001)? scale_mat:
+                 (sel == 3'b010)? pitch_mat:
+                 (sel == 3'b011)? yaw_mat:
+                 (sel == 3'b100)? roll_mat: id_mat;
+
     matrix_mult transform (
         .clk_in(clk_in),
         .rst_in(rst_in),
@@ -126,16 +144,16 @@ endmodule
 // 16 increments of rotation (4 bit lookup input), 32 bit float output
 function [31:0] sin (input [4:0] theta);
     case (theta)
-        5'd0: sin = 32'h00000000;
-        5'd1: sin = 32'h3e47c5c2;
-        5'd2: sin = 32'h3ec3ef15;
-        5'd3: sin = 32'h3f0e39da;
-        5'd4: sin = 32'h3f3504f3;
-        5'd5: sin = 32'h3f54db31;
-        5'd6: sin = 32'h3f6c835e;
-        5'd7: sin = 32'h3f7b14be;
-        5'd8: sin = 32'h3f800000;
-        5'd9: sin = 32'h3f7b14be;
+        5'd0:  sin = 32'h00000000;
+        5'd1:  sin = 32'h3e47c5c2;
+        5'd2:  sin = 32'h3ec3ef15;
+        5'd3:  sin = 32'h3f0e39da;
+        5'd4:  sin = 32'h3f3504f3;
+        5'd5:  sin = 32'h3f54db31;
+        5'd6:  sin = 32'h3f6c835e;
+        5'd7:  sin = 32'h3f7b14be;
+        5'd8:  sin = 32'h3f800000;
+        5'd9:  sin = 32'h3f7b14be;
         5'd10: sin = 32'h3f6c835e;
         5'd11: sin = 32'h3f54db31;
         5'd12: sin = 32'h3f3504f3;
@@ -163,16 +181,16 @@ endfunction
 
 function [31:0] cos (input [4:0] theta);
     case (theta)
-        5'd0: cos = 32'h3f800000;
-        5'd1: cos = 32'h3f7b14be;
-        5'd2: cos = 32'h3f6c835e;
-        5'd3: cos = 32'h3f54db31;
-        5'd4: cos = 32'h3f3504f3;
-        5'd5: cos = 32'h3f0e39da;
-        5'd6: cos = 32'h3ec3ef15;
-        5'd7: cos = 32'h3e47c5c2;
-        5'd8: cos = 32'h248d3132;
-        5'd9: cos = 32'hbe47c5c2;
+        5'd0:  cos = 32'h3f800000;
+        5'd1:  cos = 32'h3f7b14be;
+        5'd2:  cos = 32'h3f6c835e;
+        5'd3:  cos = 32'h3f54db31;
+        5'd4:  cos = 32'h3f3504f3;
+        5'd5:  cos = 32'h3f0e39da;
+        5'd6:  cos = 32'h3ec3ef15;
+        5'd7:  cos = 32'h3e47c5c2;
+        5'd8:  cos = 32'h248d3132;
+        5'd9:  cos = 32'hbe47c5c2;
         5'd10: cos = 32'hbec3ef15;
         5'd11: cos = 32'hbf0e39da;
         5'd12: cos = 32'hbf3504f3;

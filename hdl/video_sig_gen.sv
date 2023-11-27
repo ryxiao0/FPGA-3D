@@ -11,14 +11,14 @@ module video_sig_gen
     (
     input wire clk_pixel_in,
     input wire rst_in,
-    output logic [$clog2(TOTAL_PIXELS)-1:0] hcount_out,
-    output logic [$clog2(TOTAL_LINES)-1:0] vcount_out,
+    output logic [$clog2(360)-1:0] hcount_out,
+    output logic [$clog2(360)-1:0] vcount_out,
     output logic vs_out,
     output logic hs_out,
     output logic ad_out,
     output logic nf_out,
     output logic [5:0] fc_out);
-    
+
     localparam TOTAL_PIXELS = ACTIVE_H_PIXELS+H_FRONT_PORCH+H_SYNC_WIDTH+H_BACK_PORCH; //figure this out (change me)
     localparam TOTAL_LINES = ACTIVE_LINES+V_FRONT_PORCH+V_SYNC_WIDTH+V_BACK_PORCH; //figure this out (change me)
 

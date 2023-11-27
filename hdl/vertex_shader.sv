@@ -20,23 +20,23 @@ module vertex_shader (
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
-            
+
         end
     end
 
-    xilinx_single_port_ram_read_first #(
-        .RAM_WIDTH(96),                       // Specify RAM data width
-        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
-        .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(cube.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
-    ) image_inst (
-        .addra(tri_addr),     // Address bus, width determined from RAM_DEPTH
-        .dina(0),       // RAM input data, width determined from RAM_WIDTH
-        .clka(clk_in),       // Clock
-        .wea(0),         // Write enable
-        .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
-        .rsta(rst_in),       // Output reset (does not affect memory contents)
-        .regcea(1),   // Output register enable
-        .douta({old_tri[2], old_tri[1], old_tri[0]})      // RAM output data, width determined from RAM_WIDTH
-    );
+    // xilinx_single_port_ram_read_first #(
+    //     .RAM_WIDTH(96),                       // Specify RAM data width
+    //     .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+    //     .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+    //     .INIT_FILE(`FPATH(cube.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    // ) image_inst (
+    //     .addra(tri_addr),     // Address bus, width determined from RAM_DEPTH
+    //     .dina(0),       // RAM input data, width determined from RAM_WIDTH
+    //     .clka(clk_in),       // Clock
+    //     .wea(0),         // Write enable
+    //     .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
+    //     .rsta(rst_in),       // Output reset (does not affect memory contents)
+    //     .regcea(1),   // Output register enable
+    //     .douta({old_tri[2], old_tri[1], old_tri[0]})      // RAM output data, width determined from RAM_WIDTH
+    // );
 endmodule
