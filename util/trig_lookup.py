@@ -11,7 +11,7 @@ def trig_lookup(func, width):
     i = 0
     while theta <= two_pi:
         v = hex((struct.unpack("i", struct.pack("f", f(theta)))[0] + (1 << 32)) % (1 << 32))
-        s = str(width) + "'d" + str(i) + ": amp_out <= 32'h" + str(v[2:].zfill(8)) + ";"
+        s = str(width) + "'d" + str(i) + ": "+ func + " <= 32'h" + str(v[2:].zfill(8)) + ";"
         print(s)
         theta += two_pi / (2**width)
         i += 1
