@@ -18,7 +18,7 @@ if {[llength $files] != 0} {
 # read in all system veriilog files:
 read_verilog -sv [ glob ./hdl/*.sv ]
 # uncomment line below if verilog (.v) files present:
-read_verilog  [ glob ./hdl/*.v ]
+# read_verilog  [ glob ./hdl/*.v ]
 read_xdc ./xdc/top_level.xdc
 #we'll use this later:
 # read_mem [ glob ./data/*.mem ]
@@ -29,9 +29,8 @@ set_part $partNum
 # Read in all IP
 read_ip ./ip/multiplier/multiplier.xci
 read_ip ./ip/adder/adder.xci
-read_ip ./ip/inv_sqrt/inv_sqrt.xci
-read_ip ./ip/fifo/fifo.xci
-read_ip ./ip/reciprocal/reciprocal.xci
+# read_ip ./ip/fifo/fifo.xci
+# read_ip ./ip/reciprocal/reciprocal.xci
 generate_target all [get_ips]
 synth_ip [get_ips]
 

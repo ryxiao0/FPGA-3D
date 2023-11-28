@@ -34,6 +34,8 @@ module matrix_mult
             mat_out[1] <= 0;
             mat_out[2] <= 0;
             mat_out[3] <= 0;
+            state <= IDLE;
+            v0_in <= 0;
         end else begin
             case (state)
                 IDLE: begin
@@ -41,11 +43,11 @@ module matrix_mult
                         row0 <= mat1_in[0];
                         v0_in <= 1;
                         state <= ONE;
-                        mat_out[0] <= 0;
-                        mat_out[1] <= 0;
-                        mat_out[2] <= 0;
-                        mat_out[3] <= 0;
                     end
+                    mat_out[0] <= 0;
+                    mat_out[1] <= 0;
+                    mat_out[2] <= 0;
+                    mat_out[3] <= 0;
                     valid_out <= 0;
                 end
                 ONE: begin
@@ -153,8 +155,8 @@ module matrix_mult_single (
                     if (valid_in) begin
                         m_valid_in <= 1;
                         state = MULT0;
-                        val_out <= 0;
                     end
+                    val_out <= 0;
                     valid_out <= 0;
                 end
                 MULT0: begin
@@ -162,67 +164,59 @@ module matrix_mult_single (
                         a_valid_in <= 1;
                         state <= ADD0;
                         idx <= idx + 1;
-                        m_valid_in <= 0;
                         m_data <= m_data_out;
-                    end
+                    end else m_valid_in <= 0;
                 end
                 ADD0: begin
                     if (a_valid_out) begin
                         med_val <= a_data_out;
                         m_valid_in <= 1;
                         state <= MULT1;
-                        a_valid_in <= 0;
-                    end
+                    end else a_valid_in <= 0;
                 end
                 MULT1: begin
                     if (m_valid_out) begin
                         a_valid_in <= 1;
                         state <= ADD1;
                         idx <= idx + 1;
-                        m_valid_in <= 0;
                         m_data <= m_data_out;
-                    end
+                    end else m_valid_in <= 0;
                 end
                 ADD1: begin
                     if (a_valid_out) begin
                         med_val <= a_data_out;
                         m_valid_in <= 1;
                         state <= MULT2;
-                        a_valid_in <= 0;
-                    end
+                    end else a_valid_in <= 0;
                 end
                 MULT2: begin
                     if (m_valid_out) begin
                         a_valid_in <= 1;
                         state <= ADD2;
                         idx <= idx + 1;
-                        m_valid_in <= 0;
                         m_data <= m_data_out;
-                    end
+                    end else m_valid_in <= 0;
                 end
                 ADD2: begin
                     if (a_valid_out) begin
                         med_val <= a_data_out;
                         m_valid_in <= 1;
                         state <= MULT3;
-                        a_valid_in <= 0;
-                    end
+                    end else a_valid_in <= 0;
                 end
                 MULT3: begin
                     if (m_valid_out) begin
                         a_valid_in <= 1;
                         state <= ADD3;
                         idx <= idx + 1;
-                        m_valid_in <= 0;
                         m_data <= m_data_out;
-                    end
+                    end else m_valid_in <= 0;
                 end
                 ADD3: begin
                     if (a_valid_out) begin
                         med_val <= a_data_out;
                         state <= READY;
-                        a_valid_in <= 0;
-                    end
+                    end else a_valid_in <= 0;
                 end
                 READY: begin
                     val_out <= med_val;

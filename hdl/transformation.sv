@@ -1,29 +1,37 @@
 module transformation
+    #(
+        parameter D=10;
+    )
     (
         input wire clk_in,
         input wire rst_in,
-        input wire [2:0] sel,
+        input wire [1:0] sel,
         input wire [31:0] pos [3:0],
-        input wire [31:0] com [3:0],
-        input wire [31:0] x_trans,
-        input wire [31:0] y_trans,
-        input wire [31:0] z_trans,
+        input signed wire [31:0] com [2:0],
         input wire [31:0] scale,
-        input wire [31:0] pitch, // x axis - like tilting up or down
-        input wire [31:0] roll, // z axis - looking down z axis
-        input wire [31:0] yaw, // y axis - like steering left or right
+        input wire [4:0] pitch, // x axis - like tilting up or down
+        input wire [4:0] roll, // z axis - looking down z axis
+        input wire [4:0] yaw, // y axis - like steering left or right
         input wire valid_in,
         output logic valid_out,
         output logic [31:0] new_pos [3:0]
     );
 
-    logic [31:0] trans_mat [3:0] [3:0];
+    parameter X=0, Y=0, Z=D
+
+    localparam IDLE=0, COM=1, TRANS=2, BACK=3;
+    logic [1:0] state;
+
+    logic [31:0] com_mat [3:0] [3:0];
+    logic [31:0] back_mat [3:0] [3:0];
     logic [31:0] scale_mat [3:0] [3:0];
     logic [31:0] pitch_mat [3:0] [3:0];
     logic [31:0] roll_mat [3:0] [3:0];
     logic [31:0] yaw_mat [3:0] [3:0];
     logic [31:0] id_mat [3:0] [3:0];
     
+
+    logic [31:0] cur_pos [3:0],
     logic [31:0] mat [3:0] [3:0];
     logic v_in;
     logic v_out;
@@ -39,18 +47,30 @@ module transformation
         end
     end
 
-    // Translation
+    // Translation to COM
     always_comb begin
         for (integer i=0;i<4;i=i+1) begin
             for (integer j=0;j<4;j=j+1) begin
                 if (i == j) begin
-                    trans_mat[i][j] = 1;
+                    com_mat[i][j] = 1;
                 end else if (j == 3) begin
-                    if (j == 0) trans_mat[i][j] = x_trans;
-                    else if (j == 1) trans_mat[i][j] = y_trans;
-                    else if (j == 2) trans_mat[i][j] = z_trans;
-                    else if (j == 3) trans_mat[i][j] = 1;
-                end else trans_mat[i][j] = 0;
+                    if (i == 0) com_mat[i][j] = -com[2];
+                    else if (i == 1) com_mat[i][j] = -com[1];
+                    else if (i == 2) com_mat[i][j] = -com[0];
+                end else com_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Translation to camera view
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == j) begin
+                    back_mat[i][j] = 1;
+                end else if (j == 3 && i == 2) begin
+                    back_mat[i][j] = D;
+                end else back_mat[i][j] = 0;
             end
         end
     end
@@ -111,31 +131,62 @@ module transformation
         end
     end
 
-    assign mat = (sel == 3'b000)? trans_mat:
-                 (sel == 3'b001)? scale_mat:
-                 (sel == 3'b010)? pitch_mat:
-                 (sel == 3'b011)? yaw_mat:
-                 (sel == 3'b100)? roll_mat: id_mat;
+    assign tf_mat = (sel == 3'b00)? scale_mat:
+                    (sel == 3'b01)? pitch_mat:
+                    (sel == 3'b10)? yaw_mat:
+                    (sel == 3'b11)? roll_mat: id_mat;
+
 
     matrix_mult transform (
         .clk_in(clk_in),
         .rst_in(rst_in),
         .valid_in(v_in),
         .mat1_in(mat),
-        .mat2_in(pos),
+        .mat2_in(cur_pos),
         .valid_out(v_out),
         .mat_out(out)
     );
+    
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             v_in <= 0;
             valid_out <= 0;
         end else begin
-            if (valid_in) v_in <= 1;
-            else v_in <= 0;
-
-            if (v_out) new_pos <= out;
+            case (state)
+                IDLE: begin
+                    if (valid_in) begin
+                        v_in <= 1;
+                        mat <= trans_mat;
+                        state <= COM;
+                    end
+                    v_in <= 0;
+                    valid_out <= 0;
+                end
+                COM: begin
+                    if (v_out) begin
+                        cur_pos <= out;
+                        v_in <= 1;
+                        mat <= tf_mat;
+                        state <= TRANS;
+                    end else v_in <= 0;
+                end
+                TRANS: begin
+                    if (v_out) begin
+                        cur_pos <= out;
+                        v_in <= 1;
+                        mat <= back_mat;
+                        state <= BACK;
+                    end else v_in <= 0;
+                end
+                BACK: begin
+                    if (v_out) begin
+                        new_pos <= out;
+                        valid_out <= 1;
+                        state <= IDLE;
+                    end else v_in <= 0;
+                end
+            endcase;
         end
     end
 

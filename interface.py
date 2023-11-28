@@ -63,7 +63,7 @@ b = m.project_io_core.val22_in.get()
 c = m.project_io_core.val23_in.get()
 d = m.project_io_core.val24_in.get()
 
-afloat = struct.unpack("f", struct.pack("i", a))[0]
+afloat = bin(struct.unpack("i", struct.pack("i", a))[0])
 bfloat = struct.unpack("f", struct.pack("i", b))[0]
 cfloat = struct.unpack("f", struct.pack("i", c))[0]
 dfloat = struct.unpack("f", struct.pack("i", d))[0]

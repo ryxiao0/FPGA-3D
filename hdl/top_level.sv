@@ -6,19 +6,15 @@ module top_level(
     input wire [15:0] sw, //all 16 input slide switches
     input wire [3:0] btn, //all four momentary button switches
     output logic [15:0] led, //16 green output LEDs (located right above switches)
-    output logic [2:0] rgb0, //rgb led
-    output logic [2:0] rgb1, //rgb led
-    output logic [2:0] hdmi_tx_p, //hdmi output signals (blue, green, red)
-    output logic [2:0] hdmi_tx_n, //hdmi output signals (negatives)
-    output logic hdmi_clk_p, hdmi_clk_n, //differential hdmi clock
-    output logic [6:0] ss0_c,
-    output logic [6:0] ss1_c,
-    output logic [3:0] ss0_an,
-    output logic [3:0] ss1_an,
-    input wire [7:0] pmoda,
-    input wire [2:0] pmodb,
-    output logic pmodbclk,
-    output logic pmodblock,
+    // output logic [2:0] rgb0, //rgb led
+    // output logic [2:0] rgb1, //rgb led
+    // output logic [2:0] hdmi_tx_p, //hdmi output signals (blue, green, red)
+    // output logic [2:0] hdmi_tx_n, //hdmi output signals (negatives)
+    // output logic hdmi_clk_p, hdmi_clk_n, //differential hdmi clock
+    // output logic [6:0] ss0_c,
+    // output logic [6:0] ss1_c,
+    // output logic [3:0] ss0_an,
+    // output logic [3:0] ss1_an,
     output logic uart_txd,
     input wire uart_rxd
 );
@@ -27,60 +23,60 @@ module top_level(
 
     // inputs 
     // angle: roll, pitch and yaw — integers from 0 to 5760. (1/16 of a degree)
-    logic [12:0] roll;
-    logic [12:0] pitch;
-    logic [12:0] yaw; 
+    // logic [12:0] roll;
+    // logic [12:0] pitch;
+    // logic [12:0] yaw; 
 
     // position: x, y, z - integers from 0 to output_width/height * 4 (4 increases per pixel)
     // x and y relative to COM 
     // z for zooming later
-    logic [11:0] input_x;
-    logic [11:0] input_y;
-    logic [11:0] input_z;
+    // logic [11:0] input_x;
+    // logic [11:0] input_y;
+    // logic [11:0] input_z;
 
-    always_ff @(posedge clk_100mhz) begin
-        if(btn[0]) begin
-            // sys reset signal 
-            input_x <= OUTPUT_WIDTH/2;
-            input_y <= OUTPUT_HEIGHT/2;
-            input_z <= 0;
-            roll <= 0;
-            pitch <= 0; 
-            yaw <= 0;
-        end else begin
-            if (sw[0]) begin 
-                roll <= (roll + 1) % 5760;
-            end else if (sw[1]) begin
-                roll <= (roll - 1) % 5760;
-            end
-            if (sw[2]) begin
-                pitch <= (pitch + 1) % 5760;
-            end else if(sw[3]) begin
-                pitch <= (pitch - 1) % 5760;
-            end
-            if (sw[4]) begin
-                yaw <= (yaw + 1) % 5760;
-            end else if (sw[5]) begin 
-                yaw <= (yaw - 1) % 5760;
-            end 
+    // always_ff @(posedge clk_100mhz) begin
+    //     if(btn[0]) begin
+    //         // sys reset signal 
+    //         input_x <= OUTPUT_WIDTH/2;
+    //         input_y <= OUTPUT_HEIGHT/2;
+    //         input_z <= 0;
+    //         roll <= 0;
+    //         pitch <= 0; 
+    //         yaw <= 0;
+    //     end else begin
+    //         if (sw[0]) begin 
+    //             roll <= (roll + 1) % 5760;
+    //         end else if (sw[1]) begin
+    //             roll <= (roll - 1) % 5760;
+    //         end
+    //         if (sw[2]) begin
+    //             pitch <= (pitch + 1) % 5760;
+    //         end else if(sw[3]) begin
+    //             pitch <= (pitch - 1) % 5760;
+    //         end
+    //         if (sw[4]) begin
+    //             yaw <= (yaw + 1) % 5760;
+    //         end else if (sw[5]) begin 
+    //             yaw <= (yaw - 1) % 5760;
+    //         end 
 
-            if (sw[10]) begin
-                input_x <= (input_x + 1) % (OUTPUT_WIDTH * 4);
-            end else if(sw[11]) begin
-                input_x <= (input_x - 1) % (OUTPUT_WIDTH * 4);
-            end
-            if (sw[12]) begin
-                input_y <= (input_y + 1) % (OUTPUT_HEIGHT * 4);
-            end else if(sw[13]) begin 
-                input_y <= (input_y - 1) % (OUTPUT_HEIGHT * 4);
-            end
-            if (sw[14]) begin
-                input_z <= (input_z + 1) % (OUTPUT_WIDTH * 4);
-            end else if(sw[15]) begin 
-                input_z <= (input_z - 1) % (OUTPUT_WIDTH * 4);
-            end
-        end 
-    end
+    //         if (sw[10]) begin
+    //             input_x <= (input_x + 1) % (OUTPUT_WIDTH * 4);
+    //         end else if(sw[11]) begin
+    //             input_x <= (input_x - 1) % (OUTPUT_WIDTH * 4);
+    //         end
+    //         if (sw[12]) begin
+    //             input_y <= (input_y + 1) % (OUTPUT_HEIGHT * 4);
+    //         end else if(sw[13]) begin 
+    //             input_y <= (input_y - 1) % (OUTPUT_HEIGHT * 4);
+    //         end
+    //         if (sw[14]) begin
+    //             input_z <= (input_z + 1) % (OUTPUT_WIDTH * 4);
+    //         end else if(sw[15]) begin 
+    //             input_z <= (input_z - 1) % (OUTPUT_WIDTH * 4);
+    //         end
+    //     end 
+    // end
 
 
     logic [31:0] val1;
@@ -133,16 +129,28 @@ module top_level(
     assign mat2[2] = val19;
     assign mat2[3] = val20;
 
-    logic v_in;
+    logic trig;
     logic v_out;
     logic [31:0] mat_out [3:0];
+    logic [16:0] count;
 
     assign led = sw;
+
+    always_ff @(posedge clk_100mhz) begin
+        if (btn[0]) begin
+            count <= 0;
+        end else begin
+            if (count >= 100000) begin
+                trig <= ~trig;
+                count <= 0;
+            end else count <= count+1;
+        end
+    end
 
     matrix_mult mm (
         .clk_in(clk_100mhz),
         .rst_in(btn[0]),
-        .valid_in(v_in),
+        .valid_in(trig),
         .mat1_in(mat1),
         .mat2_in(mat2),
         .valid_out(v_out),
@@ -184,24 +192,24 @@ module top_level(
         .val24_in(val24)
     );
 
-    logic fifo_in_valid;
-    logic fifo_in_ready;
-    logic [8:0] fifo_in_data; // 32 bit integers [2:0][3:0] 
-    logic fifo_out_valid;
-    logic fifo_out_ready;
-    logic [8:0] fifo_out_data; // 32 bit integers [2:0][3:0]
+    // logic fifo_in_valid;
+    // logic fifo_in_ready;
+    // logic [8:0] fifo_in_data; // 32 bit integers [2:0][3:0] 
+    // logic fifo_out_valid;
+    // logic fifo_out_ready;
+    // logic [8:0] fifo_out_data; // 32 bit integers [2:0][3:0]
 
 
-    manta fifo (
-        .s_axis_aresetn(btn[0]),
-        .s_axis_aclk(clk_100mhz),
-        .s_axis_tvalid(fifo_in_valid),
-        .s_axis_tready(fifo_in_ready),
-        .s_axis_tdata(fifo_in_data),
-        .m_axis_tvalid(fifo_out_valid),
-        .m_axis_tready(fifo_out_ready),
-        .m_axis_tdata(fifo_out_data)
-    );
+    // manta fifo (
+    //     .s_axis_aresetn(btn[0]),
+    //     .s_axis_aclk(clk_100mhz),
+    //     .s_axis_tvalid(fifo_in_valid),
+    //     .s_axis_tready(fifo_in_ready),
+    //     .s_axis_tdata(fifo_in_data),
+    //     .m_axis_tvalid(fifo_out_valid),
+    //     .m_axis_tready(fifo_out_ready),
+    //     .m_axis_tdata(fifo_out_data)
+    // );
 
     // manta reciprocal (
     //     .aclk(clk_100mhz),
