@@ -17,7 +17,7 @@ module transformation
         output logic [31:0] new_pos [3:0]
     );
 
-    parameter X=0, Y=0, Z=D
+    parameter X=0, Y=0, Z=D;
 
     localparam IDLE=0, COM=1, TRANS=2, BACK=3;
     logic [1:0] state;

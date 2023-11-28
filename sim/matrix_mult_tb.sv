@@ -11,6 +11,11 @@ module matrix_mult_tb;
     logic valid_out;
     logic [31:0] mat_out [3:0];
 
+    logic [31:0] row1;
+    logic [31:0] row2;
+    logic [31:0] row3;
+    logic [31:0] row4;
+
     matrix_mult uut (
         .clk_in(clk),
         .rst_in(rst),
@@ -47,6 +52,11 @@ module matrix_mult_tb;
         valid_in = 1;
         #10;
         valid_in = 0;
+        #5000;
+        row1 = mat_out[3];
+        row2 = mat_out[2];
+        row3 = mat_out[1];
+        row4 = mat_out[0];
         #1000;
         $display("Finishing Sim");
         $finish;
