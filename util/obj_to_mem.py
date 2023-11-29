@@ -6,7 +6,6 @@ if __name__ == "__main__":
         print("Usage: {0} <image to convert>".format(sys.argv[0]))
     else:
         input_fname = sys.argv[1]
-        print(struct.unpack("i", struct.pack("f", -37.2752))[0])
         vertices = []
         facets = []
         first = False
@@ -43,7 +42,10 @@ if __name__ == "__main__":
                     # yVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][1]))[0] + (1 << 32)) % (1 << 32))
                     # zVal = hex((struct.unpack("i", struct.pack("f", vertices[ind[0]-1][2]))[0] + (1 << 32)) % (1 << 32))
                     # facets.append(xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8))
-                    facets.append(str(ind[0])+str(ind[1])+str(ind[2]))
+                    i1 = hex(struct.unpack("i", struct.pack("i", ind[0]))[0])
+                    i2 = hex(struct.unpack("i", struct.pack("i", ind[1]))[0])
+                    i3 = hex(struct.unpack("i", struct.pack("i", ind[2]))[0])
+                    facets.append(i1[2:].zfill(4)+i2[2:].zfill(4)+i3[2:].zfill(4))
 
                     # hex((val + (1 << nbits)) % (1 << nbits)) to get hex of twos complement
 
@@ -57,8 +59,10 @@ if __name__ == "__main__":
         zVal = hex((struct.unpack("i", struct.pack("f", zCOM))[0] + (1 << 32)) % (1 << 32))
         hexCOM = xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8)
 
-        vert_str = [hexCOM]
-        for v in vertices:
+        vert_str = []
+        vert = [(a[0]-xCOM, a[1]-yCOM, a[2]-zCOM) for a in vertices]
+        print(vert)
+        for v in vert:
             xVal = hex((struct.unpack("i", struct.pack("f", v[0]))[0] + (1 << 32)) % (1 << 32))
             yVal = hex((struct.unpack("i", struct.pack("f", v[1]))[0] + (1 << 32)) % (1 << 32))
             zVal = hex((struct.unpack("i", struct.pack("f", v[2]))[0] + (1 << 32)) % (1 << 32))
