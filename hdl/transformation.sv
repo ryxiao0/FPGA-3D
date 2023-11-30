@@ -1,6 +1,6 @@
-module transformation
+/*module transformation
     #(
-        parameter D=10;
+        parameter D=10
     )
     (
         input wire clk_in,
@@ -266,3 +266,4 @@ function [31:0] cos (input [4:0] theta);
         5'd31: cos = 32'h3f7b14be;
     endcase;
 endfunction
+*/

@@ -4,7 +4,7 @@
 `define FPATH(X) `"data/X`"
 `endif  /* ! SYNTHESIS */
 
-module vertex_shader #(
+/*module vertex_shader #(
     parameter NUM_VERT=8;
 )
 (
@@ -15,21 +15,27 @@ module vertex_shader #(
     input wire [31:0] roll,
     input wire [31:0] yaw,
     input wire [31:0] scale,
-    output logic [31:0] new_pos [3:0],
+    output logic [31:0] new_tri [3:0] [2:0],
     output logic valid_out
     output logic obj_done;
 );
 
-    localparam COM=0, TRANS=1;
+    localparam INIT=0, GETFACE=1, V1=2, V2=3, V3=4;
     logic [1:0] state;
 
-    logic [31:0] old_pos [3:0];
-    logic [15:0] read_addr;
+    logic [31:0] old_tri [3:0] [2:0];
+    logic [15:0] vertex_addr;
+    logic [15:0] facet_addr
     logic [31:0] v1;
     logic [31:0] v2;
     logic [31:0] v3;
-    logic [31:0] com [2:0];
-    logic [95:0] dout;
+
+    logic [16:0] f1;
+    logic [16:0] f2;
+    logic [16:0] f3;
+
+    logic [95:0] vertex_out;
+    logic [47:0] facet_out;
 
     logic trans_out;
     logic trans_in;
@@ -52,19 +58,25 @@ module vertex_shader #(
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
-            read_addr <= 0;
+            vertex_addr <= 0;
+            facet_addr <= 0;
             valid_out <= 0;
             old_pos[0] <= 32'h3f800000;
-            state <= COM;
+            state <= INIT;
         end else begin
             case (state)
-                COM: begin
-                    com[2] <= dout[95:64];
-                    com[1] <= dout[63:32];
-                    com[0] <= dout[31:0];
-                    state <= TRANS;
-                    read_addr <= read_addr+1;
-                    valid_out <= 0;
+                INIT: begin
+                    
+                end
+                GETFACE: begin
+                    f1 <= facet_out[47:32];
+                    f2 <= facet_out[31:16];
+                    f3 <= facet_out[15:0];
+                    if (facet_addr == NUM_VERT) facet_addr <= 0;
+                    else facet_addr <= facet_addr+1;
+                end
+                V1: begin
+                    
                 end
                 TRANS: begin
                     if (trans_out) begin
@@ -92,15 +104,32 @@ module vertex_shader #(
         .RAM_WIDTH(96),                       // Specify RAM data width
         .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(cube.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(cube_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) vertex_inst (
-        .addra(read_addr),     // Address bus, width determined from RAM_DEPTH
+        .addra(vertex_addr),     // Address bus, width determined from RAM_DEPTH
         .dina(0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
         .wea(0),         // Write enable
         .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
         .rsta(rst_in),       // Output reset (does not affect memory contents)
         .regcea(1),   // Output register enable
-        .douta(dout)      // RAM output data, width determined from RAM_WIDTH
+        .douta(vertex_out)      // RAM output data, width determined from RAM_WIDTH
+    );
+
+    xilinx_single_port_ram_read_first #(
+        .RAM_WIDTH(48),                       // Specify RAM data width
+        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
+        .INIT_FILE(`FPATH(cube_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+    ) facet_inst (
+        .addra(facet_addr),     // Address bus, width determined from RAM_DEPTH
+        .dina(0),       // RAM input data, width determined from RAM_WIDTH
+        .clka(clk_in),       // Clock
+        .wea(0),         // Write enable
+        .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
+        .rsta(rst_in),       // Output reset (does not affect memory contents)
+        .regcea(1),   // Output register enable
+        .douta(facet_out)      // RAM output data, width determined from RAM_WIDTH
     );
 endmodule
+*/
