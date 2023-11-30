@@ -1,16 +1,16 @@
 module rasterizer #(
-    parameter WIDTH = 360,
-    parameter HEIGHT = 360
+    parameter WIDTH = 64,
+    parameter HEIGHT = 64
     )
     (
     input wire clk_in,
     input wire rst_in,
-    input wire [31:0] triangle [3:0] [2:0],
+    //input wire [8:0] triangle [2:0] [2:0],
     input wire valid_tri,
     input wire obj_done,
     input wire new_frame,
-    input wire [16:0] hcount,
-    input wire [16:0] vcount,
+    input wire [5:0] hcount,
+    input wire [5:0] vcount,
     output logic [7:0] color
 );
 
@@ -32,7 +32,6 @@ module rasterizer #(
 
 
     enum {RECEIVE, ITER, SEND} state;
-    // s state;
 
     logic buf_sel;
     always_ff @(posedge clk_in) begin
@@ -59,6 +58,18 @@ module rasterizer #(
 
     logic tp_valid_out;
     assign tp_valid_out = valid_tri;
+
+    logic valid_r;
+    logic read_pipe [1:0];
+    logic [15:0] buffer_in0;
+    logic [15:0] buffer_in1;
+    logic [7:0] color_val;
+    logic [16:0] read_out0;
+    logic [16:0] read_out1;
+    logic [7:0] read_out;
+
+    logic [16:0] read_addr0;
+    logic [16:0] read_addr1;
 
     // bounding box for pixel iterating
     // assign x_max = (rounded_triangle[2][0] > rounded_triangle[2][1] && 
@@ -132,7 +143,6 @@ module rasterizer #(
                     end
                 end
                 SEND: begin // need to figure out timing
-                    valid_r <= 1;
                     state <= RECEIVE;
                 end
             endcase;
@@ -146,34 +156,32 @@ module rasterizer #(
     //////////////////
     ///Frame Buffer///
     //////////////////
-    logic [16:0] read_addr0;
-    logic [16:0] read_addr1;
+    // logic [16:0] read_addr0;
+    // logic [16:0] read_addr1;
 
     assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
 
-    logic valid_read;
-    logic valid_r;
-    logic valid_read_pipe [1:0];
-    logic [15:0] buffer_in0;
-    logic [15:0] buffer_in1;
-    logic [7:0] color_val;
-    logic [16:0] read_out0;
-    logic [16:0] read_out1;
-    logic [7:0] read_out;
+    // logic valid_r;
+    // logic read_pipe [1:0];
+    // logic [15:0] buffer_in0;
+    // logic [15:0] buffer_in1;
+    // logic [7:0] color_val;
+    // logic [16:0] read_out0;
+    // logic [16:0] read_out1;
+    // logic [7:0] read_out;
 
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
 
     always_ff @(posedge clk_in) begin
         if (rst_in) color <= 0;
-        else if (valid_read) color <= read_out;
+        else color <= read_pipe[1];
     end
     // pipelining for BRAM reads (2 cycles)
     always_ff @(posedge clk_in)begin
-        valid_read_pipe[0] <= valid_r;
-        valid_read_pipe[1] <= valid_read_pipe[0];
+        read_pipe[0] <= read_out;
+        read_pipe[1] <= read_pipe[0];
     end
-    assign valid_read = valid_read_pipe[1];
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)

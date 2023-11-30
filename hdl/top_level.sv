@@ -82,6 +82,10 @@ module top_level(
 
     assign valid_tri = 1;
 
+    // tri_proj tp (
+
+    // );
+
     rasterizer rast (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
@@ -148,3 +152,5 @@ module top_level(
     OBUFDS OBUFDS_clock(.I(clk_pixel), .O(hdmi_clk_p), .OB(hdmi_clk_n));
 
 endmodule
+
+`default_nettype wire
