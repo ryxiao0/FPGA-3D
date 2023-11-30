@@ -192,25 +192,43 @@ module top_level(
         .val24_in(val24)
     );
 
-    // logic fifo_in_valid;
-    // logic fifo_in_ready;
-    // logic [8:0] fifo_in_data; // 32 bit integers [2:0][3:0] 
-    // logic fifo_out_valid;
-    // logic fifo_out_ready;
-    // logic [8:0] fifo_out_data; // 32 bit integers [2:0][3:0]
+    logic fifo_in_valid;
+    logic fifo_in_ready;
+    logic fifo_out_valid;
+    logic fifo_out_ready;
 
+    logic [31:0] fifo_in_triangle [3:0] [2:0];
+    logic [383:0] fifo_in_triange_unrolled = {triangle[3][2], triangle[3][1], triangle[3][0],
+                                      triangle[2][2], triangle[2][1], triangle[2][0],
+                                      triangle[1][2], triangle[1][1], triangle[1][0],
+                                      triangle[0][2], triangle[0][1], triangle[0][0]}
 
-    // manta fifo (
-    //     .s_axis_aresetn(btn[0]),
-    //     .s_axis_aclk(clk_100mhz),
-    //     .s_axis_tvalid(fifo_in_valid),
-    //     .s_axis_tready(fifo_in_ready),
-    //     .s_axis_tdata(fifo_in_data),
-    //     .m_axis_tvalid(fifo_out_valid),
-    //     .m_axis_tready(fifo_out_ready),
-    //     .m_axis_tdata(fifo_out_data)
-    // );
+    logic [31:0] fifo_out_triangle [3:0] [2:0];
+    logic [383:0] fifo_out_triangle_unrolled;
+    
 
+    manta fifo (
+        .s_axis_aresetn(btn[0]),
+        .s_axis_aclk(clk_100mhz),
+        .s_axis_tvalid(fifo_in_valid),
+        .s_axis_tready(fifo_in_ready),
+        .s_axis_tdata(fifo_in_triange_unrolled),
+        .m_axis_tvalid(fifo_out_valid),
+        .m_axis_tready(fifo_out_ready),
+        .m_axis_tdata(fifo_out_triangle_unrolled)
+    );
+
+    always_ff @(posedge clk_100mhz) begin
+        if(fifo_out_valid) begin
+            // unrolling the triangle out of fifo
+            for(int i = 0; i < 4; i= i + 1) begin
+                for(int j = 0; j < 3; j = j + 1) begin
+                    int x = j * 32 + i * 32 * 3;
+                    fifo_out_triangle[x+31:x]
+                end
+            end
+        end
+    end
     // manta reciprocal (
     //     .aclk(clk_100mhz),
     //     .s_axis_aclk(clk_100mhz),
