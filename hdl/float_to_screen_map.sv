@@ -54,7 +54,8 @@ module float_to_screen_map
             data_valid_out <= 0;
         end else begin 
             // TODO: convert float_0_to_360 to an integer 
-            final_integer <= float_0_to_360;
+            // int'(float_0_to_360) would also work if this doesn't
+            final_integer <= $rtoi(float_0_to_360);
 
         end
     end
