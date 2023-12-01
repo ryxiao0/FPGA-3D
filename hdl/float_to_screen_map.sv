@@ -43,7 +43,6 @@ module float_to_screen_map
         .m_axis_result_tvalid(float_valid_out)
     );
 
-    // TODO: convert float_0_to_360 to an integer 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             input_times_180 <= 0;
@@ -53,7 +52,7 @@ module float_to_screen_map
             float_valid_out <= 0;
             data_valid_out <= 0;
         end else begin 
-            // TODO: convert float_0_to_360 to an integer 
+            // convert float_0_to_360 to an integer 
             // int'(float_0_to_360) would also work if this doesn't
             if(float_valid_out) begin
                 final_integer <= $rtoi(float_0_to_360);
