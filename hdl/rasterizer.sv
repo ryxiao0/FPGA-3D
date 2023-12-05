@@ -43,19 +43,13 @@ module rasterizer #(
     end
 
     // write buffer: 0 means buffer0 is being read, 1 means buffer1 is being read
-    logic [16:0] write_addr;
-    logic [16:0] write_in;
-    logic wea0;
-    logic wea1;
+    logic [16:0] write_addr, write_in;
+    logic wea0, wea1;
     logic [8:0] read_out_w;
 
     // bounding box for pixel iterating
-    logic [8:0] x_max;
-    logic [8:0] x_min;
-    logic [8:0] y_max;
-    logic [8:0] y_min;
-    logic [8:0] x_iter;
-    logic [8:0] y_iter;
+    logic [8:0] x_max, x_min, y_max, y_min;
+    logic [8:0] x_iter, y_iter;
     logic [8:0] depth; 
 
     assign x_max = (vert1[2] > vert2[2] && 
@@ -81,25 +75,20 @@ module rasterizer #(
 
     // read buffer 0 means buffer1 is read, 1 means buffer0 is read
     logic valid_r;
-    logic read_pipe [1:0];
-    logic [15:0] buffer_in0;
-    logic [15:0] buffer_in1;
+    logic [7:0] read_pipe [1:0];
+    logic [15:0] buffer_in0, buffer_in1;
     logic [7:0] color_val;
-    logic [16:0] read_out0;
-    logic [16:0] read_out1;
+    logic [16:0] read_out0, read_out1;
     logic [7:0] read_out;
 
-    logic [16:0] read_addr0;
-    logic [16:0] read_addr1;
+    logic [16:0] read_addr0, read_addr1;
 
     assign read_out_w = (buf_sel)? read_out0[8:0]: read_out1[8:0]; // buffer being written
     assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
 
-    logic in_tri_v_in;
-    logic in_tri_out;
-    logic in_tri_v_out;
+    logic in_tri_v_in, in_tri_out, in_tri_v_out;
 
     in_triangle intri (
         .clk_in(clk_in),
