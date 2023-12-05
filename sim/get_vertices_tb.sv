@@ -1,10 +1,11 @@
 `timescale 1ns / 1ps
 `default_nettype none
 
-module get_vertices_tb:
+module get_vertices_tb;
 
     logic clk;
     logic rst;
+    logic go;
     logic [31:0] tri_out [3:0] [2:0];
     logic valid_out;
     logic obj_done;
@@ -12,6 +13,7 @@ module get_vertices_tb:
     get_vertices uut (
         .clk_in(clk),
         .rst_in(rst),
+        .go(go),
         .tri_out(tri_out),
         .valid_out(valid_out),
         .obj_done(obj_done)
@@ -32,6 +34,9 @@ module get_vertices_tb:
         rst = 1;
         #10;
         rst = 0;
+        go = 1;
+        #10;
+        go = 0;
         #10000;
         $display("Finishing Sim");;
         $finish;

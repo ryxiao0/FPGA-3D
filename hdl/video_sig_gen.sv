@@ -11,8 +11,8 @@ module video_sig_gen
     (
     input wire clk_pixel_in,
     input wire rst_in,
-    output logic [$clog2(360)-1:0] hcount_out,
-    output logic [$clog2(360)-1:0] vcount_out,
+    output logic [$clog2(1650)-1:0] hcount_out,
+    output logic [$clog2(750)-1:0] vcount_out,
     output logic vs_out,
     output logic hs_out,
     output logic ad_out,

@@ -22,7 +22,7 @@ module top_level(
     logic locked; //locked signal (we'll leave unused but still hook it up)
 
     //Signals related to driving the video pipeline
-    logic [9:0] hcount; //horizontal count
+    logic [10:0] hcount; //horizontal count
     logic [9:0] vcount; //vertical count
     logic vert_sync; //vertical sync signal
     logic hor_sync; //horizontal sync signal
@@ -31,8 +31,8 @@ module top_level(
     logic [5:0] frame_count; //current frame
 
     // Scaling
-    logic [8:0] hcount_scaled;
-    logic [8:0] vcount_scaled;
+    logic [10:0] hcount_scaled;
+    logic [9:0] vcount_scaled;
     logic valid_addr_scaled;
 
     // Rasterizer
@@ -71,16 +71,16 @@ module top_level(
         .fc_out(frame_count)
     );
 
-    // scale s (
-    //     .scale_in({sw[0],sw[1]}),
-    //     .hcount_in(hcount),
-    //     .vcount_in(vcount),
-    //     .scaled_hcount_out(hcount_scaled),
-    //     .scaled_vcount_out(vcount_scaled),
-    //     .valid_addr_out(valid_addr_scaled)
-    // );
-    assign hcount_scaled = hcount;
-    assign vcount_scaled = vcount;
+    scale s (
+        .scale_in({sw[0],sw[1]}),
+        .hcount_in(hcount),
+        .vcount_in(vcount),
+        .scaled_hcount_out(hcount_scaled),
+        .scaled_vcount_out(vcount_scaled),
+        .valid_addr_out(valid_addr_scaled)
+    );
+    // assign hcount_scaled = hcount;
+    // assign vcount_scaled = vcount;
 
     logic [8:0] v1 [2:0];
     logic [8:0] v2 [2:0];
@@ -100,6 +100,8 @@ module top_level(
     logic [7:0] c;
     assign c = (sw[0])? gray: 8'hFF;
 
+    assign obj_done = new_frame;
+
     rasterizer rast (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
@@ -111,7 +113,7 @@ module top_level(
         .new_frame(new_frame),
         .hcount(hcount_scaled),
         .vcount(vcount_scaled),
-        .color(gray)
+        .color_out(gray)
     );
 
     //three tmds_encoders (blue, green, red)

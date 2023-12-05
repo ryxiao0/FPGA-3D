@@ -1,6 +1,8 @@
 module rasterizer #(
     parameter WIDTH = 360,
-    parameter HEIGHT = 360
+    parameter HEIGHT = 360,
+    parameter BITWIDTH = $clog(WIDTH)-1,
+    parameter BITHEIGHT = $clog(HEIGHT)-1
     )
     (
     input wire clk_in,
@@ -11,9 +13,11 @@ module rasterizer #(
     input wire valid_tri,
     input wire obj_done,
     input wire new_frame,
-    input wire [9:0] hcount,
+    // input wire [5:0] hcount,
+    // input wire [5:0] vcount,
+    input wire [10:0] hcount,
     input wire [9:0] vcount,
-    output logic [7:0] color
+    output logic [7:0] color_out
 );
 
     parameter BLACK=8'h00, COLOR=8'hCC;
@@ -35,11 +39,29 @@ module rasterizer #(
 
     enum {RECEIVE, ITER, CHECK, SEND} state;
 
+    // calculate rom address
+    localparam STAGES = 4;
+
+    // logic [$clog2(WIDTH*HEIGHT)-1:0] image_addr;
+    logic [10:0] hcount_in_pipe [STAGES-1:0];
+    logic [9:0] vcount_in_pipe [STAGES-1:0];
+    // logic [5:0] hcount_in_pipe [STAGES-1:0];
+    // logic [5:0] vcount_in_pipe [STAGES-1:0];
+
+    always_ff @(posedge clk_in) begin
+        hcount_in_pipe[0] <= hcount;
+        vcount_in_pipe[0] <= vcount;
+        for (int i=1;i<STAGES;i=i+1) begin // 2 3 or 4 stages
+        hcount_in_pipe[i] <= hcount_in_pipe[i-1];
+        vcount_in_pipe[i] <= vcount_in_pipe[i-1];
+        end
+    end
+
     // buffer swap
     logic buf_sel;
     always_ff @(posedge clk_in) begin
         if (rst_in) buf_sel <= 0;
-        else if (new_frame) buf_sel <= ~buf_sel;
+        else if (obj_done) buf_sel <= ~buf_sel;
     end
 
     // write buffer: 0 means buffer0 is being read, 1 means buffer1 is being read
@@ -84,8 +106,8 @@ module rasterizer #(
     logic [16:0] read_addr0, read_addr1;
 
     assign read_out_w = (buf_sel)? read_out0[8:0]: read_out1[8:0]; // buffer being written
-    assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
-    assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
+    assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
+    assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
 
     logic in_tri_v_in, in_tri_out, in_tri_v_out;
@@ -161,15 +183,8 @@ module rasterizer #(
     //////////////////
     ///Frame Buffer///
     //////////////////
-    always_ff @(posedge clk_in) begin
-        if (rst_in) color <= 0;
-        else color <= read_pipe[1];
-    end
-    // pipelining for BRAM reads (2 cycles)
-    always_ff @(posedge clk_in)begin
-        read_pipe[0] <= read_out;
-        read_pipe[1] <= read_pipe[0];
-    end
+
+    assign color_out = read_out;
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)

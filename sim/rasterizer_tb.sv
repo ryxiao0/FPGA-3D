@@ -31,7 +31,7 @@ module rasterizer_tb;
         .new_frame(new_frame),
         .hcount(hcount_in),
         .vcount(vcount_in),
-        .color(color)
+        .color_out(color)
     );
 
     always begin
@@ -56,16 +56,23 @@ module rasterizer_tb;
         #10;
         rst = 0;
         valid_tri = 1;
+        for (integer i = 0; i<64; i = i + 1)begin
+            for (integer j = 0; j<64; j = j + 1) begin
+                hcount_in = j;
+                vcount_in = i;
+                #10;
+            end
+        end
+        obj_done = 1;
+        #10;
+        for (integer i = 0; i<64; i = i + 1)begin
+            for (integer j = 0; j<64; j = j + 1) begin
+                hcount_in = j;
+                vcount_in = i;
+                #10;
+            end
+        end
         #30000;
-        // for (integer i = 0; i<64; i = i + 1)begin
-        //     for (integer j = 0; j<64; j = j + 1) begin
-        //         hcount_in = j;
-        //         vcount_in = i;
-        //         valid_tri = 1;
-        //         #10;
-        //     end
-        // end
-        #100;
         $display("Finishing Sim"); //print nice message
         $finish;
     end

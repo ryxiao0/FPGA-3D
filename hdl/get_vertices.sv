@@ -1,3 +1,6 @@
+`timescale 1ns / 1ps
+`default_nettype none
+
 `ifdef SYNTHESIS
 `define FPATH(X) `"X`"
 `else /* ! SYNTHESIS */
@@ -10,6 +13,7 @@ module get_vertices#(
     (
     input wire clk_in,
     input wire rst_in,
+    input wire go,
     output logic [31:0] tri_out [3:0] [2:0],
     output logic valid_out,
     output logic obj_done 
@@ -20,58 +24,61 @@ module get_vertices#(
     logic [15:0] facet_read, vertex_read;
     logic [15:0] f1, f2, f3;
     logic [31:0] x, y, z;
-    logic [$clog(NUM_FACETS)-1:0] idx;
+    logic [47:0] facet_out;
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             valid_out <= 0;
             facet_read <= 0;
             obj_done <= 0;
+            state <= INIT;
         end else begin
             case (state)
                 INIT: begin
                     facet_read <= 0;
                     state <= GETF;
                     obj_done <= 0;
+                    valid_out <= 0;
                 end
                 GETF: begin
                     obj_done <= 0;
+                    valid_out <= 0;
                     state <= GETTINGF;
                 end
                 GETTINGF: begin
-                    vertex_read <= f1;
+                    vertex_read <= f1-1;
                     state <= GETV1;
                 end
                 GETV1: begin
                     state <= GETTINGV1;
                 end
                 GETTINGV1: begin
-                    tri_out[0][3] <= x;
-                    tri_out[0][2] <= y;
-                    tri_out[0][1] <= z;
+                    tri_out[3][0] <= x;
+                    tri_out[2][0] <= y;
+                    tri_out[1][0] <= z;
                     tri_out[0][0] <= 1;
-                    vertex_read <= f2;
+                    vertex_read <= f2-1;
                     state <= GETV2;
                 end
                 GETV2: begin
                     state <= GETTINGV2;
                 end
                 GETTINGV2: begin
-                    tri_out[1][3] <= x;
-                    tri_out[1][2] <= y;
+                    tri_out[3][1] <= x;
+                    tri_out[2][1] <= y;
                     tri_out[1][1] <= z;
-                    tri_out[1][0] <= 1;
-                    vertex_read <= f3;
-                    state <= GETV2;
+                    tri_out[0][1] <= 1;
+                    vertex_read <= f3-1;
+                    state <= GETV3;
                 end
                 GETV3: begin
                     state <= GETTINGV3;
                 end
                 GETTINGV3: begin
-                    tri_out[2][3] <= x;
+                    tri_out[3][2] <= x;
                     tri_out[2][2] <= y;
-                    tri_out[2][1] <= z;
-                    tri_out[2][0] <= 1;
+                    tri_out[1][2] <= z;
+                    tri_out[0][2] <= 1;
                     valid_out <= 1;
                     if (facet_read == NUM_FACETS-1) begin
                         state <= INIT;
@@ -122,3 +129,5 @@ module get_vertices#(
     );
 
 endmodule
+
+`default_nettype wire
