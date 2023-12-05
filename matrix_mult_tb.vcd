@@ -1,0 +1,60 @@
+$date
+	Mon Dec  4 17:36:55 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module matrix_mult_tb $end
+$var wire 1 ! valid_out $end
+$var wire 1 " in_tri $end
+$var reg 1 # valid_in $end
+$var reg 9 $ x [8:0] $end
+$var reg 9 % y [8:0] $end
+$scope module uut $end
+$var wire 1 & a $end
+$var wire 1 ' b $end
+$var wire 1 " in_tri $end
+$var wire 1 # valid_in $end
+$var wire 1 ! valid_out $end
+$var wire 9 ( x [8:0] $end
+$var wire 9 ) y [8:0] $end
+$var wire 17 * detvv2 [16:0] $end
+$var wire 17 + detvv1 [16:0] $end
+$var wire 17 , detv1v2 [16:0] $end
+$var wire 17 - detv0v2 [16:0] $end
+$var wire 17 . detv0v1 [16:0] $end
+$var wire 16 / det_raw [15:0] $end
+$var wire 16 0 b_raw [15:0] $end
+$var wire 17 1 b_num [16:0] $end
+$var wire 17 2 a_num [16:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+bx 2
+bx 1
+bx 0
+bx /
+bx .
+bx -
+bx ,
+bx +
+bx *
+b1 )
+b1 (
+x'
+x&
+b1 %
+b1 $
+x#
+x"
+z!
+$end
+#30000

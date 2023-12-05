@@ -1,16 +1,18 @@
 module rasterizer #(
-    parameter WIDTH = 64,
-    parameter HEIGHT = 64
+    parameter WIDTH = 360,
+    parameter HEIGHT = 360
     )
     (
     input wire clk_in,
     input wire rst_in,
-    //input wire [8:0] triangle [2:0] [2:0],
+    input wire [8:0] vert1 [2:0],
+    input wire [8:0] vert2 [2:0],
+    input wire [8:0] vert3 [2:0],
     input wire valid_tri,
     input wire obj_done,
     input wire new_frame,
-    input wire [5:0] hcount,
-    input wire [5:0] vcount,
+    input wire [9:0] hcount,
+    input wire [9:0] vcount,
     output logic [7:0] color
 );
 
@@ -31,23 +33,23 @@ module rasterizer #(
     //     o_convergent <= w_convergent[(IWID-1):(IWID-OWID)];
 
 
-    enum {RECEIVE, ITER, SEND} state;
+    enum {RECEIVE, ITER, CHECK, SEND} state;
 
+    // buffer swap
     logic buf_sel;
     always_ff @(posedge clk_in) begin
         if (rst_in) buf_sel <= 0;
         else if (new_frame) buf_sel <= ~buf_sel;
     end
 
+    // write buffer
     logic [16:0] write_addr;
     logic [16:0] write_in;
     logic wea0;
     logic wea1;
-    logic [16:0] read_out_w;
+    logic [8:0] read_out_w;
 
-    logic [31:0] proj_triangle [2:0] [2:0];
-    logic [8:0] rounded_triangle [2:0] [2:0];
-
+    // bounding box for pixel iterating
     logic [8:0] x_max;
     logic [8:0] x_min;
     logic [8:0] y_max;
@@ -56,9 +58,23 @@ module rasterizer #(
     logic [8:0] y_iter;
     logic [8:0] depth; 
 
-    logic tp_valid_out;
-    assign tp_valid_out = valid_tri;
+    assign x_max = (vert1[2] > vert2[2] && 
+                    vert1[2] > vert3[2])? vert1[2]:
+                    (vert2[2] > vert3[2])? vert2[2]: vert3[2];
 
+    assign x_min = (vert1[2] < vert2[2] && 
+                    vert1[2] < vert3[2])? vert1[2]:
+                    (vert2[2] < vert3[2])? vert2[2]: vert3[2];
+
+    assign y_max = (vert1[1] > vert2[1] && 
+                    vert1[1] > vert3[1])? vert1[1]:
+                    (vert2[1] > vert3[1])? vert2[1]: vert3[1];
+
+    assign y_min = (vert1[1] < vert2[1] && 
+                    vert1[1] < vert3[1])? vert1[1]:
+                    (vert2[1] < vert3[1])? vert2[1]: vert3[1];
+
+    // read buffer
     logic valid_r;
     logic read_pipe [1:0];
     logic [15:0] buffer_in0;
@@ -71,31 +87,10 @@ module rasterizer #(
     logic [16:0] read_addr0;
     logic [16:0] read_addr1;
 
-    // bounding box for pixel iterating
-    // assign x_max = (rounded_triangle[2][0] > rounded_triangle[2][1] && 
-    //                 rounded_triangle[2][0] > rounded_triangle[2][2])? rounded_triangle[2][0]:
-    //                 (rounded_triangle[2][1] > rounded_triangle[2][2])? rounded_triangle[2][1]:
-    //                                                                     rounded_triangle[2][2];
-
-    // assign y_max = (rounded_triangle[1][0] > rounded_triangle[1][1] && 
-    //                 rounded_triangle[1][0] > rounded_triangle[1][2])? rounded_triangle[1][0]:
-    //                 (rounded_triangle[1][1] > rounded_triangle[1][2])? rounded_triangle[1][1]:
-    //                                                                     rounded_triangle[1][2];
-
-    // assign x_min = (rounded_triangle[2][0] < rounded_triangle[2][1] && 
-    //                 rounded_triangle[2][0] < rounded_triangle[2][2])? rounded_triangle[2][0]:
-    //                 (rounded_triangle[2][1] < rounded_triangle[2][2])? rounded_triangle[2][1]:
-    //                                                                     rounded_triangle[2][2];
-
-    // assign y_min = (rounded_triangle[1][0] < rounded_triangle[1][1] && 
-    //                 rounded_triangle[1][0] < rounded_triangle[1][2])? rounded_triangle[1][0]:
-    //                 (rounded_triangle[1][1] < rounded_triangle[1][2])? rounded_triangle[1][1]:
-    //                                                                     rounded_triangle[1][2];
-
-    assign x_max = WIDTH;
-    assign x_min = 0;
-    assign y_max = HEIGHT;
-    assign y_min = 0;
+    assign read_out_w = (buf_sel)? read_out0[8:0]: read_out1[8:0]; // buffer being written
+    assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
+    assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
+    assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
 
     // get minimum depth (z) of triangle (assume surfaces don't go through each other)
     // assign depth = (rounded_triangle[0][0] < rounded_triangle[0][1] && 
@@ -104,42 +99,69 @@ module rasterizer #(
     //                                                                     rounded_triangle[0][2];
     assign depth = 0;
 
+    logic in_tri_v_in;
+    logic in_tri_out;
+    logic in_tri_v_out;
+
+    in_triangle intri (
+        .clk_in(clk_in),
+        .rst_in(rst_in),
+        .v1(vert1),
+        .v2(vert2),
+        .v3(vert3),
+        .x(x_iter),
+        .y(y_iter),
+        .valid_in(in_tri_v_in),
+        .in_tri(in_tri_out),
+        .valid_out(in_tri_v_out)
+    );
+
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             x_iter <= x_min;
             y_iter <= y_min;
             wea0 <= 0;
             wea1 <= 0;
+            state <= RECEIVE;
+            in_tri_v_in <= 0;
         end else begin
             case (state)
                 RECEIVE: begin
-                    if (tp_valid_out) begin
+                    if (valid_tri) begin
                         state <= ITER;
                     end
-                    x_iter <= x_min;
-                    y_iter <= y_min;
+                    x_iter <= x_min-1;
+                    y_iter <= y_min-1;
                     wea0 <= 0;
                     wea1 <= 0;
                 end
                 ITER: begin
-                    if (in_tri && depth < read_out_w[8:0]) begin
-                        write_addr <= x_iter + y_iter*WIDTH;
-                        write_in <= {COLOR, depth};
-                        if (buf_sel) wea0 <= 1;
-                        else wea1 <= 1;
-                    end else begin
-                        wea0 <= 0;
-                        wea1 <= 0;
-                    end
-
-                    if (x_iter <= x_max) x_iter = x_iter + 1;
+                    if (x_iter <= x_max) x_iter <= x_iter + 1;
                     else begin
                         x_iter <= x_min;
-                        if (y_iter <= y_max) y_iter = y_iter + 1;
-                        else begin
-                            y_iter <= y_min;
-                            state <= SEND; // iterated through every pixel in box
+                        y_iter <= y_iter + 1;
+                    end
+                    in_tri_v_in <= 1;
+                    state <= CHECK;
+                end
+                CHECK: begin
+                    if (in_tri_v_out) begin
+                        if (in_tri_out) begin
+                            if (depth <= read_out_w[8:0]) begin
+                                write_addr <= x_iter + y_iter*WIDTH;
+                                write_in <= {COLOR, depth};
+                                if (buf_sel) wea0 <= 1;
+                                else wea1 <= 1;
+                            end else begin
+                                wea0 <= 0;
+                                wea1 <= 0;
+                            end
                         end
+
+                        if (y_iter > y_max) state <= SEND;
+                        else state <= ITER;
+
+                        in_tri_v_in <= 0;
                     end
                 end
                 SEND: begin // need to figure out timing
@@ -149,30 +171,9 @@ module rasterizer #(
         end
     end
 
-    assign read_out_w = (buf_sel)? read_out0: read_out1; // buffer being written
-    assign in_tri = ((x_iter >= 100 && x_iter < (100 + 150)) && 
-                        (y_iter >= 100 && y_iter < (100 + 150)));
-
     //////////////////
     ///Frame Buffer///
     //////////////////
-    // logic [16:0] read_addr0;
-    // logic [16:0] read_addr1;
-
-    assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
-    assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
-
-    // logic valid_r;
-    // logic read_pipe [1:0];
-    // logic [15:0] buffer_in0;
-    // logic [15:0] buffer_in1;
-    // logic [7:0] color_val;
-    // logic [16:0] read_out0;
-    // logic [16:0] read_out1;
-    // logic [7:0] read_out;
-
-    assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
-
     always_ff @(posedge clk_in) begin
         if (rst_in) color <= 0;
         else color <= read_pipe[1];

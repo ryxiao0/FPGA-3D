@@ -22,7 +22,7 @@ module top_level(
     logic locked; //locked signal (we'll leave unused but still hook it up)
 
     //Signals related to driving the video pipeline
-    logic [10:0] hcount; //horizontal count
+    logic [9:0] hcount; //horizontal count
     logic [9:0] vcount; //vertical count
     logic vert_sync; //vertical sync signal
     logic hor_sync; //horizontal sync signal
@@ -80,16 +80,27 @@ module top_level(
         .valid_addr_out(valid_addr_scaled)
     );
 
+    logic [8:0] v1 [2:0];
+    logic [8:0] v2 [2:0];
+    logic [8:0] v3 [2:0];
+
     assign valid_tri = 1;
-
-    // tri_proj tp (
-
-    // );
+    assign v1[2] = 20;
+    assign v1[1] = 20;
+    assign v1[0] = 30;
+    assign v2[2] = 20;
+    assign v2[1] = 40;
+    assign v1[0] = 30;
+    assign v3[2] = 40;
+    assign v3[1] = 20;
+    assign v1[0] = 30;
 
     rasterizer rast (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .triangle(triangle),
+        .vert1(v1),
+        .vert2(v2),
+        .vert3(v3),
         .valid_tri(valid_tri),
         .obj_done(obj_done),
         .new_frame(new_frame),
