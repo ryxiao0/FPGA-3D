@@ -71,14 +71,16 @@ module top_level(
         .fc_out(frame_count)
     );
 
-    scale s (
-        .scale_in({sw[0],sw[1]}),
-        .hcount_in(hcount),
-        .vcount_in(vcount),
-        .scaled_hcount_out(hcount_scaled),
-        .scaled_vcount_out(vcount_scaled),
-        .valid_addr_out(valid_addr_scaled)
-    );
+    // scale s (
+    //     .scale_in({sw[0],sw[1]}),
+    //     .hcount_in(hcount),
+    //     .vcount_in(vcount),
+    //     .scaled_hcount_out(hcount_scaled),
+    //     .scaled_vcount_out(vcount_scaled),
+    //     .valid_addr_out(valid_addr_scaled)
+    // );
+    assign hcount_scaled = hcount;
+    assign vcount_scaled = vcount;
 
     logic [8:0] v1 [2:0];
     logic [8:0] v2 [2:0];
@@ -94,6 +96,9 @@ module top_level(
     assign v3[2] = 40;
     assign v3[1] = 20;
     assign v1[0] = 30;
+
+    logic [7:0] c;
+    assign c = (sw[0])? gray: 8'hFF;
 
     rasterizer rast (
         .clk_in(clk_pixel),
@@ -114,7 +119,7 @@ module top_level(
     tmds_encoder tmds_red(
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .data_in(gray),
+        .data_in(c),
         .control_in(2'b0),
         .ve_in(active_draw),
         .tmds_out(tmds_10b[2]));
@@ -122,7 +127,7 @@ module top_level(
     tmds_encoder tmds_green(
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .data_in(gray),
+        .data_in(c),
         .control_in(2'b0),
         .ve_in(active_draw),
         .tmds_out(tmds_10b[1]));
@@ -130,7 +135,7 @@ module top_level(
     tmds_encoder tmds_blue(
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .data_in(gray),
+        .data_in(c),
         .control_in({vert_sync,hor_sync}),
         .ve_in(active_draw),
         .tmds_out(tmds_10b[0]));

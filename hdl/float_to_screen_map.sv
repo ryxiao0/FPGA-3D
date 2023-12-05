@@ -1,4 +1,4 @@
-`default_nettype none
+/*`default_nettype none
 `timescale 1ns/1ps
 module float_to_screen_map
     (
@@ -69,4 +69,4 @@ module float_to_screen_map
 
 
 endmodule
-`default_nettype wire
+`default_nettype wire*/

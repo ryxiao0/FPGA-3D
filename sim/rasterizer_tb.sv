@@ -56,7 +56,7 @@ module rasterizer_tb;
         #10;
         rst = 0;
         valid_tri = 1;
-        #15000;
+        #30000;
         // for (integer i = 0; i<64; i = i + 1)begin
         //     for (integer j = 0; j<64; j = j + 1) begin
         //         hcount_in = j;

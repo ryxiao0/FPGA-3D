@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Tue Dec  5 03:45:59 2023
+| Date         : Tue Dec  5 04:38:52 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_drc -file obj/post_imp_drc.rpt
 | Design       : top_level
@@ -55,7 +55,7 @@ Related violations: <none>
 
 DPIP-1#5 Warning
 Input pipelining  
-DSP rast/read_addr00 input rast/read_addr00/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP rast/p_1_out input rast/p_1_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 

@@ -42,7 +42,7 @@ module rasterizer #(
         else if (new_frame) buf_sel <= ~buf_sel;
     end
 
-    // write buffer
+    // write buffer: 0 means buffer0 is being read, 1 means buffer1 is being read
     logic [16:0] write_addr;
     logic [16:0] write_in;
     logic wea0;
@@ -74,7 +74,12 @@ module rasterizer #(
                     vert1[1] < vert3[1])? vert1[1]:
                     (vert2[1] < vert3[1])? vert2[1]: vert3[1];
 
-    // read buffer
+    // get minimum depth (z) of triangle (assume surfaces don't go through each other)
+    assign depth = (vert1[0] < vert2[0] && 
+                    vert1[0] < vert3[0])? vert1[0]:
+                    (vert2[0] < vert3[0])? vert2[0]: vert3[0];
+
+    // read buffer 0 means buffer1 is read, 1 means buffer0 is read
     logic valid_r;
     logic read_pipe [1:0];
     logic [15:0] buffer_in0;
@@ -91,13 +96,6 @@ module rasterizer #(
     assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
-
-    // get minimum depth (z) of triangle (assume surfaces don't go through each other)
-    // assign depth = (rounded_triangle[0][0] < rounded_triangle[0][1] && 
-    //                 rounded_triangle[0][0] < rounded_triangle[0][2])? rounded_triangle[0][0]:
-    //                 (rounded_triangle[0][1] < rounded_triangle[0][2])? rounded_triangle[0][1]:
-    //                                                                     rounded_triangle[0][2];
-    assign depth = 0;
 
     logic in_tri_v_in;
     logic in_tri_out;
@@ -147,15 +145,15 @@ module rasterizer #(
                 CHECK: begin
                     if (in_tri_v_out) begin
                         if (in_tri_out) begin
-                            if (depth <= read_out_w[8:0]) begin
+                            // if (depth <= read_out_w[8:0]) begin
                                 write_addr <= x_iter + y_iter*WIDTH;
                                 write_in <= {COLOR, depth};
                                 if (buf_sel) wea0 <= 1;
                                 else wea1 <= 1;
-                            end else begin
-                                wea0 <= 0;
-                                wea1 <= 0;
-                            end
+                            // end else begin
+                            //     wea0 <= 0;
+                            //     wea1 <= 0;
+                            // end
                         end
 
                         if (y_iter > y_max) state <= SEND;

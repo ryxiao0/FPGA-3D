@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Tue Dec  5 03:45:45 2023
+| Date         : Tue Dec  5 04:38:38 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing -file obj/post_synth_timing.rpt
 | Design       : top_level
@@ -12,16 +12,16 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanc
 
 Timing Report
 
-Slack (MET) :             5.339ns  (required time - arrival time)
-  Source:                 rast/y_iter_reg[1]/C
-                            (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
-  Destination:            rast/z_buffer1/BRAM_reg_0_0/ENBWREN
-                            (rising edge-triggered cell RAMB36E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+Slack (MET) :             6.645ns  (required time - arrival time)
+  Source:                 rast/intri/detvv11/CLK
+                            (rising edge-triggered cell DSP48E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
+  Destination:            rast/intri/detvv1_reg/C[0]
+                            (rising edge-triggered cell DSP48E1 clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        7.373ns  (logic 3.921ns (53.183%)  route 3.452ns (46.817%))
-  Logic Levels:           8  (CARRY4=6 LUT1=1 LUT2=1)
+  Data Path Delay:        4.809ns  (logic 4.009ns (83.369%)  route 0.800ns (16.631%))
+  Logic Levels:           0  
   Clock Path Skew:        -0.145ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    -2.063ns = ( 11.405 - 13.468 ) 
     Source Clock Delay      (SCD):    -1.388ns
@@ -43,34 +43,13 @@ Slack (MET) :             5.339ns  (required time - arrival time)
                                                      -5.108    -3.083 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800    -2.284    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.096    -2.188 r  mhdmicw/clkout1_buf/O
-                         net (fo=137, unplaced)       0.800    -1.388    rast/clk_pixel
-                         FDRE                                         r  rast/y_iter_reg[1]/C
+                         net (fo=130, unplaced)       0.800    -1.388    rast/intri/clk_pixel
+                         DSP48E1                                      r  rast/intri/detvv11/CLK
   -------------------------------------------------------------------    -------------------
-                         FDRE (Prop_fdre_C_Q)         0.456    -0.932 r  rast/y_iter_reg[1]/Q
-                         net (fo=10, unplaced)        0.709    -0.223    rast/z_buffer1/S[0]
-                         CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.827     0.604 r  rast/z_buffer1/BRAM_reg_0_0_i_28/CO[3]
-                         net (fo=1, unplaced)         0.009     0.613    rast/z_buffer1/BRAM_reg_0_0_i_28_n_0
-                         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.348     0.961 r  rast/z_buffer1/BRAM_reg_mux_sel_b_pos_0__8_i_6/O[1]
-                         net (fo=1, unplaced)         0.611     1.572    rast/z_buffer1_n_16
-                         LUT2 (Prop_lut2_I1_O)        0.306     1.878 r  rast/BRAM_reg_0_0_i_16/O
-                         net (fo=1, unplaced)         0.000     1.878    rast/z_buffer1/BRAM_reg_3_0_1[2]
-                         CARRY4 (Prop_carry4_S[2]_CO[3])
-                                                      0.398     2.276 r  rast/z_buffer1/BRAM_reg_0_0_i_6/CO[3]
-                         net (fo=1, unplaced)         0.000     2.276    rast/z_buffer1/BRAM_reg_0_0_i_6_n_0
-                         CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.235     2.511 r  rast/z_buffer1/BRAM_reg_mux_sel_b_pos_0__8_i_2/O[0]
-                         net (fo=1, unplaced)         0.983     3.494    rast/z_buffer1/read_addr01[14]
-                         CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.697     4.191 r  rast/z_buffer1/BRAM_reg_0_0_i_2/CO[3]
-                         net (fo=1, unplaced)         0.000     4.191    rast/z_buffer1/BRAM_reg_0_0_i_2_n_0
-                         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.348     4.539 f  rast/z_buffer1/BRAM_reg_mux_sel_b_pos_0__8_i_1/O[1]
-                         net (fo=5, unplaced)         0.340     4.879    rast/z_buffer1/read_addr00__0[13]
-                         LUT1 (Prop_lut1_I0_O)        0.306     5.185 r  rast/z_buffer1/BRAM_reg_0_0_i_1/O
-                         net (fo=2, unplaced)         0.800     5.985    rast/z_buffer1/BRAM_reg_0_0_i_1_n_0
-                         RAMB36E1                                     r  rast/z_buffer1/BRAM_reg_0_0/ENBWREN
+                         DSP48E1 (Prop_dsp48e1_CLK_P[0])
+                                                      4.009     2.621 r  rast/intri/detvv11/P[0]
+                         net (fo=1, unplaced)         0.800     3.421    rast/intri/detvv11_n_105
+                         DSP48E1                                      r  rast/intri/detvv1_reg/C[0]
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
@@ -83,17 +62,17 @@ Slack (MET) :             5.339ns  (required time - arrival time)
                                                      -5.378     9.899 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760    10.659    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.091    10.750 r  mhdmicw/clkout1_buf/O
-                         net (fo=137, unplaced)       0.655    11.405    rast/z_buffer1/clk_pixel
-                         RAMB36E1                                     r  rast/z_buffer1/BRAM_reg_0_0/CLKBWRCLK
+                         net (fo=130, unplaced)       0.655    11.405    rast/intri/clk_pixel
+                         DSP48E1                                      r  rast/intri/detvv1_reg/CLK
                          clock pessimism              0.530    11.935    
                          clock uncertainty           -0.168    11.767    
-                         RAMB36E1 (Setup_ramb36e1_CLKBWRCLK_ENBWREN)
-                                                     -0.443    11.324    rast/z_buffer1/BRAM_reg_0_0
+                         DSP48E1 (Setup_dsp48e1_CLK_C[0])
+                                                     -1.701    10.066    rast/intri/detvv1_reg
   -------------------------------------------------------------------
-                         required time                         11.324    
-                         arrival time                          -5.985    
+                         required time                         10.066    
+                         arrival time                          -3.421    
   -------------------------------------------------------------------
-                         slack                                  5.339    
+                         slack                                  6.645    
 
 
 
