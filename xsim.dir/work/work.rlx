@@ -1,0 +1,20 @@
+0.7
+2020.2
+May  7 2023
+15:10:42
+/home/ryxiao/FPGA-3D/hdl/hdmi_clk_wiz.v,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/manta.sv,,hdmi_clk_wiz_720p,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/manta.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/matrix_mult.sv,,bridge_rx;bridge_tx;manta;project_io_core;uart_rx;uart_tx,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/matrix_mult.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/rasterizer.sv,,matrix_mult;matrix_mult_single,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/rasterizer.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/scale.sv,,rasterizer,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/scale.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/tm_choice.sv,,scale,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/tm_choice.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/tmds_encoder.sv,,tm_choice,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/tmds_encoder.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/tmds_serializer.sv,,tmds_encoder,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/tmds_serializer.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/top_level.sv,,tmds_serializer,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/top_level.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/transformation.sv,,top_level,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/transformation.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/tri_proj.sv,,,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/tri_proj.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/vertex_shader.sv,,,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/vertex_shader.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/video_sig_gen.sv,,,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/video_sig_gen.sv,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v,,video_sig_gen,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v,1701371719,systemVerilog,,/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v,,xilinx_single_port_ram_read_first,,,,,,,,
+/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v,1701371719,systemVerilog,,,,xilinx_true_dual_port_read_first_2_clock_ram,,,,,,,,
+/home/ryxiao/FPGA-3D/sim/recorder_tb.sv,1701371719,systemVerilog,,,,recorder_tb,,,,,,,,

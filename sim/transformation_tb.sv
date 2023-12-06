@@ -41,7 +41,7 @@ module transformation_tb;
         v_in = 0;
         #1000;
         $display("Finishing Sim");
-        $finish
+        $finish;
     end
 
 endmodule

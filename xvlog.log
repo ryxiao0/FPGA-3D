@@ -1,0 +1,33 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/hdmi_clk_wiz.v" into library work
+INFO: [VRFC 10-311] analyzing module hdmi_clk_wiz_720p
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/manta.sv" into library work
+INFO: [VRFC 10-311] analyzing module manta
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-311] analyzing module bridge_rx
+INFO: [VRFC 10-311] analyzing module project_io_core
+INFO: [VRFC 10-311] analyzing module bridge_tx
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/matrix_mult.sv" into library work
+INFO: [VRFC 10-311] analyzing module matrix_mult
+INFO: [VRFC 10-311] analyzing module matrix_mult_single
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/rasterizer.sv" into library work
+INFO: [VRFC 10-311] analyzing module rasterizer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/scale.sv" into library work
+INFO: [VRFC 10-311] analyzing module scale
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/tm_choice.sv" into library work
+INFO: [VRFC 10-311] analyzing module tm_choice
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/tmds_encoder.sv" into library work
+INFO: [VRFC 10-311] analyzing module tmds_encoder
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/tmds_serializer.sv" into library work
+INFO: [VRFC 10-311] analyzing module tmds_serializer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/top_level.sv" into library work
+INFO: [VRFC 10-311] analyzing module top_level
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/transformation.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/tri_proj.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/vertex_shader.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/video_sig_gen.sv" into library work
+INFO: [VRFC 10-311] analyzing module video_sig_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" into library work
+INFO: [VRFC 10-311] analyzing module xilinx_single_port_ram_read_first
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v" into library work
+INFO: [VRFC 10-311] analyzing module xilinx_true_dual_port_read_first_2_clock_ram

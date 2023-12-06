@@ -4,7 +4,7 @@
     "xci_name": "adder",
     "component_reference": "xilinx.com:ip:floating_point:7.1",
     "ip_revision": "15",
-    "gen_directory": "./ip/adder",
+    "gen_directory": "ip/adder",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "adder", "resolve_type": "user", "usage": "all" } ],
@@ -138,7 +138,7 @@
         "PACKAGE": [ { "value": "csga324" } ],
         "PREFHDL": [ { "value": "VERILOG" } ],
         "SILICON_REVISION": [ { "value": "" } ],
-        "SIMULATOR_LANGUAGE": [ { "value": "VERILOG" } ],
+        "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
         "SPEEDGRADE": [ { "value": "-1" } ],
         "STATIC_POWER": [ { "value": "" } ],
         "TEMPERATURE_GRADE": [ { "value": "" } ]
@@ -147,7 +147,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "15" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "./ip/adder" } ],
+        "OUTPUTDIR": [ { "value": "ip/adder" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1" } ],

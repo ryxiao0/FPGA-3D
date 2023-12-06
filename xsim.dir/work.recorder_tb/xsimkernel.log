@@ -1,0 +1,4 @@
+Running: xsim.dir/work.recorder_tb/xsimk -simmode gui -wdb work.recorder_tb.wdb -simrunnum 0 -socket 38627
+Design successfully loaded
+Design Loading Memory Usage: 23188 KB (Peak: 23700 KB)
+Design Loading CPU Usage: 0 ms

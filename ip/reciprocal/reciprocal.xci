@@ -4,7 +4,7 @@
     "xci_name": "reciprocal",
     "component_reference": "xilinx.com:ip:floating_point:7.1",
     "ip_revision": "15",
-    "gen_directory": ".ip/reciprocal",
+    "gen_directory": "ip/reciprocal",
     "parameters": {
       "component_parameters": {
         "Component_Name": [ { "value": "reciprocal", "resolve_type": "user", "usage": "all" } ],
@@ -147,7 +147,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "15" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "./ip/reciprocal" } ],
+        "OUTPUTDIR": [ { "value": "ip/reciprocal" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1" } ],

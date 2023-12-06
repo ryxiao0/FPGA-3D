@@ -1,0 +1,29 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Wed Dec  6 13:36:53 2023
+# Process ID: 1528390
+# Current directory: /home/ryxiao/FPGA-3D
+# Command line: vivado -mode batch -source xsim_run.tcl
+# Log file: /home/ryxiao/FPGA-3D/vivado.log
+# Journal file: /home/ryxiao/FPGA-3D/vivado.jou
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 2937.852 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+#-----------------------------------------------------------
+source xsim_run.tcl
+# create_project -force -part xc7s50csga324-1 transform_tb transform_tb
+# read_verilog -sv [ glob ./hdl/*.sv ]
+# read_verilog [ glob ./hdl/*.v ]
+# read_verilog -sv [ glob ./sim/*.sv ]
+# read_ip ./ip/adder/adder.xci
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/tools/Xilinx/Vivado/2023.1/data/ip'.
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/adder/adder.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/adder/ip/adder'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# reap_ip ./ip/multiplier/multiplier.xci
+invalid command name "reap_ip"
+    while executing
+"reap_ip ./ip/multiplier/multiplier.xci"
+    (file "xsim_run.tcl" line 8)
+INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 13:36:58 2023...

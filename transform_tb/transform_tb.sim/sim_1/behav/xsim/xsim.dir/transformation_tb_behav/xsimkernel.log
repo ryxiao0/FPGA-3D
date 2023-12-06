@@ -1,0 +1,7 @@
+Running: xsim.dir/transformation_tb_behav/xsimk -simmode gui -wdb transformation_tb_behav.wdb -simrunnum 0 -socket 48309
+Design successfully loaded
+Design Loading Memory Usage: 23476 KB (Peak: 24040 KB)
+Design Loading CPU Usage: 0 ms
+Simulation completed
+Simulation Memory Usage: 106176 KB (Peak: 162744 KB)
+Simulation CPU Usage: 0 ms
