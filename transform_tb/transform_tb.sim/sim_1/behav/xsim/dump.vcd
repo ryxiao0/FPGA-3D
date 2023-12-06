@@ -1,5 +1,5 @@
 $date
-   Wed Dec  6 13:40:09 2023
+   Wed Dec  6 13:50:10 2023
 $end
 $version
   2023.1
@@ -10,24 +10,30 @@ $end
 $scope module transformation_tb $end
 $var reg 1 ! clk $end
 $var reg 1 " rst $end
-$var reg 1 # v_in $end
-$var reg 32 $ x [31:0] $end
-$var reg 32 % y [31:0] $end
-$var reg 32 & z [31:0] $end
-$var reg 32 ' w [31:0] $end
-$var reg 1 ( v_out $end
+$var reg 32 # x_in [31:0] $end
+$var reg 32 $ y_in [31:0] $end
+$var reg 32 % z_in [31:0] $end
+$var reg 1 & v_in $end
+$var reg 32 ' x [31:0] $end
+$var reg 32 ( y [31:0] $end
+$var reg 32 ) z [31:0] $end
+$var reg 32 * w [31:0] $end
+$var reg 1 + v_out $end
 $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
 0!
 0"
-x#
+bx #
 bx $
 bx %
-bx &
+x&
 bx '
-x(
+bx (
+bx )
+bx *
+x+
 $end
 #5000
 1!
@@ -39,12 +45,15 @@ $end
 0"
 #20000
 0!
-1#
+1&
+b0 '
+b0 (
+b0 )
 #25000
 1!
 #30000
 0!
-0#
+0&
 #35000
 1!
 #40000

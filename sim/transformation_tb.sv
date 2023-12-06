@@ -5,6 +5,7 @@ module transformation_tb;
 
     logic clk;
     logic rst;
+    logic [31:0] x_in, y_in, z_in;
     logic [31:0] pos [3:0];
     logic v_in;
     logic [31:0] new_pos [3:0];
@@ -15,6 +16,11 @@ module transformation_tb;
     assign y = new_pos[2];
     assign z = new_pos[1];
     assign w = new_pos[0];
+
+    assign pos[3] = x_in;
+    assign pos[2] = y_in;
+    assign pos[1] = z_in;
+    assign pos[0] = 32'h3f800000;
 
     always begin
         clk = ~clk;
@@ -32,10 +38,9 @@ module transformation_tb;
         #10;
         rst = 0;
         #5;
-        pos[3] = 0;
-        pos[2] = 0;
-        pos[1] = 0;
-        pos[0] = 0;
+        x = 0;
+        y = 0;
+        z = 0;
         v_in = 1;
         #10;
         v_in = 0;

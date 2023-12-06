@@ -5,4 +5,4 @@ INFO: HDL object /transformation_tb/new_pos is an unpacked array. VCD does not s
 ERROR: Could not open vcd file transformation_tb.sv. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
 Starting Sim
 Finishing Sim
-$finish called at time : 1030 ns : File "/home/ryxiao/FPGA-3D/sim/transformation_tb.sv" Line 44
+$finish called at time : 1030 ns : File "/home/ryxiao/FPGA-3D/sim/transformation_tb.sv" Line 49

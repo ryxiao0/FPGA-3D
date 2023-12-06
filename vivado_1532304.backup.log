@@ -3,13 +3,13 @@
 # SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Wed Dec  6 13:50:02 2023
-# Process ID: 1543680
+# Start of session at: Wed Dec  6 13:40:01 2023
+# Process ID: 1532304
 # Current directory: /home/ryxiao/FPGA-3D
 # Command line: vivado -mode batch -source xsim_run.tcl
 # Log file: /home/ryxiao/FPGA-3D/vivado.log
 # Journal file: /home/ryxiao/FPGA-3D/vivado.jou
-# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 2677.198 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 800.228 MHz, CPU Physical cores: 16, Host memory: 33318 MB
 #-----------------------------------------------------------
 source xsim_run.tcl
 # create_project -force -part xc7s50csga324-1 transform_tb transform_tb
@@ -55,7 +55,7 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/transform_tb/t
 INFO: [VRFC 10-311] analyzing module glbl
 Waiting for jobs to finish...
 No pending jobs, compilation finished.
-INFO: [USF-XSim-69] 'compile' step finished in '0' seconds
+INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
 INFO: [USF-XSim-3] XSim::Elaborate design
 INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/ryxiao/FPGA-3D/transform_tb/transform_tb.sim/sim_1/behav/xsim'
 xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot transformation_tb_behav xil_defaultlib.transformation_tb xil_defaultlib.glbl -log elaborate.log
@@ -66,7 +66,6 @@ Running: /tools/Xilinx/Vivado/2023.1/bin/unwrapped/lnx64.o/xelab --incr --debug 
 Using 8 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
-WARNING: [VRFC 10-3823] variable 'x' might have multiple concurrent drivers [/home/ryxiao/FPGA-3D/sim/transformation_tb.sv:30]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis
@@ -74,7 +73,7 @@ Time Resolution for simulation is 1ps
 Compiling module xil_defaultlib.transformation_tb
 Compiling module xil_defaultlib.glbl
 Built simulation snapshot transformation_tb_behav
-INFO: [USF-XSim-69] 'elaborate' step finished in '1' seconds
+INFO: [USF-XSim-69] 'elaborate' step finished in '0' seconds
 INFO: [USF-XSim-4] XSim::Simulate design
 INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/ryxiao/FPGA-3D/transform_tb/transform_tb.sim/sim_1/behav/xsim'
 INFO: [USF-XSim-98] *** Running xsim
@@ -96,7 +95,7 @@ INFO: HDL object /transformation_tb/new_pos is an unpacked array. VCD does not s
 ERROR: Could not open vcd file transformation_tb.sv. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
 Starting Sim
 Finishing Sim
-$finish called at time : 1030 ns : File "/home/ryxiao/FPGA-3D/sim/transformation_tb.sv" Line 49
+$finish called at time : 1030 ns : File "/home/ryxiao/FPGA-3D/sim/transformation_tb.sv" Line 44
 # flush_vcd
 # close_vcd
-INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 13:50:10 2023...
+INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 13:40:09 2023...
