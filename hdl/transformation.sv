@@ -1,6 +1,6 @@
 module transformation
     #(
-        parameter DIST=10
+        parameter DIST=32'h3f800000
     )
     (
         input wire clk_in,
