@@ -1,0 +1,15 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Wed Dec  6 14:11:04 2023
+# Process ID: 1568278
+# Current directory: /home/ryxiao/FPGA-3D
+# Command line: vivado
+# Log file: /home/ryxiao/FPGA-3D/vivado.log
+# Journal file: /home/ryxiao/FPGA-3D/vivado.jou
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 5057.435 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+#-----------------------------------------------------------
+start_gui
+ERROR: [Common 17-211] Error loading jvm.

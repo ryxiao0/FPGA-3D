@@ -3,13 +3,13 @@
 # SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Wed Dec  6 13:58:25 2023
-# Process ID: 1553580
+# Start of session at: Wed Dec  6 15:16:33 2023
+# Process ID: 1976639
 # Current directory: /home/ryxiao/FPGA-3D
 # Command line: vivado -mode batch -source xsim_run.tcl
 # Log file: /home/ryxiao/FPGA-3D/vivado.log
 # Journal file: /home/ryxiao/FPGA-3D/vivado.jou
-# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 2435.523 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 4624.800 MHz, CPU Physical cores: 16, Host memory: 33318 MB
 #-----------------------------------------------------------
 source xsim_run.tcl
 # create_project -force -part xc7s50csga324-1 transform_tb transform_tb
@@ -62,7 +62,7 @@ INFO: [VRFC 10-311] analyzing module glbl
 xvhdl --incr --relax -prj transformation_tb_vhdl.prj
 Waiting for jobs to finish...
 No pending jobs, compilation finished.
-INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
 INFO: [USF-XSim-3] XSim::Elaborate design
 INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/ryxiao/FPGA-3D/transform_tb/transform_tb.sim/sim_1/behav/xsim'
 xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L xbip_utils_v3_0_10 -L axi_utils_v2_0_6 -L xbip_pipe_v3_0_6 -L xbip_dsp48_wrapper_v3_0_4 -L xbip_dsp48_addsub_v3_0_6 -L xbip_dsp48_multadd_v3_0_6 -L xbip_bram18k_v3_0_6 -L mult_gen_v12_0_18 -L floating_point_v7_1_15 -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot transformation_tb_behav xil_defaultlib.transformation_tb xil_defaultlib.glbl -log elaborate.log
@@ -298,7 +298,7 @@ source transformation_tb.tcl
 Starting Sim
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'transformation_tb_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:10 ; elapsed = 00:00:08 . Memory (MB): peak = 1423.441 ; gain = 119.547 ; free physical = 2445 ; free virtual = 13662
+launch_simulation: Time (s): cpu = 00:00:10 ; elapsed = 00:00:08 . Memory (MB): peak = 1423.574 ; gain = 120.422 ; free physical = 2929 ; free virtual = 11908
 # restart
 INFO: [Wavedata 42-604] Simulation restarted
 # open_vcd
@@ -312,4 +312,4 @@ Finishing Sim
 $finish called at time : 1030 ns : File "/home/ryxiao/FPGA-3D/sim/transformation_tb.sv" Line 58
 # flush_vcd
 # close_vcd
-INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 13:58:37 2023...
+INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 15:16:45 2023...
