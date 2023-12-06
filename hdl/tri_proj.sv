@@ -1,164 +1,91 @@
-/*module tri_proj (
+module tri_proj #(
+    parameter RECIP_D=32'h3f000000; // hardcode to 1/d, which we can calculate by hand
+    )
+    (
     input wire clk_in,
     input wire rst_in,
-    input wire [31:0] homo_tri [3:0] [2:0],
+    input wire [31:0] coor_in [3:0],
     input wire valid_in,
-    output logic [31:0] 2D_triangle [1:0] [2:0]
+    output logic [31:0] coor_out [1:0],
+    output logic valid_out
 );
 
-    parameter RECIP_D=32'b0; // hardcode to 1/d, which we can calculate by hand
+    enum {IDLE, DIV, REC, X, Y} state;
 
-    localparam IDLE=0, DIV1=1, RECIP1=2, X=3, Y=5, Z=7;
-    logic [2:0] state;
-    logic [31:0] rep_data_in;
-    logic [31:0] rep_data_out;
-    logic rep_v_in;
-    logic rep_v_out;
+    logic [31:0] rec_in, rec_out;
+    logic rec_v_in, rec_v_out;
 
-    logic [31:0] mult_data_in;
-    logic [31:0] mult_data_out;
-    logic mult_v_in;
-    logic mult_v_out;
+    logic [31:0] mult_a_in, mult_b_in, mult_out;
+    logic mult_v_in, mult_v_out;
 
-    logic [31:0] proj_mat [3:0] [3:0];
-
-    reciprocal rep (
+    reciprocal rec (
         .aclk(clk_in),
-        .s_axis_a_tdata(rep_data_in),
+        .s_axis_a_tdata(rec_in),
         .s_axis_a_tready(),
-        .s_axis_a_tvalid(rep_v_in),
-        .s_axis_tdata(rep_data_out),
-        .s_axis_tready(),
-        .s_axis_tvalid(rep_v_out)
-    );
-
-    multiplier proj (
-        .aclk(clk_in),
-        .s_axis_a_tdata(rep_data_in),
-        .s_axis_a_tready(),
-        .s_axis_a_tvalid(rep_v_in),
-        .s_axis_a_tdata(rep_data_in),
-        .s_axis_a_tready(),
-        .s_axis_a_tvalid(rep_v_in),
-        .s_axis_tdata(rep_data_out),
-        .s_axis_tready(),
-        .s_axis_tvalid(rep_v_out)
-    );
-
-    always_ff @(posedge clk_in) begin
-        if (rst_in) begin
-            rep_v_in <= 0;
-        end else begin
-            if (valid_in) begin
-                case (state)
-                    IDLE: begin
-                        if (valid_in) begin
-                            mult_v_in <= 1;
-                            mult_data_in <= 
-                        end
-                    end
-                    DIV1: begin // z/d
-
-                    end
-                    RECIP1: begin // 1/(z/d)
-
-                    end
-                    X: begin // x * 1/(z/d)
-
-                    end
-                    Y: begin // y * 1/(z/d)
-
-                    end
-                endcase;
-            end
-        end
-    end
-
-endmodule
-
-module tri_proj_one (
-    input wire clk_in,
-    input wire rst_in,
-    input wire [31:0] homo_coor [3:0],
-    input wire valid_in,
-    output logic [31:0] new_2D_coor [1:0]
-    output logic valid_out;
-);
-
-    parameter RECIP_D=32'b0; // hardcode to 1/d, which we can calculate by hand
-
-    localparam IDLE=0, DIV1=1, RECIP1=2, X=3, Y=5, Z=7;
-    logic [2:0] state;
-    logic [31:0] rep_data_in;
-    logic [31:0] rep_data_out;
-    logic rep_v_in;
-    logic rep_v_out;
-    logic [31:0] recip_val;
-
-    logic [31:0] mult1_data_in;
-    logic [31:0] mult2_data_in;
-    logic [31:0] mult_data_out;
-    logic mult_v_in;
-    logic mult_v_out;
-
-    logic [31:0] proj_mat [3:0] [3:0];
-
-    reciprocal rep (
-        .aclk(clk_in),
-        .s_axis_a_tdata(rep_data_in),
-        .s_axis_a_tready(),
-        .s_axis_a_tvalid(rep_v_in),
-        .s_axis_tdata(rep_data_out),
+        .s_axis_a_tvalid(rec_v_in),
+        .s_axis_tdata(rec_out),
         .s_axis_tready(1'b1),
-        .s_axis_tvalid(rep_v_out)
+        .s_axis_tvalid(rec_v_out)
     );
 
     multiplier proj (
         .aclk(clk_in),
-        .s_axis_a_tdata(mult1_data_in),
+        .s_axis_a_tdata(mult_a_in),
         .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_v_in),
-        .s_axis_b_tdata(mult2_data_in),
-        .s_axis_b_tready(),
-        .s_axis_b_tvalid(mult_v_in),
-        .s_axis_tdata(mult_data_out),
+        .s_axis_a_tdata(mult_b_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_v_in),
+        .s_axis_tdata(mult_out),
         .s_axis_tready(1'b1),
         .s_axis_tvalid(mult_v_out)
     );
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
-            rep_v_in <= 0;
+            valid_out <= 0;
+            state <= IDLE;
         end else begin
             if (valid_in) begin
                 case (state)
                     IDLE: begin
                         if (valid_in) begin
                             mult_v_in <= 1;
-                            mult1_data_in <= homo_coor[1]; // z coordinate
-                            mult2_data_in <= RECIP_D;
+                            mult_a_in <= 3d_coor[1];
+                            mult_b_in <= RECIP_D;
+                            state <= DIV1;
                         end
-                        new_2D_coor <= 0;
                         valid_out <= 0;
                     end
-                    DIV1: begin // z/d
+                    DIV: begin // z/d
                         if (mult_v_out) begin
-                            rep_data_in <= mult_data_out;
-                            rep_v_in <= 1;
+                            rec_in <= mult_out;
+                            rec_v_in <= 1;
+                            state <= REC;
                         end else mult_v_in <= 0;
                     end
-                    RECIP1: begin // 1/(z/d)
-                        if (recip_v_out) begin
-                            mult1_data_in <= rep_data_out;
-                            mult2_data_in <= homo_coor[3]; // x coordinate
+                    REC: begin // 1/(z/d)
+                        if (rec_v_out) begin
+                            mult_a_in <= rec_out;
+                            mult_b_in <= 3d_coor[3]; // x
                             mult_v_in <= 1;
-                        end else rep_v_in
+                            state <= X;
+                        end else rec_v_in <= 0;
                     end
                     X: begin // x * 1/(z/d)
-
+                        if (mult_v_out) begin
+                            2d_coor[1] <= mult_out;
+                            mult_b_in <= 3d_coor[2]; // y
+                            mult_v_in <= 1;
+                            state <= Y;
+                        end else mult_v_in <= 0;
                     end
                     Y: begin // y * 1/(z/d)
-
+                        if (mult_v_out) begin
+                            2d_coor[0] <= mult_out;
+                            valid_out <= 1;
+                            state <= IDLE;
+                        end else mult_v_in <= 0;
                     end
                 endcase;
             end
@@ -166,4 +93,3 @@ module tri_proj_one (
     end
 
 endmodule
-*/

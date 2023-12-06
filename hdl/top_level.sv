@@ -79,8 +79,6 @@ module top_level(
         .scaled_vcount_out(vcount_scaled),
         .valid_addr_out(valid_addr_scaled)
     );
-    // assign hcount_scaled = hcount;
-    // assign vcount_scaled = vcount;
 
     logic [8:0] v1 [2:0];
     logic [8:0] v2 [2:0];

@@ -17,10 +17,140 @@ module transformation
         output logic [31:0] new_pos [3:0]
     );
 
+    parameter X=0, Y=0, Z=D;
+
     enum {READY, TOVIEW} state;
 
-    logic [31:0] add_a_in, add_b_in, add_out;
-    logic add_v_in, add_v_out;
+    logic [31:0] com_mat [3:0] [3:0];
+    logic [31:0] back_mat [3:0] [3:0];
+    logic [31:0] scale_mat [3:0] [3:0];
+    logic [31:0] pitch_mat [3:0] [3:0];
+    logic [31:0] roll_mat [3:0] [3:0];
+    logic [31:0] yaw_mat [3:0] [3:0];
+    logic [31:0] id_mat [3:0] [3:0];
+    
+
+    // logic [31:0] cur_pos [3:0],
+    // logic [31:0] mat [3:0] [3:0];
+    // logic v_in;
+    // logic v_out;
+    // logic [31:0] out [3:0];
+
+    // Identity
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == j) id_mat[i][j] = 1;
+                else id_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Translation to COM
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == j) begin
+                    com_mat[i][j] = 1;
+                end else if (j == 3) begin
+                    if (i == 0) com_mat[i][j] = -com[2];
+                    else if (i == 1) com_mat[i][j] = -com[1];
+                    else if (i == 2) com_mat[i][j] = -com[0];
+                end else com_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Translation to camera view
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == j) begin
+                    back_mat[i][j] = 1;
+                end else if (j == 3 && i == 2) begin
+                    back_mat[i][j] = D;
+                end else back_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Scaling
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == j) begin
+                    if (i == 0) scale_mat[i][j] = scale;
+                    else if (i == 1) scale_mat[i][j] = scale;
+                    else if (i == 2) scale_mat[i][j] = scale;
+                    else if (i == 3) scale_mat[i][j] = 1;
+                end else scale_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Pitch - rotation about x axis
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == 1 && j == 1) pitch_mat[i][j] = cos(pitch);
+                else if (i == 1 && j == 2) pitch_mat[i][j] = -sin(pitch);
+                else if (i == 2 && j == 1) pitch_mat[i][j] = sin(pitch);
+                else if (i == 2 && j == 2) pitch_mat[i][j] = cos(pitch);
+                else if ((i == 0 && j == 0) || (i == 3 && j == 3)) pitch_mat[i][j] = 1;
+                else pitch_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Roll - rotation about z axis
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == 0 && j == 0) roll_mat[i][j] = cos(roll);
+                else if (i == 0 && j == 1) roll_mat[i][j] = -sin(roll);
+                else if (i == 1 && j == 0) roll_mat[i][j] = sin(roll);
+                else if (i == 1 && j == 1) roll_mat[i][j] = cos(roll);
+                else if ((i == 2 && j == 2) || (i == 3 && j == 3)) roll_mat[i][j] = 1;
+                else roll_mat[i][j] = 0;
+            end
+        end
+    end
+
+    // Yaw - rotation about y axis
+    always_comb begin
+        for (integer i=0;i<4;i=i+1) begin
+            for (integer j=0;j<4;j=j+1) begin
+                if (i == 0 && j == 0) yaw_mat[i][j] = cos(yaw);
+                else if (i == 0 && j == 2) yaw_mat[i][j] = sin(yaw);
+                else if (i == 2 && j == 0) yaw_mat[i][j] = -sin(yaw);
+                else if (i == 2 && j == 2) yaw_mat[i][j] = cos(yaw);
+                else if ((i == 1 && j == 1) || (i == 3 && j == 3)) yaw_mat[i][j] = 1;
+                else yaw_mat[i][j] = 0;
+            end
+        end
+    end
+
+    assign tf_mat = (sel == 3'b00)? scale_mat:
+                    (sel == 3'b01)? pitch_mat:
+                    (sel == 3'b10)? yaw_mat:
+                    (sel == 3'b11)? roll_mat: id_mat;
+
+
+    // matrix_mult transform (
+    //     .clk_in(clk_in),
+    //     .rst_in(rst_in),
+    //     .valid_in(v_in),
+    //     .mat1_in(mat),
+    //     .mat2_in(cur_pos),
+    //     .valid_out(v_out),
+    //     .mat_out(out)
+    // );
+
+    logic [31:0] add_a_in;
+    logic [31:0] add_b_in;
+    logic add_v_in;
+    logic [31:0] add_out;
+    logic add_v_out;
 
     adder add (
         .aclk(clk_in),
@@ -35,8 +165,11 @@ module transformation
         .m_axis_result_tvalid(add_v_out)
     );
 
-    logic [31:0] mult_a_in, mult_b_in, mult_out;
-    logic mult_v_in, mult_v_out;
+    logic [31:0] mult_a_in;
+    logic [31:0] mult_b_in;
+    logic mult_v_in;
+    logic [31:0] mult_out;
+    logic mult_v_out;
 
     multiplier mult (
         .aclk(clk_in),
@@ -54,7 +187,6 @@ module transformation
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             valid_out <= 0;
-            state <= READY;
         end else begin
             case (state)
                 READY: begin
