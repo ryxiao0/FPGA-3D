@@ -22,6 +22,15 @@ module transformation_tb;
     assign pos[1] = z_in;
     assign pos[0] = 32'h3f800000;
 
+    transformation uut (
+        .clk_in(clk),
+        .rst_in(rst),
+        .pos(pos),
+        .valid_in(v_in),
+        .valid_out(v_out),
+        .new_pos(new_pos)
+    );
+
     always begin
         clk = ~clk;
         #5;
