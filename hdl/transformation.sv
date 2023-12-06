@@ -62,7 +62,7 @@ module transformation
                         add_a_in <= pos[1];
                         add_b_in <= DIST;
                         add_v_in <= 1;
-                        state <= TOCAM;
+                        state <= TOVIEW;
                     end
                     valid_out <= 0;
                 end
