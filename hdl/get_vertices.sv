@@ -13,7 +13,6 @@ module get_vertices#(
     (
     input wire clk_in,
     input wire rst_in,
-    input wire go,
     output logic [31:0] tri_out [3:0] [2:0],
     output logic valid_out,
     output logic obj_done 

@@ -5,10 +5,12 @@ module tri_proj
     (
         input wire clk_in,
         input wire rst_in,
+        input wire obj_done_in,
         input wire [31:0] coor_in [3:0],
         input wire valid_in,
         output logic [31:0] coor_out [1:0],
-        output logic valid_out
+        output logic valid_out,
+        output logic obj_done_out
 );
 
     enum {IDLE, DIV, REC, X, Y} state;
@@ -18,6 +20,8 @@ module tri_proj
 
     logic [31:0] mult_a_in, mult_b_in, mult_out;
     logic mult_v_in, mult_v_out;
+
+    assign obj_done_out = obj_done_in;
 
     reciprocal rec (
         .aclk(clk_in),

@@ -5,8 +5,6 @@ module transformation
     (
         input wire clk_in,
         input wire rst_in,
-        input wire [1:0] sel,
-        input wire [31:0] com [2:0],
         input wire [31:0] pos [3:0],
         input wire [31:0] scale,
         input wire [4:0] pitch, // x axis - like tilting up or down

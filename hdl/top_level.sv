@@ -36,8 +36,10 @@ module top_level(
     logic valid_addr_scaled;
 
     // Rasterizer
-    logic [8:0] x_rast;
-    logic [8:0] y_rast;
+    logic [8:0] v1_rast [2:0];
+    logic [8:0] v2_rast [2:0];
+    logic [8:0] v3_rast [2:0];
+    logic [8:0] x_rast, y_rast;
     logic [7:0] depth;
     logic in_tri;
     logic rast_valid_out;
@@ -80,20 +82,61 @@ module top_level(
         .valid_addr_out(valid_addr_scaled)
     );
 
-    logic [8:0] v1 [2:0];
-    logic [8:0] v2 [2:0];
-    logic [8:0] v3 [2:0];
+    get_vertices gv (
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .tri_out(),
+        .valid_out(),
+        .obj_done()
+    );
 
-    assign valid_tri = 1;
-    assign v1[2] = 20;
-    assign v1[1] = 20;
-    assign v1[0] = 30;
-    assign v2[2] = 20;
-    assign v2[1] = 40;
-    assign v1[0] = 30;
-    assign v3[2] = 40;
-    assign v3[1] = 20;
-    assign v1[0] = 30;
+    transformation #(
+        .DIST(32'h3f800000)
+    ) tf (
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .pos(),
+        .scale(),
+        .pitch(),
+        .roll(),
+        .yaw(),
+        .valid_in(),
+        .valid_out(),
+        .new_pos()
+    );
+
+    /*
+    Add FIFO here
+    */
+
+    tri_proj tp (
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .obj_done_in(),
+        .coor_in(),
+        .valid_out(),
+        .obj_done_out()
+    );
+
+    /*
+    Add color mapping here
+    */
+
+    /*
+    Add float to integer mapping here
+    */
+
+    // testing single triangle
+    // assign valid_tri = 1;
+    // assign v1_rast[2] = 20;
+    // assign v1_rast[1] = 20;
+    // assign v1_rast[0] = 30;
+    // assign v2_rast[2] = 20;
+    // assign v2_rast[1] = 40;
+    // assign v2_rast[0] = 30;
+    // assign v3_rast[2] = 40;
+    // assign v3_rast[1] = 20;
+    // assign v3_rast[0] = 30;
 
     logic [7:0] c;
     assign c = (sw[0])? gray: 8'hFF;
@@ -103,9 +146,9 @@ module top_level(
     rasterizer rast (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .vert1(v1),
-        .vert2(v2),
-        .vert3(v3),
+        .vert1(v1_rast),
+        .vert2(v2_rast),
+        .vert3(v3_rast),
         .valid_tri(valid_tri),
         .obj_done(obj_done),
         .new_frame(new_frame),
