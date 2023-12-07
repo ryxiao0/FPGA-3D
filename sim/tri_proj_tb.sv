@@ -6,9 +6,19 @@ module tri_proj_tb;
     logic clk;
     logic rst;
     logic [31:0] coor_in [3:0];
+    logic [31:0] x_in, y_in, z_in;
     logic v_in;
     logic [31:0] coor_out [1:0];
+    logic [31:0] x, y;
     logic v_out;
+
+    assign x = coor_out[1];
+    assign y = coor_out[0];
+
+    assign coor_in[3] = x_in;
+    assign coor_in[2] = y_in;
+    assign coor_in[1] = z_in;
+    assign coor_in[0] = 32'h3f800000;
 
     tri_proj uut (
         .clk_in(clk),
@@ -35,7 +45,13 @@ module tri_proj_tb;
         #10;
         rst = 0;
         #10;
-        
+        x_in = 32'h40c00000;
+        y_in = 32'h40c00000;
+        z_in = 32'h40c00000;
+        v_in = 1;
+        #10;
+        v_in <= 0;
+        #3000;
         $display("Finishing Sim");
         $finish;
     end

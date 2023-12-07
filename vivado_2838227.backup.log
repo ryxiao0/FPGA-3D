@@ -1,0 +1,86 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Wed Dec  6 23:37:05 2023
+# Process ID: 2838227
+# Current directory: /home/ryxiao/FPGA-3D
+# Command line: vivado -mode batch -source xsim_run_tri_proj.tcl
+# Log file: /home/ryxiao/FPGA-3D/vivado.log
+# Journal file: /home/ryxiao/FPGA-3D/vivado.jou
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 3088.015 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+#-----------------------------------------------------------
+source xsim_run_tri_proj.tcl
+# create_project -force -part xc7s50csga324-1 tri_proj_tb tri_proj_tb
+# read_verilog -sv [ glob ./hdl/*.sv ]
+# read_verilog [ glob ./hdl/*.v ]
+# read_verilog -sv [ glob ./sim/*.sv ]
+# read_ip ./ip/adder/adder.xci
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/tools/Xilinx/Vivado/2023.1/data/ip'.
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/adder/adder.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/adder/ip/adder'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# read_ip ./ip/multiplier/multiplier.xci
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/multiplier/multiplier.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# read_ip ./ip/reciprocal/reciprocal.xci
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/reciprocal/reciprocal.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# generate_target all [get_ips]
+# synth_ip [get_ips]
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/adder/adder.xci
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/multiplier/multiplier.xci
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/reciprocal/reciprocal.xci
+INFO: [Vivado 12-3441] generate_netlist_ip - operation complete
+# set_property top tri_proj_tb [get_fileset sim_1]
+# synth_design -top tri_proj_tb
+Command: synth_design -top tri_proj_tb
+Starting synth_design
+Using part: xc7s50csga324-1
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7s50'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7s50'
+INFO: [Device 21-403] Loading part xc7s50csga324-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 2838393
+WARNING: [Synth 8-11065] parameter 'BLACK' becomes localparam in 'rasterizer' with formal parameter declaration list [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:23]
+WARNING: [Synth 8-11065] parameter 'COLOR' becomes localparam in 'rasterizer' with formal parameter declaration list [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:23]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2016.617 ; gain = 372.734 ; free physical = 1421 ; free virtual = 11056
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'tri_proj_tb' [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:4]
+INFO: [Synth 8-251] Starting Sim [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:40]
+WARNING: [Synth 8-6090] variable 'v_in' is written by both blocking and non-blocking assignments, entire logic could be removed [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:53]
+INFO: [Synth 8-251] Finishing Sim [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:55]
+WARNING: [Synth 8-324] index 3 out of range [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:15]
+WARNING: [Synth 8-324] index 2 out of range [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:16]
+INFO: [Synth 8-6157] synthesizing module 'tri_proj' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'reciprocal' [/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/reciprocal_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'reciprocal' (0#1) [/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/reciprocal_stub.v:6]
+WARNING: [Synth 8-4446] all outputs are unconnected for this instance and logic may be removed [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+INFO: [Synth 8-6157] synthesizing module 'multiplier' [/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/multiplier_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'multiplier' (0#1) [/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/multiplier_stub.v:6]
+ERROR: [Synth 8-344] instance 'pro' has duplicate port connection for port 's_axis_a_tdata' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:37]
+ERROR: [Synth 8-344] instance 'pro' has duplicate port connection for port 's_axis_a_tready' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:38]
+ERROR: [Synth 8-344] instance 'pro' has duplicate port connection for port 's_axis_a_tvalid' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:39]
+ERROR: [Synth 8-11365] for the instance 'pro' of module 'multiplier' declared at '/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/multiplier_stub.v:6', named port connection 's_axis_tdata' does not exist [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:40]
+ERROR: [Synth 8-11365] for the instance 'pro' of module 'multiplier' declared at '/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/multiplier_stub.v:6', named port connection 's_axis_tready' does not exist [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:41]
+ERROR: [Synth 8-11365] for the instance 'pro' of module 'multiplier' declared at '/home/ryxiao/FPGA-3D/.Xil/Vivado-2838227-eecs-digital-33/realtime/multiplier_stub.v:6', named port connection 's_axis_tvalid' does not exist [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:42]
+WARNING: [Synth 8-7071] port 's_axis_b_tvalid' of module 'multiplier' is unconnected for instance 'pro' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+WARNING: [Synth 8-7071] port 's_axis_b_tready' of module 'multiplier' is unconnected for instance 'pro' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+WARNING: [Synth 8-7071] port 's_axis_b_tdata' of module 'multiplier' is unconnected for instance 'pro' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+WARNING: [Synth 8-7071] port 'm_axis_result_tvalid' of module 'multiplier' is unconnected for instance 'pro' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+WARNING: [Synth 8-7071] port 'm_axis_result_tready' of module 'multiplier' is unconnected for instance 'pro' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+WARNING: [Synth 8-7071] port 'm_axis_result_tdata' of module 'multiplier' is unconnected for instance 'pro' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+WARNING: [Synth 8-7023] instance 'pro' of module 'multiplier' has 10 connections declared, but only 4 given [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:32]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:51]
+ERROR: [Synth 8-6156] failed synthesizing module 'tri_proj' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:1]
+ERROR: [Synth 8-6156] failed synthesizing module 'tri_proj_tb' [/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv:4]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2080.586 ; gain = 436.703 ; free physical = 1335 ; free virtual = 10970
+---------------------------------------------------------------------------------
+RTL Elaboration failed
+INFO: [Common 17-83] Releasing license: Synthesis
+15 Infos, 13 Warnings, 0 Critical Warnings and 9 Errors encountered.
+synth_design failed
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
+INFO: [Common 17-206] Exiting Vivado at Wed Dec  6 23:37:13 2023...

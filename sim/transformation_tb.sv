@@ -49,7 +49,7 @@ module transformation_tb;
         #5;
         x_in = 32'h3f800000;
         y_in = 32'h3f800000;
-        z_in = 0;
+        z_in = 32'h3f800000;
         v_in = 1;
         #10;
         v_in = 0;

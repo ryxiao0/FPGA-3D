@@ -1,0 +1,14 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../../ip/multiplier/ip/multiplier/sim/multiplier.v" \
+"../../../../../ip/reciprocal/ip/reciprocal/sim/reciprocal.v" \
+
+sv xil_defaultlib  \
+"../../../../../hdl/tri_proj.sv" \
+"../../../../../sim/tri_proj_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
