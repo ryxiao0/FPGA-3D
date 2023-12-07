@@ -1,5 +1,6 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
+"../../../../../ip/float_to_fixed/ip/float_to_fixed/sim/float_to_fixed.v" \
 "../../../../../ip/multiplier/ip/multiplier/sim/multiplier.v" \
 "../../../../../ip/reciprocal/ip/reciprocal/sim/reciprocal.v" \
 

@@ -1,3 +1,5 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed/sim/float_to_fixed.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module float_to_fixed
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/sim/multiplier.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module multiplier
 INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal/sim/reciprocal.v" into library xil_defaultlib

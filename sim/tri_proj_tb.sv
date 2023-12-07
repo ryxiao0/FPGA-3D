@@ -8,12 +8,8 @@ module tri_proj_tb;
     logic [31:0] coor_in [3:0];
     logic [31:0] x_in, y_in, z_in;
     logic v_in;
-    logic [31:0] coor_out [1:0];
-    logic [31:0] x, y;
+    logic [8:0] x, y, z;
     logic v_out;
-
-    assign x = coor_out[1];
-    assign y = coor_out[0];
 
     assign coor_in[3] = x_in;
     assign coor_in[2] = y_in;
@@ -25,7 +21,9 @@ module tri_proj_tb;
         .rst_in(rst),
         .coor_in(coor_in),
         .valid_in(v_in),
-        .coor_out(coor_out),
+        .x(x),
+        .y(y),
+        .z(z),
         .valid_out(v_out)
     );
 

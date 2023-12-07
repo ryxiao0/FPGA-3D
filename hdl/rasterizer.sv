@@ -26,21 +26,10 @@ module rasterizer #(
     ///Rasterizer///
     ////////////////
 
-    // rounding to half even
-    // IWID - input width (32)
-    // OWID - output width (8)
-    // assign	w_convergent = i_data[(IWID-1):0]
-    //             + { {(OWID){1'b0}},
-    //                 i_data[(IWID-OWID)],
-    //                 {(IWID-OWID-1){!i_data[(IWID-OWID)]}}};
-    // always @(posedge i_clk)
-    //     o_convergent <= w_convergent[(IWID-1):(IWID-OWID)];
-
-
     enum {RECEIVE, ITER, CHECK, SEND} state;
 
     // calculate rom address
-    localparam STAGES = 4;
+    localparam STAGES = 2;
 
     // logic [$clog2(WIDTH*HEIGHT)-1:0] image_addr;
     logic [10:0] hcount_in_pipe [STAGES-1:0];
@@ -102,13 +91,15 @@ module rasterizer #(
     logic [7:0] color_val;
     logic [16:0] read_out0, read_out1;
     logic [7:0] read_out;
-
     logic [16:0] read_addr0, read_addr1;
+    logic [16:0] write_addr0, write_addr1;
 
     assign read_out_w = (buf_sel)? read_out0[8:0]: read_out1[8:0]; // buffer being written
     assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
     assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
+    // assign write_addr0 = (buf_sel)? write_addr: ;
+    // assign write_addr1 = (~buf_sel)? write_addr: ;
 
     logic in_tri_v_in, in_tri_out, in_tri_v_out;
 
@@ -190,7 +181,7 @@ module rasterizer #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)
         .RAM_DEPTH(WIDTH*HEIGHT))
         z_buffer0 (
-        .addra(write_addr), // rasterizer output
+        .addra(write_addr0), // rasterizer output
         .clka(clk_in),
         .wea(wea0),
         .dina(write_in),
@@ -212,7 +203,7 @@ module rasterizer #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)
         .RAM_DEPTH(WIDTH*HEIGHT))
         z_buffer1 (
-        .addra(write_addr), // rasterizer output
+        .addra(write_addr1), // rasterizer output
         .clka(clk_in),
         .wea(wea1),
         .dina(write_in),

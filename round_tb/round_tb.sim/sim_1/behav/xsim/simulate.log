@@ -1,0 +1,8 @@
+Time resolution is 1 ps
+Starting Sim
+Finishing Sim
+$finish called at time : 355 ns : File "/home/ryxiao/FPGA-3D/sim/round_tb.sv" Line 56
+ERROR: Could not open vcd file round_tb.vcd. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
+Starting Sim
+Finishing Sim
+$finish called at time : 355 ns : File "/home/ryxiao/FPGA-3D/sim/round_tb.sv" Line 56

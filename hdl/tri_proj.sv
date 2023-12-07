@@ -8,12 +8,14 @@ module tri_proj
         input wire obj_done_in,
         input wire [31:0] coor_in [3:0],
         input wire valid_in,
-        output logic [31:0] coor_out [1:0],
+        output logic [8:0] x, y, z,
         output logic valid_out,
         output logic obj_done_out
 );
 
-    enum {IDLE, DIV, REC, X, Y} state;
+    parameter M=32'h43340000; // 180
+
+    enum {IDLE, DIV, REC, X, Y, MULTX, ROUNDX, MULTY, ROUNDY, MULTZ, ROUNDZ} state;
 
     logic [31:0] rec_in, rec_out;
     logic rec_v_in, rec_v_out;
@@ -21,7 +23,18 @@ module tri_proj
     logic [31:0] mult_a_in, mult_b_in, mult_out;
     logic mult_v_in, mult_v_out;
 
+    logic [31:0] round_in;
+    logic [15:0] round_out; // fixed point, index [14:6] for 9 bit int, [15:6] for signed
+    logic round_v_in, round_v_out;
+
     assign obj_done_out = obj_done_in;
+
+    logic [31:0] x_f, y_f, z_f;
+
+    assign z_f = coor_in[1];
+
+    logic [9:0] shift;
+    assign shift = round_out[15:6] + 180;
 
     reciprocal rec (
         .aclk(clk_in),
@@ -44,6 +57,16 @@ module tri_proj
         .m_axis_result_tdata(mult_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(mult_v_out)
+    );
+
+    float_to_fixed round (
+        .aclk(clk_in),
+        .s_axis_a_tdata(round_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(round_v_in),
+        .m_axis_result_tdata(round_out),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(round_v_out)
     );
 
     always_ff @(posedge clk_in) begin
@@ -78,7 +101,7 @@ module tri_proj
                 end
                 X: begin // x * 1/(z/d)
                     if (mult_v_out) begin
-                        coor_out[1] <= mult_out;
+                        x_f <= mult_out;
                         mult_b_in <= coor_in[2]; // y
                         mult_v_in <= 1;
                         state <= Y;
@@ -86,10 +109,56 @@ module tri_proj
                 end
                 Y: begin // y * 1/(z/d)
                     if (mult_v_out) begin
-                        coor_out[0] <= mult_out;
+                        y_f <= mult_out;
+                        mult_a_in <= M;
+                        mult_b_in <= x_f;
+                        mult_v_in <= 1;
+                        state <= MULTX;
+                    end else mult_v_in <= 0;
+                end
+                MULTX: begin
+                    if (mult_v_out) begin
+                        round_in <= mult_out;
+                        round_v_in <= 1;
+                        state <= ROUNDX;
+                    end else mult_v_in <= 0;
+                end
+                ROUNDX: begin
+                    if (round_v_out) begin
+                        x <= shift[8:0]; // drop sign
+                        mult_b_in <= y_f;
+                        mult_v_in <= 1;
+                        state <= MULTY;
+                    end else round_v_in <= 0;
+                end
+                MULTY: begin
+                    if (mult_v_out) begin
+                        round_in <= mult_out;
+                        round_v_in <= 1;
+                        state <= ROUNDY;
+                    end else mult_v_in <= 0;
+                end
+                ROUNDY: begin
+                    if (round_v_out) begin
+                        y <= shift[8:0]; // drop sign
+                        mult_b_in <= z_f;
+                        mult_v_in <= 1;
+                        state <= MULTZ;
+                    end else round_v_in <= 0;
+                end
+                MULTZ: begin
+                    if (mult_v_out) begin
+                        round_in <= mult_out;
+                        round_v_in <= 1;
+                        state <= ROUNDZ;
+                    end else mult_v_in <= 0;
+                end
+                ROUNDZ: begin
+                    if (round_v_out) begin
+                        z <= shift[8:0]; // drop sign
                         valid_out <= 1;
                         state <= IDLE;
-                    end else mult_v_in <= 0;
+                    end else round_v_in <= 0;
                 end
             endcase;
         end

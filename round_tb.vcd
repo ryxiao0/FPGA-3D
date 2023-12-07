@@ -1,0 +1,73 @@
+$date
+	Thu Dec  7 01:17:28 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module round_tb $end
+$var wire 8 ! integ [7:0] $end
+$var wire 32 " w_halfup [31:0] $end
+$var reg 1 # clk $end
+$var reg 32 $ float [31:0] $end
+$var reg 8 % o_halfup [7:0] $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx %
+bx $
+0#
+bx "
+bx !
+$end
+#5000
+1#
+#10000
+0#
+b1000000100100110011001100110011 "
+b1000000000100110011001100110011 $
+#15000
+b1000000 !
+b1000000 %
+1#
+#20000
+0#
+#25000
+1#
+#30000
+0#
+#35000
+1#
+#40000
+0#
+#45000
+1#
+#50000
+0#
+#55000
+1#
+#60000
+0#
+#65000
+1#
+#70000
+0#
+#75000
+1#
+#80000
+0#
+#85000
+1#
+#90000
+0#
+#95000
+1#
+#100000
+0#
+#105000
+1#
+#110000
+0#
