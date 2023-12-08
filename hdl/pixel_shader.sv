@@ -2,7 +2,8 @@
 `default_nettype none
 
 module pixel_shader(
-    input wire aclk,
+    input wire clk_in,
+    input wire rst_in,
     input wire data_valid_in, 
     input wire [8:0] v1 [2:0],
     input wire [8:0] v2 [2:0],
@@ -40,6 +41,7 @@ module pixel_shader(
     logic [14:0] tri_normal_magnitude_squared;
 
     logic [7:0] color;
+    logic [31:0] angle;
 
 
     // reciprocal rec (
@@ -78,7 +80,7 @@ module pixel_shader(
 
 
 
-    enum {RECEIVE, NORMAL, ANGLE, COLOR, SEND} state;
+    enum {RECEIVE, NORMAL, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, ANGLE_CALC_4, COLOR, SEND} state;
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
@@ -125,7 +127,7 @@ module pixel_shader(
                 end
                 // find the normal vector to the triangle
                 NORMAL: begin
-                    state <= DOT_PRODUCT;
+                    state <= ANGLE_CALC_1;
                     tri_normal[0] <= vect1[1] * vect2[2] - vect1[2] * vect2[1];
                     tri_normal[1] <= -(vect1[0] * vect2[2] - vect1[2] * vect2[0]);
                     tri_normal[2] <= vect1[0] * vect2[1] - vect1[1] * vect2[0];

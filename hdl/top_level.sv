@@ -40,6 +40,20 @@ module top_level(
     logic gv_valid_out;
     logic gv_obj_done;
 
+    // Input System
+    // logic [8:0] current_translate [2:0];
+    // logic [31:0] current_scale;
+    // logic [31:0] current_scale;
+    // logic [4:0] current_pitch;
+    // logic [4:0] current_roll; 
+    // logic [4:0] current_yaw;
+    // logic [8:0] translate [2:0];
+    // logic [31:0] scale;
+    // logic [4:0] pitch;
+    // logic [4:0] roll; 
+    // logic [4:0] yaw;
+    // logic scale_valid_out;
+
     // Transformations
     logic [31:0] tf_pos_in [3:0];
     logic [31:0] tf_dist;
@@ -129,6 +143,41 @@ module top_level(
     //     end
     // end
 
+
+    // getting inputs for transformation
+    // system_inputs #(
+    //  .rot_max(3), // the maximum value of pitch, roll and yaw, 
+    //   .translate_max(24), // the maximum value of translate in any direction
+    //  .scale_min(1),
+    //  .scale_max(1))
+    //  s
+    // (
+    //     .clk_in(clk_100mhz),
+    //     .rst_in(rst_in), 
+    //     .sw(sw),
+    //     .valid_in(1),
+    //     .current_translate(current_translate),
+    //     .current_scale(current_scale),
+    //     .current_pitch(current_pitch),
+    //     .current_roll(current_roll), 
+    //     .current_yaw(current_yaw),
+    //     .translate(new_translate),
+    //     .scale(new_scale),
+    //     .pitch(new_pitch),
+    //     .roll(new_roll), 
+    //     .yaw(new_yaw),
+    //     .scale_valid_out(scale_valid_out)
+    // );
+    // always_ff @(posedge clk_in) begin
+    //     current_translate <= new_translate;
+    //     current_pitch <= new_pitch;
+    //     current_roll <= new_roll;
+    //     current_yaw <= new_yaw
+    //     if(scale_valid_out) begin
+    //         current_scale <= new_scale;
+    //     end
+    // end
+
     assign tf_dist = 32'h40a00000;
 
     transformation tf (
@@ -163,16 +212,23 @@ module top_level(
         end else begin
             if(fifo_in_valid) begin
                 // rolling the triangle to put into the FIFO
-                fifo_in_triange_unrolled = {triangle[3][2], triangle[3][1], triangle[3][0], triangle[2][2], triangle[2][1], triangle[2][0], triangle[1][2], triangle[1][1], triangle[1][0], triangle[0][2], triangle[0][1], triangle[0][0]}
+                fifo_in_triange_unrolled <= {triangle[3][2], triangle[3][1], triangle[3][0], triangle[2][2], triangle[2][1], triangle[2][0], triangle[1][2], triangle[1][1], triangle[1][0], triangle[0][2], triangle[0][1], triangle[0][0]};
             end
             if(fifo_out_valid) begin
                 // unrolling the triangle out of fifo
-                for(int i = 0; i < 4; i= i + 1) begin
-                    for(int j = 0; j < 3; j = j + 1) begin
-                        int x = j * 32 + i * 32 * 3;
-                        fifo_out_triangle[x+31:x]
-                    end
-                end
+                fifo_out_triangle[0][0] <= fifo_out_triangle_unrolled[31:0];
+                fifo_out_triangle[0][1] <= fifo_out_triangle_unrolled[63:32];
+                fifo_out_triangle[0][2] <= fifo_out_triangle_unrolled[95:64];
+                fifo_out_triangle[1][0] <= fifo_out_triangle_unrolled[127:96];
+                fifo_out_triangle[1][1] <= fifo_out_triangle_unrolled[159:128];
+                fifo_out_triangle[1][2] <= fifo_out_triangle_unrolled[191:160];
+                fifo_out_triangle[2][0] <= fifo_out_triangle_unrolled[223:192];
+                fifo_out_triangle[2][1] <= fifo_out_triangle_unrolled[255:224];
+                fifo_out_triangle[2][2] <= fifo_out_triangle_unrolled[287:256];
+                fifo_out_triangle[3][0] <= fifo_out_triangle_unrolled[319:288];
+                fifo_out_triangle[3][1] <= fifo_out_triangle_unrolled[351:320];
+                fifo_out_triangle[3][2] <= fifo_out_triangle_unrolled[383:352];
+
             end
         end
     end
