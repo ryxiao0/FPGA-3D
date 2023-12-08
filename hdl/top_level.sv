@@ -11,7 +11,7 @@ module top_level(
     output logic hdmi_clk_p, hdmi_clk_n //differential hdmi clock
 );
 
-    parameter NUM_VERTICES=8; // get number of vertices from python
+    parameter NF=12; // get number of facets from python
 
     assign led = sw;
     logic sys_rst;
@@ -34,6 +34,19 @@ module top_level(
     logic [10:0] hcount_scaled;
     logic [9:0] vcount_scaled;
     logic valid_addr_scaled;
+
+    // Get Vertices
+    logic [31:0] triangle [3:0] [2:0];
+    logic gv_valid_out;
+    logic gv_obj_done;
+
+    // Transformations
+    logic [31:0] tf_pos_in [3:0];
+    logic [31:0] tf_dist;
+    logic [31:0] tf_scale;
+    logic [4:0] tf_pitch, tf_yaw, tf_roll;
+    logic tf_valid_in, tf_valid_out;
+    logic [31:0] tf_pos_out [3:0];
 
     // Rasterizer
     logic [8:0] v1_rast [2:0];
@@ -82,27 +95,38 @@ module top_level(
         .valid_addr_out(valid_addr_scaled)
     );
 
-    get_vertices gv (
+    get_vertices #(
+        .NUM_FACETS(NF)
+        ) gv (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .tri_out(),
-        .valid_out(),
-        .obj_done()
+        .tri_out(triangle),
+        .valid_out(gv_valid_out),
+        .obj_done(gv_obj_done)
     );
 
-    transformation #(
-        .DIST(32'h3f800000)
-    ) tf (
+    // always_ff @(posedge clk_pixel) begin
+    //     if (sys_rst) begin
+    //         distance <= 32'h40a00000; // 5
+    //     end else begin
+    //         if (btn[0])
+    //     end
+    // end
+
+    assign tf_dist = 32'h40a00000;
+
+    transformation tf (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .pos(),
-        .scale(),
-        .pitch(),
-        .roll(),
-        .yaw(),
-        .valid_in(),
-        .valid_out(),
-        .new_pos()
+        .pos(tf_pos_in),
+        .distance(tf_dist),
+        .scale(tf_scale),
+        .pitch(tf_pitch),
+        .roll(tf_roll),
+        .yaw(tf_yaw),
+        .valid_in(tf_valid_in),
+        .valid_out(tf_valid_out),
+        .new_pos(tf_pos_out)
     );
 
     /*
@@ -120,10 +144,6 @@ module top_level(
 
     /*
     Add color mapping here
-    */
-
-    /*
-    Add float to integer mapping here
     */
 
     // testing single triangle

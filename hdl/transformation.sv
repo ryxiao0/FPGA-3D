@@ -1,11 +1,9 @@
 module transformation
-    #(
-        parameter DIST=32'h3f800000
-    )
     (
         input wire clk_in,
         input wire rst_in,
         input wire [31:0] pos [3:0],
+        input wire [31:0] distance,
         input wire [31:0] scale,
         input wire [4:0] pitch, // x axis - like tilting up or down
         input wire [4:0] roll, // z axis - looking down z axis
@@ -58,7 +56,7 @@ module transformation
                 READY: begin
                     if (valid_in) begin
                         add_a_in <= pos[1];
-                        add_b_in <= DIST;
+                        add_b_in <= distance;
                         add_v_in <= 1;
                         state <= TOVIEW;
                     end
