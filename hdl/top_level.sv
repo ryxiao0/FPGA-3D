@@ -48,6 +48,16 @@ module top_level(
     logic tf_valid_in, tf_valid_out;
     logic [31:0] tf_pos_out [3:0];
 
+    // FIFO
+    logic fifo_in_valid;
+    logic fifo_in_ready;
+    logic fifo_out_valid;
+    logic fifo_out_ready;
+    logic [31:0] fifo_in_triangle [3:0] [2:0];
+    logic [383:0] fifo_in_triange_unrolled;
+    logic [383:0] fifo_out_triangle_unrolled;
+    logic [31:0] fifo_out_triangle [3:0] [2:0];
+
     // Triangle Projection
     logic tp_obj_done_in, tp_obj_done_out;
     logic [31:0] tp_coor_in [3:0];
@@ -135,9 +145,38 @@ module top_level(
         .new_pos(tf_pos_out)
     );
 
-    /*
-    Add FIFO here
-    */
+    fifo my_fifo (
+        .s_axis_aresetn(btn[0]),
+        .s_axis_aclk(clk_100mhz),
+        .s_axis_tvalid(fifo_in_valid),
+        .s_axis_tready(fifo_in_ready),
+        .s_axis_tdata(fifo_in_triange_unrolled),
+        .m_axis_tvalid(fifo_out_valid),
+        .m_axis_tready(fifo_out_ready),
+        .m_axis_tdata(fifo_out_triangle_unrolled)
+    );
+
+    always_ff @(posedge clk_in) begin
+        if (rst_in) begin
+            valid_out <= 0;
+            in_tri <= 0;
+        end else begin
+            if(fifo_in_valid) begin
+                // rolling the triangle to put into the FIFO
+                fifo_in_triange_unrolled = {triangle[3][2], triangle[3][1], triangle[3][0], triangle[2][2], triangle[2][1], triangle[2][0], triangle[1][2], triangle[1][1], triangle[1][0], triangle[0][2], triangle[0][1], triangle[0][0]}
+            end
+            if(fifo_out_valid) begin
+                // unrolling the triangle out of fifo
+                for(int i = 0; i < 4; i= i + 1) begin
+                    for(int j = 0; j < 3; j = j + 1) begin
+                        int x = j * 32 + i * 32 * 3;
+                        fifo_out_triangle[x+31:x]
+                    end
+                end
+            end
+        end
+    end
+
 
     tri_proj tp (
         .clk_in(clk_pixel),
