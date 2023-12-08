@@ -158,8 +158,8 @@ module top_level(
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
-            valid_out <= 0;
-            in_tri <= 0;
+            fifo_in_valid <= 0;
+            fifo_out_valid <= 0;
         end else begin
             if(fifo_in_valid) begin
                 // rolling the triangle to put into the FIFO
