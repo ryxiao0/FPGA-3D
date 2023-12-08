@@ -48,6 +48,12 @@ module top_level(
     logic tf_valid_in, tf_valid_out;
     logic [31:0] tf_pos_out [3:0];
 
+    // Triangle Projection
+    logic tp_obj_done_in, tp_obj_done_out;
+    logic [31:0] tp_coor_in [3:0];
+    logic tp_valid_in, tp_valid_out;
+    logic [8:0] tp_x_out, tp_y_out, tp_z_out;
+
     // Rasterizer
     logic [8:0] v1_rast [2:0];
     logic [8:0] v2_rast [2:0];
@@ -136,17 +142,21 @@ module top_level(
     tri_proj tp (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
-        .obj_done_in(),
-        .coor_in(),
-        .valid_out(),
-        .obj_done_out()
+        .obj_done_in(tp_obj_done_in),
+        .coor_in(tp_coor_in),
+        .valid_in(tp_valid_in)
+        .valid_out(tp_valid_out),
+        .obj_done_out(tp_obj_done_out),
+        .x(tp_x_out),
+        .y(tp_y_out),
+        .z(tp_z_out)
     );
 
     /*
     Add color mapping here
     */
 
-    // testing single triangle
+    // Tests a single triangle
     // assign valid_tri = 1;
     // assign v1_rast[2] = 20;
     // assign v1_rast[1] = 20;

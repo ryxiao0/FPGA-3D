@@ -3,13 +3,13 @@
 # SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Thu Dec  7 11:38:26 2023
-# Process ID: 187637
+# Start of session at: Thu Dec  7 12:48:41 2023
+# Process ID: 275714
 # Current directory: /home/ryxiao/FPGA-3D
 # Command line: vivado -mode batch -source xsim_run_round.tcl
 # Log file: /home/ryxiao/FPGA-3D/vivado.log
 # Journal file: /home/ryxiao/FPGA-3D/vivado.jou
-# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 2312.687 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 2608.986 MHz, CPU Physical cores: 16, Host memory: 33318 MB
 #-----------------------------------------------------------
 source xsim_run_round.tcl
 # create_project -force -part xc7s50csga324-1 round_tb round_tb
@@ -158,10 +158,10 @@ source round_tb.tcl
 ## current_wave_config
 Starting Sim
 Finishing Sim
-$finish called at time : 125 ns : File "/home/ryxiao/FPGA-3D/sim/round_tb.sv" Line 70
+$finish called at time : 355 ns : File "/home/ryxiao/FPGA-3D/sim/round_tb.sv" Line 56
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'round_tb_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1446.391 ; gain = 99.734 ; free physical = 1653 ; free virtual = 11125
+launch_simulation: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1433.449 ; gain = 99.734 ; free physical = 626 ; free virtual = 8400
 # restart
 INFO: [Wavedata 42-604] Simulation restarted
 # open_vcd
@@ -170,7 +170,7 @@ INFO: [Wavedata 42-604] Simulation restarted
 ERROR: Could not open vcd file round_tb.vcd. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
 Starting Sim
 Finishing Sim
-$finish called at time : 125 ns : File "/home/ryxiao/FPGA-3D/sim/round_tb.sv" Line 70
+$finish called at time : 355 ns : File "/home/ryxiao/FPGA-3D/sim/round_tb.sv" Line 56
 # flush_vcd
 # close_vcd
-INFO: [Common 17-206] Exiting Vivado at Thu Dec  7 11:38:37 2023...
+INFO: [Common 17-206] Exiting Vivado at Thu Dec  7 12:48:52 2023...

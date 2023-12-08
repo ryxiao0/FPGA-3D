@@ -4,7 +4,7 @@
     "xci_name": "fifo",
     "component_reference": "xilinx.com:ip:axis_data_fifo:2.0",
     "ip_revision": "10",
-    "gen_directory": "./ip/fifo",
+    "gen_directory": "ip/fifo",
     "parameters": {
       "component_parameters": {
         "TDATA_NUM_BYTES": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -68,7 +68,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "10" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "./ip/fifo" } ],
+        "OUTPUTDIR": [ { "value": "ip/fifo" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2023.1" } ],
