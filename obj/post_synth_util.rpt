@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Tue Dec  5 19:18:27 2023
-| Host         : worker running 64-bit Ubuntu 20.04.6 LTS
+| Date         : Thu Dec  7 21:36:44 2023
+| Host         : eecs-digital-33 running 64-bit Ubuntu 22.04.3 LTS
 | Command      : report_utilization -file obj/post_synth_util.rpt
 | Design       : top_level
 | Device       : xc7s50csga324-1
@@ -31,16 +31,16 @@ Table of Contents
 +----------------------------+------+-------+------------+-----------+-------+
 |          Site Type         | Used | Fixed | Prohibited | Available | Util% |
 +----------------------------+------+-------+------------+-----------+-------+
-| Slice LUTs*                |  398 |     0 |          0 |     32600 |  1.22 |
-|   LUT as Logic             |  387 |     0 |          0 |     32600 |  1.19 |
-|   LUT as Memory            |   11 |     0 |          0 |      9600 |  0.11 |
+| Slice LUTs*                | 1354 |     0 |          0 |     32600 |  4.15 |
+|   LUT as Logic             | 1192 |     0 |          0 |     32600 |  3.66 |
+|   LUT as Memory            |  162 |     0 |          0 |      9600 |  1.69 |
 |     LUT as Distributed RAM |    0 |     0 |            |           |       |
-|     LUT as Shift Register  |   11 |     0 |            |           |       |
-| Slice Registers            |  166 |     0 |          0 |     65200 |  0.25 |
-|   Register as Flip Flop    |  166 |     0 |          0 |     65200 |  0.25 |
+|     LUT as Shift Register  |  162 |     0 |            |           |       |
+| Slice Registers            | 1956 |     0 |          0 |     65200 |  3.00 |
+|   Register as Flip Flop    | 1956 |     0 |          0 |     65200 |  3.00 |
 |   Register as Latch        |    0 |     0 |          0 |     65200 |  0.00 |
-| F7 Muxes                   |    6 |     0 |          0 |     16300 |  0.04 |
-| F8 Muxes                   |    0 |     0 |          0 |      8150 |  0.00 |
+| F7 Muxes                   |    2 |     0 |          0 |     16300 |  0.01 |
+| F8 Muxes                   |    1 |     0 |          0 |      8150 |  0.01 |
 +----------------------------+------+-------+------------+-----------+-------+
 * Warning! The Final LUT count, after physical optimizations and full implementation, is typically lower. Run opt_design after synthesis, if not already completed, for a more realistic count.
 Warning! LUT value is adjusted to account for LUT combining.
@@ -60,8 +60,8 @@ Warning! LUT value is adjusted to account for LUT combining.
 | 0     |          Yes |           - |            - |
 | 0     |          Yes |           - |          Set |
 | 0     |          Yes |           - |        Reset |
-| 0     |          Yes |         Set |            - |
-| 166   |          Yes |       Reset |            - |
+| 1     |          Yes |         Set |            - |
+| 1955  |          Yes |       Reset |            - |
 +-------+--------------+-------------+--------------+
 
 
@@ -85,8 +85,8 @@ Warning! LUT value is adjusted to account for LUT combining.
 +----------------+------+-------+------------+-----------+-------+
 |    Site Type   | Used | Fixed | Prohibited | Available | Util% |
 +----------------+------+-------+------------+-----------+-------+
-| DSPs           |    9 |     0 |          0 |       120 |  7.50 |
-|   DSP48E1 only |    9 |       |            |           |       |
+| DSPs           |   19 |     0 |          0 |       120 | 15.83 |
+|   DSP48E1 only |   19 |       |            |           |       |
 +----------------+------+-------+------------+-----------+-------+
 
 
@@ -154,24 +154,27 @@ Warning! LUT value is adjusted to account for LUT combining.
 +------------+------+---------------------+
 |  Ref Name  | Used | Functional Category |
 +------------+------+---------------------+
-| FDRE       |  166 |        Flop & Latch |
-| LUT2       |  153 |                 LUT |
-| LUT3       |  102 |                 LUT |
-| LUT6       |   66 |                 LUT |
-| LUT5       |   58 |                 LUT |
-| CARRY4     |   46 |          CarryLogic |
-| LUT1       |   44 |                 LUT |
-| LUT4       |   35 |                 LUT |
+| FDRE       | 1955 |        Flop & Latch |
+| LUT3       |  592 |                 LUT |
+| LUT2       |  265 |                 LUT |
+| LUT6       |  231 |                 LUT |
+| LUT5       |  208 |                 LUT |
+| SRL16E     |  149 |  Distributed Memory |
+| LUT4       |  144 |                 LUT |
+| CARRY4     |  111 |          CarryLogic |
+| LUT1       |   93 |                 LUT |
+| DSP48E1    |   19 |    Block Arithmetic |
 | IBUF       |   18 |                  IO |
 | RAMB36E1   |   16 |        Block Memory |
 | OBUF       |   16 |                  IO |
-| SRL16E     |   11 |  Distributed Memory |
-| DSP48E1    |    9 |    Block Arithmetic |
+| SRLC32E    |   13 |  Distributed Memory |
 | OSERDESE2  |    6 |                  IO |
-| MUXF7      |    6 |               MuxFx |
 | OBUFDS     |    4 |                  IO |
 | BUFG       |    3 |               Clock |
+| MUXF7      |    2 |               MuxFx |
+| MUXF8      |    1 |               MuxFx |
 | MMCME2_ADV |    1 |               Clock |
+| FDSE       |    1 |        Flop & Latch |
 +------------+------+---------------------+
 
 
@@ -186,8 +189,13 @@ Warning! LUT value is adjusted to account for LUT combining.
 9. Instantiated Netlists
 ------------------------
 
-+----------+------+
-| Ref Name | Used |
-+----------+------+
++----------------+------+
+|    Ref Name    | Used |
++----------------+------+
+| multiplier     |    2 |
+| reciprocal     |    1 |
+| float_to_fixed |    1 |
+| adder          |    1 |
++----------------+------+
 
 
