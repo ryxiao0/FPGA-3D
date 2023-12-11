@@ -13,15 +13,17 @@ module get_vertices#(
     (
     input wire clk_in,
     input wire rst_in,
-    output logic [31:0] tri_out [3:0] [2:0],
+    output logic [31:0] v1 [3:0],
+    output logic [31:0] v2 [3:0],
+    output logic [31:0] v3 [3:0],
     output logic valid_out,
     output logic obj_done 
 );
 
     enum {INIT, GETF, GETTINGF, GETV1, GETTINGV1, GETV2, GETTINGV2, GETV3, GETTINGV3} state;
 
-    logic [15:0] facet_read, vertex_read;
-    logic [15:0] f1, f2, f3;
+    logic [11:0] facet_read, vertex_read;
+    logic [11:0] f1, f2, f3;
     logic [31:0] x, y, z;
     logic [47:0] facet_out;
 
@@ -52,10 +54,10 @@ module get_vertices#(
                     state <= GETTINGV1;
                 end
                 GETTINGV1: begin
-                    tri_out[3][0] <= x;
-                    tri_out[2][0] <= y;
-                    tri_out[1][0] <= z;
-                    tri_out[0][0] <= 1;
+                    v1[3] <= x;
+                    v1[2] <= y;
+                    v1[1] <= z;
+                    v1[0] <= 1;
                     vertex_read <= f2-1;
                     state <= GETV2;
                 end
@@ -63,10 +65,10 @@ module get_vertices#(
                     state <= GETTINGV2;
                 end
                 GETTINGV2: begin
-                    tri_out[3][1] <= x;
-                    tri_out[2][1] <= y;
-                    tri_out[1][1] <= z;
-                    tri_out[0][1] <= 1;
+                    v2[3] <= x;
+                    v2[2] <= y;
+                    v2[1] <= z;
+                    v2[0] <= 1;
                     vertex_read <= f3-1;
                     state <= GETV3;
                 end
@@ -74,10 +76,10 @@ module get_vertices#(
                     state <= GETTINGV3;
                 end
                 GETTINGV3: begin
-                    tri_out[3][2] <= x;
-                    tri_out[2][2] <= y;
-                    tri_out[1][2] <= z;
-                    tri_out[0][2] <= 1;
+                    v3[3] <= x;
+                    v3[2] <= y;
+                    v3[1] <= z;
+                    v3[0] <= 1;
                     valid_out <= 1;
                     if (facet_read == NUM_FACETS-1) begin
                         state <= INIT;
@@ -97,9 +99,9 @@ module get_vertices#(
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(96),                       // Specify RAM data width
-        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(2048),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(Deer_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(cube_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) vertex_inst (
         .addra(vertex_read),     // Address bus, width determined from RAM_DEPTH
         .dina(0),       // RAM input data, width determined from RAM_WIDTH
@@ -113,9 +115,9 @@ module get_vertices#(
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(48),                       // Specify RAM data width
-        .RAM_DEPTH(65536),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(2048),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(Deer_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(cube_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) facet_inst (
         .addra(facet_read),     // Address bus, width determined from RAM_DEPTH
         .dina(0),       // RAM input data, width determined from RAM_WIDTH

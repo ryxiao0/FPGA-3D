@@ -100,9 +100,9 @@ module in_triangle(
                 DET: begin
                     // a_num = detvv2 - detv0v2;
                     // b_num = detvv1 - detv0v1;
-                    a_raw = (a_num[16])? -a_num[15:0]: a_num[15:0];
-                    b_raw = (b_num[16])? -b_num[15:0]: b_num[15:0];
-                    det_raw = (detv1v2[16])? -detv1v2[15:0]: detv1v2[15:0];
+                    a_raw <= (a_num[16])? -a_num[15:0]: a_num[15:0];
+                    b_raw <= (b_num[16])? -b_num[15:0]: b_num[15:0];
+                    det_raw <= (detv1v2[16])? -detv1v2[15:0]: detv1v2[15:0];
                     state <= CALC;
                 end
                 CALC: begin

@@ -1,0 +1,1368 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Fri Dec  8 15:55:40 2023
+# Process ID: 1830818
+# Current directory: /home/ryxiao/FPGA-3D
+# Command line: vivado -mode batch -source build.tcl
+# Log file: /home/ryxiao/FPGA-3D/vivado.log
+# Journal file: /home/ryxiao/FPGA-3D/vivado.jou
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 3072.422 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+#-----------------------------------------------------------
+source build.tcl
+# set partNum xc7s50csga324-1
+# set outputDir obj
+# file mkdir $outputDir
+# set files [glob -nocomplain "$outputDir/*"]
+# if {[llength $files] != 0} {
+#     # clear folder contents
+#     puts "deleting contents of $outputDir"
+#     file delete -force {*}[glob -directory $outputDir *];
+# } else {
+#     puts "$outputDir is empty"
+# }
+obj is empty
+# read_verilog -sv [ glob ./hdl/*.sv ]
+# read_verilog  [ glob ./hdl/*.v ]
+# read_xdc ./xdc/top_level.xdc
+# read_mem [ glob ./data/*.mem ]
+# set_part $partNum
+INFO: [Coretcl 2-1500] The part has been set to 'xc7s50csga324-1' for the current project only. Run set_part -help for more details. To evaluate different speed grades in the current design, use the set_speed_grade command, or use the open_checkpoint -part command to change the part used by an existing checkpoint design.
+# read_ip ./ip/multiplier/multiplier.xci
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/tools/Xilinx/Vivado/2023.1/data/ip'.
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/multiplier/multiplier.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# read_ip ./ip/adder/adder.xci
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/adder/adder.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/adder/ip/adder'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# read_ip ./ip/fifo/fifo.xci
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/fifo/fifo.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/fifo/ip/fifo'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# read_ip ./ip/reciprocal/reciprocal.xci
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/reciprocal/reciprocal.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# read_ip ./ip/float_to_fixed/float_to_fixed.xci
+WARNING: [Vivado 12-13650] The IP file '/home/ryxiao/FPGA-3D/ip/float_to_fixed/float_to_fixed.xci' has been moved from its original location, as a result the outputs for this IP will now be generated in '/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed'. Alternatively a copy of the IP can be imported into the project using one of the 'import_ip' or 'import_files' commands.
+# generate_target all [get_ips]
+# synth_ip [get_ips]
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/adder/adder.xci
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/fifo/fifo.xci
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/float_to_fixed/float_to_fixed.xci
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/multiplier/multiplier.xci
+INFO: [Vivado 12-3435] The given sub-design is up-to-date, no action was taken.  If a regeneration is desired, use the '-force' option: /home/ryxiao/FPGA-3D/ip/reciprocal/reciprocal.xci
+INFO: [Vivado 12-3441] generate_netlist_ip - operation complete
+# synth_design -top top_level -part $partNum -verbose
+Command: synth_design -top top_level -part xc7s50csga324-1 -verbose
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7s50'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7s50'
+INFO: [Device 21-403] Loading part xc7s50csga324-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 1830956
+WARNING: [Synth 8-11065] parameter 'M' becomes localparam in 'tri_proj' with formal parameter declaration list [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:16]
+WARNING: [Synth 8-11065] parameter 'BLACK' becomes localparam in 'rasterizer' with formal parameter declaration list [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:23]
+WARNING: [Synth 8-11065] parameter 'COLOR' becomes localparam in 'rasterizer' with formal parameter declaration list [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:23]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2022.688 ; gain = 368.797 ; free physical = 805 ; free virtual = 10072
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'top_level' [/home/ryxiao/FPGA-3D/hdl/top_level.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'hdmi_clk_wiz_720p' [/home/ryxiao/FPGA-3D/hdl/hdmi_clk_wiz.v:69]
+INFO: [Synth 8-6157] synthesizing module 'IBUF' [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:71768]
+INFO: [Synth 8-6155] done synthesizing module 'IBUF' (0#1) [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:71768]
+INFO: [Synth 8-6157] synthesizing module 'MMCME2_ADV' [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:80311]
+	Parameter BANDWIDTH bound to: OPTIMIZED - type: string 
+	Parameter CLKFBOUT_MULT_F bound to: 37.125000 - type: double 
+	Parameter CLKFBOUT_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKFBOUT_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKIN1_PERIOD bound to: 10.000000 - type: double 
+	Parameter CLKOUT0_DIVIDE_F bound to: 10.000000 - type: double 
+	Parameter CLKOUT0_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT0_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT0_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKOUT1_DIVIDE bound to: 2 - type: integer 
+	Parameter CLKOUT1_DUTY_CYCLE bound to: 0.500000 - type: double 
+	Parameter CLKOUT1_PHASE bound to: 0.000000 - type: double 
+	Parameter CLKOUT1_USE_FINE_PS bound to: FALSE - type: string 
+	Parameter CLKOUT4_CASCADE bound to: FALSE - type: string 
+	Parameter COMPENSATION bound to: ZHOLD - type: string 
+	Parameter DIVCLK_DIVIDE bound to: 5 - type: integer 
+	Parameter STARTUP_WAIT bound to: FALSE - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'MMCME2_ADV' (0#1) [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:80311]
+INFO: [Synth 8-6157] synthesizing module 'BUFG' [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:1519]
+INFO: [Synth 8-6155] done synthesizing module 'BUFG' (0#1) [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:1519]
+INFO: [Synth 8-6155] done synthesizing module 'hdmi_clk_wiz_720p' (0#1) [/home/ryxiao/FPGA-3D/hdl/hdmi_clk_wiz.v:69]
+INFO: [Synth 8-6157] synthesizing module 'video_sig_gen' [/home/ryxiao/FPGA-3D/hdl/video_sig_gen.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'video_sig_gen' (0#1) [/home/ryxiao/FPGA-3D/hdl/video_sig_gen.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'scale' [/home/ryxiao/FPGA-3D/hdl/scale.sv:4]
+INFO: [Synth 8-6155] done synthesizing module 'scale' (0#1) [/home/ryxiao/FPGA-3D/hdl/scale.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'get_vertices' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:10]
+	Parameter NUM_FACETS bound to: 12 - type: integer 
+INFO: [Synth 8-155] case statement is not full and has no default [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:37]
+INFO: [Synth 8-6157] synthesizing module 'xilinx_single_port_ram_read_first' [/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v:10]
+	Parameter RAM_WIDTH bound to: 96 - type: integer 
+	Parameter RAM_DEPTH bound to: 65536 - type: integer 
+	Parameter RAM_PERFORMANCE bound to: HIGH_PERFORMANCE - type: string 
+	Parameter INIT_FILE bound to: cube_vertices.mem - type: string 
+INFO: [Synth 8-3876] $readmem data file 'cube_vertices.mem' is read successfully [/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v:33]
+INFO: [Synth 8-6155] done synthesizing module 'xilinx_single_port_ram_read_first' (0#1) [/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v:10]
+INFO: [Synth 8-6157] synthesizing module 'xilinx_single_port_ram_read_first__parameterized0' [/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v:10]
+	Parameter RAM_WIDTH bound to: 48 - type: integer 
+	Parameter RAM_DEPTH bound to: 65536 - type: integer 
+	Parameter RAM_PERFORMANCE bound to: HIGH_PERFORMANCE - type: string 
+	Parameter INIT_FILE bound to: cube_facets.mem - type: string 
+INFO: [Synth 8-3876] $readmem data file 'cube_facets.mem' is read successfully [/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v:33]
+INFO: [Synth 8-6155] done synthesizing module 'xilinx_single_port_ram_read_first__parameterized0' (0#1) [/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v:10]
+INFO: [Synth 8-6155] done synthesizing module 'get_vertices' (0#1) [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:10]
+INFO: [Synth 8-6157] synthesizing module 'transformation' [/home/ryxiao/FPGA-3D/hdl/transformation.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'adder' [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/adder_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'adder' (0#1) [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/adder_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'multiplier' [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/multiplier_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'multiplier' (0#1) [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/multiplier_stub.v:6]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/ryxiao/FPGA-3D/hdl/transformation.sv:55]
+INFO: [Synth 8-6155] done synthesizing module 'transformation' (0#1) [/home/ryxiao/FPGA-3D/hdl/transformation.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'tri_proj' [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'reciprocal' [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/reciprocal_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'reciprocal' (0#1) [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/reciprocal_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'float_to_fixed' [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/float_to_fixed_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'float_to_fixed' (0#1) [/home/ryxiao/FPGA-3D/.Xil/Vivado-1830818-eecs-digital-33/realtime/float_to_fixed_stub.v:6]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:77]
+INFO: [Synth 8-6155] done synthesizing module 'tri_proj' (0#1) [/home/ryxiao/FPGA-3D/hdl/tri_proj.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'rasterizer' [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:1]
+WARNING: [Synth 8-639] system function call 'clog' not supported [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:4]
+WARNING: [Synth 8-639] system function call 'clog' not supported [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:5]
+INFO: [Synth 8-6157] synthesizing module 'in_triangle' [/home/ryxiao/FPGA-3D/hdl/in_triangle.sv:1]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/ryxiao/FPGA-3D/hdl/in_triangle.sv:87]
+INFO: [Synth 8-6155] done synthesizing module 'in_triangle' (0#1) [/home/ryxiao/FPGA-3D/hdl/in_triangle.sv:1]
+INFO: [Synth 8-155] case statement is not full and has no default [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:128]
+INFO: [Synth 8-6157] synthesizing module 'xilinx_true_dual_port_read_first_2_clock_ram' [/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v:10]
+	Parameter RAM_WIDTH bound to: 17 - type: integer 
+	Parameter RAM_DEPTH bound to: 129600 - type: integer 
+WARNING: [Synth 8-6896] loop limit (65536) exceeded inside initial block, initial block items will be ignored [/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v:55]
+WARNING: [Synth 8-6896] loop limit (65536) exceeded inside initial block, initial block items will be ignored [/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v:61]
+INFO: [Synth 8-6155] done synthesizing module 'xilinx_true_dual_port_read_first_2_clock_ram' (0#1) [/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v:10]
+WARNING: [Synth 8-639] system function call 'clog' not supported [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:4]
+WARNING: [Synth 8-639] system function call 'clog' not supported [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:5]
+INFO: [Synth 8-6155] done synthesizing module 'rasterizer' (0#1) [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'tmds_encoder' [/home/ryxiao/FPGA-3D/hdl/tmds_encoder.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'tm_choice' [/home/ryxiao/FPGA-3D/hdl/tm_choice.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'tm_choice' (0#1) [/home/ryxiao/FPGA-3D/hdl/tm_choice.sv:1]
+INFO: [Synth 8-226] default block is never used [/home/ryxiao/FPGA-3D/hdl/tmds_encoder.sv:66]
+INFO: [Synth 8-6155] done synthesizing module 'tmds_encoder' (0#1) [/home/ryxiao/FPGA-3D/hdl/tmds_encoder.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'tmds_serializer' [/home/ryxiao/FPGA-3D/hdl/tmds_serializer.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'OSERDESE2' [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:95372]
+	Parameter DATA_RATE_OQ bound to: DDR - type: string 
+	Parameter DATA_RATE_TQ bound to: SDR - type: string 
+	Parameter DATA_WIDTH bound to: 10 - type: integer 
+	Parameter SERDES_MODE bound to: MASTER - type: string 
+	Parameter TBYTE_CTL bound to: FALSE - type: string 
+	Parameter TBYTE_SRC bound to: FALSE - type: string 
+	Parameter TRISTATE_WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'OSERDESE2' (0#1) [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:95372]
+INFO: [Synth 8-6157] synthesizing module 'OSERDESE2__parameterized0' [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:95372]
+	Parameter DATA_RATE_OQ bound to: DDR - type: string 
+	Parameter DATA_RATE_TQ bound to: SDR - type: string 
+	Parameter DATA_WIDTH bound to: 10 - type: integer 
+	Parameter SERDES_MODE bound to: SLAVE - type: string 
+	Parameter TBYTE_CTL bound to: FALSE - type: string 
+	Parameter TBYTE_SRC bound to: FALSE - type: string 
+	Parameter TRISTATE_WIDTH bound to: 1 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'OSERDESE2__parameterized0' (0#1) [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:95372]
+INFO: [Synth 8-6155] done synthesizing module 'tmds_serializer' (0#1) [/home/ryxiao/FPGA-3D/hdl/tmds_serializer.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'OBUFDS' [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:91135]
+INFO: [Synth 8-6155] done synthesizing module 'OBUFDS' (0#1) [/tools/Xilinx/Vivado/2023.1/scripts/rt/data/unisim_comp.v:91135]
+INFO: [Synth 8-6155] done synthesizing module 'top_level' (0#1) [/home/ryxiao/FPGA-3D/hdl/top_level.sv:4]
+WARNING: [Synth 8-3848] Net mult_a_in in module/entity transformation does not have driver. [/home/ryxiao/FPGA-3D/hdl/transformation.sv:34]
+WARNING: [Synth 8-3848] Net mult_b_in in module/entity transformation does not have driver. [/home/ryxiao/FPGA-3D/hdl/transformation.sv:34]
+WARNING: [Synth 8-3848] Net mult_v_in in module/entity transformation does not have driver. [/home/ryxiao/FPGA-3D/hdl/transformation.sv:35]
+WARNING: [Synth 8-6014] Unused sequential element write_addr_reg was removed.  [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:151]
+WARNING: [Synth 8-3848] Net write_addr1 in module/entity rasterizer does not have driver. [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:95]
+WARNING: [Synth 8-3848] Net write_addr0 in module/entity rasterizer does not have driver. [/home/ryxiao/FPGA-3D/hdl/rasterizer.sv:95]
+WARNING: [Synth 8-3848] Net led in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:8]
+WARNING: [Synth 8-3848] Net v2_rast[2] in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:59]
+WARNING: [Synth 8-3848] Net v2_rast[1] in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:59]
+WARNING: [Synth 8-3848] Net v2_rast[0] in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:59]
+WARNING: [Synth 8-3848] Net v3_rast[2] in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:60]
+WARNING: [Synth 8-3848] Net v3_rast[1] in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:60]
+WARNING: [Synth 8-3848] Net v3_rast[0] in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:60]
+WARNING: [Synth 8-3848] Net tp_obj_done_in in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:52]
+WARNING: [Synth 8-3848] Net tf_scale in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:46]
+WARNING: [Synth 8-3848] Net tf_pitch in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:47]
+WARNING: [Synth 8-3848] Net tf_roll in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:47]
+WARNING: [Synth 8-3848] Net tf_yaw in module/entity top_level does not have driver. [/home/ryxiao/FPGA-3D/hdl/top_level.sv:47]
+WARNING: [Synth 8-7129] Port v1[0][8] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][7] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][6] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][5] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][4] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][3] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][2] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][1] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][0] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][8] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][7] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][6] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][5] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][4] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][3] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][2] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][1] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][0] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][8] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][7] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][6] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][5] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][4] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][3] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][2] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][1] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][0] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port new_frame in module rasterizer is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][31] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][30] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][29] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][28] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][27] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][26] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][25] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][24] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][23] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][22] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][21] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][20] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][19] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][18] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][17] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][16] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][15] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][14] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][13] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][12] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][11] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][10] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][9] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][8] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][7] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][6] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][5] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][4] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][3] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][2] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][1] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][0] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[31] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[30] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[29] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[28] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[27] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[26] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[25] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[24] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[23] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[22] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[21] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[20] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[19] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[18] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[17] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[16] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[15] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[14] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[13] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[12] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[11] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[10] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[9] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[8] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[7] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[6] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[5] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[4] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[3] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[2] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[1] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port scale[0] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port pitch[4] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port pitch[3] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port pitch[2] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port pitch[1] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port pitch[0] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port roll[4] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port roll[3] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port roll[2] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port roll[1] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port roll[0] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port yaw[4] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port yaw[3] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port yaw[2] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port yaw[1] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port yaw[0] in module transformation is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[15] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[14] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[13] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[12] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[11] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[10] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[9] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[8] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[7] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[6] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[5] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[4] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[3] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[2] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[1] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[0] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[15] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[14] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[13] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[12] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[11] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[10] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[9] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[8] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[7] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[6] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[5] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[4] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[3] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[2] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port btn[3] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port btn[2] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port btn[1] in module top_level is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2251.875 ; gain = 597.984 ; free physical = 567 ; free virtual = 9835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2251.875 ; gain = 597.984 ; free physical = 567 ; free virtual = 9835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2251.875 ; gain = 597.984 ; free physical = 567 ; free virtual = 9835
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2251.875 ; gain = 0.000 ; free physical = 567 ; free virtual = 9835
+INFO: [Netlist 29-17] Analyzing 5 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier/multiplier_in_context.xdc] for cell 'tf/mult'
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier/multiplier_in_context.xdc] for cell 'tf/mult'
+Parsing XDC File [/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier/multiplier_in_context.xdc] for cell 'tp/pro'
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier/multiplier_in_context.xdc] for cell 'tp/pro'
+Parsing XDC File [/home/ryxiao/FPGA-3D/ip/adder/ip/adder/adder/adder_in_context.xdc] for cell 'tf/add'
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/ip/adder/ip/adder/adder/adder_in_context.xdc] for cell 'tf/add'
+Parsing XDC File [/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal/reciprocal/reciprocal_in_context.xdc] for cell 'tp/rec'
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal/reciprocal/reciprocal_in_context.xdc] for cell 'tp/rec'
+Parsing XDC File [/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed/float_to_fixed/float_to_fixed_in_context.xdc] for cell 'tp/round'
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed/float_to_fixed/float_to_fixed_in_context.xdc] for cell 'tp/round'
+Parsing XDC File [/home/ryxiao/FPGA-3D/xdc/top_level.xdc]
+WARNING: [Vivado 12-584] No ports matched 'uart_rxd'. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:134]
+WARNING: [Vivado 12-584] No ports matched 'uart_txd'. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:135]
+WARNING: [Vivado 12-584] No ports matched 'uart*'. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:136]
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/xdc/top_level.xdc]
+WARNING: [Project 1-498] One or more constraints failed evaluation while reading constraint file [/home/ryxiao/FPGA-3D/xdc/top_level.xdc] and the design contains unresolved black boxes. These constraints will be read post-synthesis (as long as their source constraint file is marked as used_in_implementation) and should be applied correctly then. You should review the constraints listed in the file [.Xil/top_level_propImpl.xdc] and check the run log file to verify that these constraints were correctly applied.
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/ryxiao/FPGA-3D/xdc/top_level.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_level_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/top_level_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+INFO: [Timing 38-2] Deriving generated clocks
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2327.707 ; gain = 0.000 ; free physical = 564 ; free virtual = 9833
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 4 instances were transformed.
+  OBUFDS => OBUFDS_DUAL_BUF (INV, OBUFDS(x2)): 4 instances
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2327.707 ; gain = 0.000 ; free physical = 564 ; free virtual = 9833
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'tf/add' at clock pin 'aclk' is different from the actual clock period '13.468', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'tf/mult' at clock pin 'aclk' is different from the actual clock period '13.468', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'tp/pro' at clock pin 'aclk' is different from the actual clock period '13.468', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'tp/rec' at clock pin 'aclk' is different from the actual clock period '13.468', this can lead to different synthesis results.
+WARNING: [Timing 38-316] Clock period '100.000' specified during out-of-context synthesis of instance 'tp/round' at clock pin 'aclk' is different from the actual clock period '13.468', this can lead to different synthesis results.
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 566 ; free virtual = 9835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7s50csga324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 566 ; free virtual = 9835
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for tf/mult. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for tp/pro. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for tf/add. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for tp/rec. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for tp/round. (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 566 ; free virtual = 9834
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'get_vertices'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'transformation'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'tri_proj'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    INIT |                        000000001 | 00000000000000000000000000000000
+                    GETF |                        000000010 | 00000000000000000000000000000001
+                GETTINGF |                        000000100 | 00000000000000000000000000000010
+                   GETV1 |                        000001000 | 00000000000000000000000000000011
+               GETTINGV1 |                        000010000 | 00000000000000000000000000000100
+                   GETV2 |                        000100000 | 00000000000000000000000000000101
+               GETTINGV2 |                        001000000 | 00000000000000000000000000000110
+                   GETV3 |                        010000000 | 00000000000000000000000000000111
+               GETTINGV3 |                        100000000 | 00000000000000000000000000001000
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'get_vertices'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                   READY |                                0 | 00000000000000000000000000000000
+                  TOVIEW |                                1 | 00000000000000000000000000000001
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'transformation'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDLE |                             0000 | 00000000000000000000000000000000
+                     DIV |                             0001 | 00000000000000000000000000000001
+                     REC |                             0010 | 00000000000000000000000000000010
+                       X |                             0011 | 00000000000000000000000000000011
+                       Y |                             0100 | 00000000000000000000000000000100
+                   MULTX |                             0101 | 00000000000000000000000000000101
+                  ROUNDX |                             0110 | 00000000000000000000000000000110
+                   MULTY |                             0111 | 00000000000000000000000000000111
+                  ROUNDY |                             1000 | 00000000000000000000000000001000
+                   MULTZ |                             1001 | 00000000000000000000000000001001
+                  ROUNDZ |                             1010 | 00000000000000000000000000001010
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'tri_proj'
+INFO: [Synth 8-3971] The signal "xilinx_true_dual_port_read_first_2_clock_ram:/BRAM_reg" was recognized as a true dual port RAM template.
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 561 ; free virtual = 9831
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'tmds_red' (tmds_encoder) to 'tmds_green'
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input   17 Bit       Adders := 2     
+	   2 Input   16 Bit       Adders := 6     
+	   2 Input   11 Bit       Adders := 1     
+	   2 Input   10 Bit       Adders := 1     
+	   3 Input   10 Bit       Adders := 4     
+	   2 Input    9 Bit       Adders := 4     
+	   2 Input    6 Bit       Adders := 1     
+	   5 Input    5 Bit       Adders := 4     
+	   4 Input    5 Bit       Adders := 2     
+	   8 Input    4 Bit       Adders := 4     
+	   2 Input    4 Bit       Adders := 2     
++---XORs : 
+	   2 Input      1 Bit         XORs := 16    
++---Registers : 
+	               96 Bit    Registers := 2     
+	               48 Bit    Registers := 2     
+	               32 Bit    Registers := 24    
+	               17 Bit    Registers := 14    
+	               16 Bit    Registers := 5     
+	               11 Bit    Registers := 2     
+	               10 Bit    Registers := 4     
+	                9 Bit    Registers := 6     
+	                6 Bit    Registers := 1     
+	                5 Bit    Registers := 2     
+	                1 Bit    Registers := 19    
++---RAMs : 
+	            6144K Bit	(65536 X 96 bit)          RAMs := 1     
+	            3072K Bit	(65536 X 48 bit)          RAMs := 1     
+	            2151K Bit	(129600 X 17 bit)          RAMs := 2     
++---Muxes : 
+	  11 Input   32 Bit        Muxes := 2     
+	   2 Input   32 Bit        Muxes := 10    
+	   4 Input   32 Bit        Muxes := 2     
+	   2 Input   17 Bit        Muxes := 2     
+	   9 Input   16 Bit        Muxes := 2     
+	   2 Input   16 Bit        Muxes := 3     
+	   2 Input   11 Bit        Muxes := 2     
+	   2 Input   10 Bit        Muxes := 5     
+	   5 Input   10 Bit        Muxes := 2     
+	   9 Input    9 Bit        Muxes := 1     
+	   2 Input    9 Bit        Muxes := 16    
+	   4 Input    9 Bit        Muxes := 2     
+	   2 Input    8 Bit        Muxes := 3     
+	   2 Input    5 Bit        Muxes := 6     
+	  11 Input    4 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 2     
+	   2 Input    3 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 1     
+	   4 Input    2 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 49    
+	   4 Input    1 Bit        Muxes := 15    
+	   9 Input    1 Bit        Muxes := 5     
+	  11 Input    1 Bit        Muxes := 18    
+	   6 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 120 (col length:60)
+BRAMs: 150 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP detv0v11, operation Mode is: A*B.
+DSP Report: operator detv0v11 is absorbed into DSP detv0v11.
+DSP Report: Generating DSP detv0v1_reg, operation Mode is: (C-A*B)'.
+DSP Report: register detv0v1_reg is absorbed into DSP detv0v1_reg.
+DSP Report: operator detv0v10 is absorbed into DSP detv0v1_reg.
+DSP Report: operator detv0v11 is absorbed into DSP detv0v1_reg.
+DSP Report: Generating DSP detvv11, operation Mode is: A*B.
+DSP Report: operator detvv11 is absorbed into DSP detvv11.
+DSP Report: Generating DSP detvv1_reg, operation Mode is: (C-A*B)'.
+DSP Report: register detvv1_reg is absorbed into DSP detvv1_reg.
+DSP Report: operator detvv10 is absorbed into DSP detvv1_reg.
+DSP Report: operator detvv11 is absorbed into DSP detvv1_reg.
+DSP Report: Generating DSP detv0v21, operation Mode is: A*B.
+DSP Report: operator detv0v21 is absorbed into DSP detv0v21.
+DSP Report: Generating DSP detv0v2_reg, operation Mode is: (C-A*B)'.
+DSP Report: register detv0v2_reg is absorbed into DSP detv0v2_reg.
+DSP Report: operator detv0v20 is absorbed into DSP detv0v2_reg.
+DSP Report: operator detv0v21 is absorbed into DSP detv0v2_reg.
+DSP Report: Generating DSP detvv21, operation Mode is: A*B.
+DSP Report: operator detvv21 is absorbed into DSP detvv21.
+DSP Report: Generating DSP detvv2_reg, operation Mode is: (C-A*B)'.
+DSP Report: register detvv2_reg is absorbed into DSP detvv2_reg.
+DSP Report: operator detvv20 is absorbed into DSP detvv2_reg.
+DSP Report: operator detvv21 is absorbed into DSP detvv2_reg.
+DSP Report: Generating DSP read_addr10, operation Mode is: C'+A''*(B:0x168).
+DSP Report: register vcount_in_pipe_reg[0] is absorbed into DSP read_addr10.
+DSP Report: register vcount_in_pipe_reg[1] is absorbed into DSP read_addr10.
+DSP Report: register hcount_in_pipe_reg[1] is absorbed into DSP read_addr10.
+DSP Report: operator read_addr10 is absorbed into DSP read_addr10.
+DSP Report: operator read_addr11 is absorbed into DSP read_addr10.
+WARNING: [Synth 8-7129] Port v1[0][8] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][7] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][6] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][5] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][4] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][3] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][2] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][1] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v1[0][0] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][8] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][7] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][6] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][5] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][4] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][3] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][2] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][1] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v2[0][0] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][8] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][7] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][6] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][5] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][4] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][3] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][2] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][1] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port v3[0][0] in module in_triangle is either unconnected or has no load
+WARNING: [Synth 8-7129] Port new_frame in module rasterizer is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][31] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][30] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][29] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][28] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][27] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][26] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][25] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][24] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][23] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][22] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][21] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][20] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][19] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][18] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][17] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][16] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][15] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][14] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][13] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][12] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][11] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][10] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][9] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][8] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][7] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][6] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][5] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][4] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][3] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][2] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][1] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port coor_in[0][0] in module tri_proj is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[15] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[14] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[13] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[12] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[11] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[10] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[9] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[8] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[7] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[6] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[5] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[4] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[3] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[2] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[1] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port led[0] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[15] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[14] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[13] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[12] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[11] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[10] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[9] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[8] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[7] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[6] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[5] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[4] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[3] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port sw[2] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port btn[3] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port btn[2] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-7129] Port btn[1] in module top_level is either unconnected or has no load
+WARNING: [Synth 8-6014] Unused sequential element rast/z_buffer0/BRAM_reg was removed. 
+WARNING: [Synth 8-6014] Unused sequential element rast/z_buffer1/BRAM_reg was removed. 
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__0) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__1) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__2) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__3) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__4) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__5) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__6) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__7) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__8) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__9) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__10) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__11) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__12) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__13) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__14) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer0/BRAM_reg_mux_sel_a_pos_0__15) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__0) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__1) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__2) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__3) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__4) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__5) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__6) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__7) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__8) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__9) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__10) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__11) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__12) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__13) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__14) is unused and will be removed from module top_level.
+WARNING: [Synth 8-3332] Sequential element (rast/z_buffer1/BRAM_reg_mux_sel_a_pos_0__15) is unused and will be removed from module top_level.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 532 ; free virtual = 9824
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-5835] Resources of type BRAM have been overutilized. Used = 704, Available = 150. Will try to implement using LUT-RAM. 
+CRITICAL WARNING: [Synth 8-7048] Resources of type BRAM have been overutilized even after performing resource management. Used = 704, Available = 150. 
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Preliminary Mapping Report (see note below)
++---------------------------------------------------+-------------------------+------------------------+---+---+-------------------------+---+---+------------------+--------+--------+
+|Module Name                                        | RTL Object              | PORT A (Depth x Width) | W | R | PORT B (Depth x Width)  | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++---------------------------------------------------+-------------------------+------------------------+---+---+-------------------------+---+---+------------------+--------+--------+
+|xilinx_single_port_ram_read_first:                 | BRAM_reg                | 64 K x 96(READ_FIRST)  | W | R |                         |   |   | Port A           | 0      | 192    | 
+|xilinx_single_port_ram_read_first__parameterized0: | BRAM_reg                | 64 K x 48(READ_FIRST)  | W | R |                         |   |   | Port A           | 0      | 96     | 
+|top_level                                          | rast/z_buffer0/BRAM_reg | 126 K x 17(READ_FIRST) | W | R | 126 K x 17(WRITE_FIRST) |   | R | Port A and B     | 0      | 68     | 
+|top_level                                          | rast/z_buffer1/BRAM_reg | 126 K x 17(READ_FIRST) | W | R | 126 K x 17(WRITE_FIRST) |   | R | Port A and B     | 0      | 68     | 
++---------------------------------------------------+-------------------------+------------------------+---+---+-------------------------+---+---+------------------+--------+--------+
+
+Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++------------+------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name | DSP Mapping      | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------+------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|in_triangle | A*B              | 10     | 10     | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-A*B)'         | 10     | 10     | 17     | -      | 17     | 0    | 0    | 0    | -    | -     | 0    | 1    | 
+|in_triangle | A*B              | 10     | 10     | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-A*B)'         | 10     | 10     | 17     | -      | 17     | 0    | 0    | 0    | -    | -     | 0    | 1    | 
+|in_triangle | A*B              | 10     | 10     | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-A*B)'         | 10     | 10     | 17     | -      | 17     | 0    | 0    | 0    | -    | -     | 0    | 1    | 
+|in_triangle | A*B              | 10     | 10     | -      | -      | 20     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-A*B)'         | 10     | 10     | 17     | -      | 17     | 0    | 0    | 0    | -    | -     | 0    | 1    | 
+|rasterizer  | C'+A''*(B:0x168) | 10     | 9      | 11     | -      | 17     | 2    | 0    | 1    | -    | -     | 0    | 0    | 
++------------+------------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 534 ; free virtual = 9827
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:18 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 516 ; free virtual = 9809
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Final Mapping Report
++---------------------------------------------------+-------------------------+------------------------+---+---+-------------------------+---+---+------------------+--------+--------+
+|Module Name                                        | RTL Object              | PORT A (Depth x Width) | W | R | PORT B (Depth x Width)  | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++---------------------------------------------------+-------------------------+------------------------+---+---+-------------------------+---+---+------------------+--------+--------+
+|xilinx_single_port_ram_read_first:                 | BRAM_reg                | 64 K x 96(READ_FIRST)  | W | R |                         |   |   | Port A           | 0      | 192    | 
+|xilinx_single_port_ram_read_first__parameterized0: | BRAM_reg                | 64 K x 48(READ_FIRST)  | W | R |                         |   |   | Port A           | 0      | 96     | 
+|top_level                                          | rast/z_buffer0/BRAM_reg | 126 K x 17(READ_FIRST) | W | R | 126 K x 17(WRITE_FIRST) |   | R | Port A and B     | 0      | 68     | 
+|top_level                                          | rast/z_buffer1/BRAM_reg | 126 K x 17(READ_FIRST) | W | R | 126 K x 17(WRITE_FIRST) |   | R | Port A and B     | 0      | 68     | 
++---------------------------------------------------+-------------------------+------------------------+---+---+-------------------------+---+---+------------------+--------+--------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_0_10' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_0_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_0_13' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_0_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_0_14' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_0_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_1_10' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_1_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_1_13' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_1_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_1_14' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_1_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_0_12' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_0_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_0_15' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_0_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_0_16' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_0_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_1_12' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_1_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_1_15' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_1_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_1_16' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_1_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_2_10' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_2_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_2_13' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_2_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_2_14' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_2_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_3_10' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_3_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_3_13' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_3_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_3_14' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_3_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_2_12' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_2_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_2_15' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_2_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_2_16' (RAMB36E1_18) to 'rast/z_buffer0/BRAM_reg_2_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_3_12' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_3_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_3_15' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_3_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer0/BRAM_reg_3_16' (RAMB36E1_19) to 'rast/z_buffer0/BRAM_reg_3_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_0_10' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_0_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_0_13' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_0_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_0_14' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_0_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_1_10' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_1_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_1_13' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_1_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_1_14' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_1_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_0_12' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_0_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_0_15' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_0_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_0_16' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_0_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_1_12' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_1_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_1_15' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_1_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_1_16' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_1_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_2_10' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_2_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_2_13' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_2_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_2_14' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_2_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_3_10' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_3_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_3_13' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_3_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_3_14' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_3_9'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_2_12' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_2_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_2_15' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_2_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_2_16' (RAMB36E1_18) to 'rast/z_buffer1/BRAM_reg_2_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_3_12' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_3_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_3_15' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_3_11'
+INFO: [Synth 8-223] decloning instance 'rast/z_buffer1/BRAM_reg_3_16' (RAMB36E1_19) to 'rast/z_buffer1/BRAM_reg_3_11'
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer0/BRAM_reg_1_9 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer0/BRAM_reg_1_11 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer0/BRAM_reg_3_9 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer0/BRAM_reg_3_11 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer1/BRAM_reg_1_9 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer1/BRAM_reg_1_11 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer1/BRAM_reg_3_9 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-7052] The timing for the instance rast/z_buffer1/BRAM_reg_3_11 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:01:03 ; elapsed = 00:01:03 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 503 ; free virtual = 9797
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[31]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[30]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[29]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[28]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[27]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[26]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[25]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[24]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[23]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[22]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[21]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[20]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[19]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[18]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[17]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[16]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[15]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[14]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[13]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[12]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[11]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[10]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[9]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[8]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[7]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[6]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[5]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[4]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[3]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[2]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[1]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_a_tdata[0]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[31]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[30]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[29]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[28]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[27]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[26]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[25]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[24]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[23]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[22]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[21]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[20]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[19]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[18]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[17]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[16]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[15]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[14]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[13]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[12]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[11]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[10]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[9]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[8]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[7]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[6]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[5]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[4]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[3]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[2]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[1]
+CRITICAL WARNING: [Synth 8-4442] BlackBox module \tf/mult  has unconnected pin s_axis_b_tdata[0]
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:01:48 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:48 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:49 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:49 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:49 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:49 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|rasterizer  | C'+A''*B    | 10     | 9      | 11     | -      | 17     | 2    | 0    | 0    | -    | -     | 0    | 0    | 
+|in_triangle | A'*B        | 9      | 18     | -      | -      | 20     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-(A'*B))' | 9      | 18     | 48     | -      | 17     | 1    | 0    | 0    | -    | -     | 0    | 1    | 
+|in_triangle | A'*B        | 9      | 18     | -      | -      | 20     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-(A'*B))' | 9      | 18     | 48     | -      | 17     | 1    | 0    | 0    | -    | -     | 0    | 1    | 
+|in_triangle | A'*B        | 9      | 18     | -      | -      | 20     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-(A'*B))' | 9      | 18     | 48     | -      | 17     | 1    | 0    | 0    | -    | -     | 0    | 1    | 
+|in_triangle | A'*B        | 9      | 18     | -      | -      | 20     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|in_triangle | (C-(A'*B))' | 9      | 18     | 48     | -      | 17     | 1    | 0    | 0    | -    | -     | 0    | 1    | 
++------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++------+---------------+----------+
+|      |BlackBox name  |Instances |
++------+---------------+----------+
+|1     |adder          |         1|
+|2     |multiplier     |         2|
+|3     |reciprocal     |         1|
+|4     |float_to_fixed |         1|
++------+---------------+----------+
+
+Report Cell Usage: 
++------+---------------+------+
+|      |Cell           |Count |
++------+---------------+------+
+|1     |adder          |     1|
+|2     |float_to_fixed |     1|
+|3     |multiplier     |     2|
+|5     |reciprocal     |     1|
+|6     |BUFG           |     3|
+|7     |CARRY4         |   124|
+|8     |DSP48E1        |     9|
+|11    |LUT1           |    99|
+|12    |LUT2           |  1612|
+|13    |LUT3           |   206|
+|14    |LUT4           |   187|
+|15    |LUT5           |   205|
+|16    |LUT6           |   245|
+|17    |MMCME2_ADV     |     1|
+|18    |MUXF7          |     6|
+|19    |OSERDESE2      |     6|
+|21    |RAMB36E1       |   304|
+|41    |FDRE           |  2328|
+|42    |FDSE           |     2|
+|43    |IBUF           |     4|
+|44    |OBUFDS         |     4|
+|45    |OBUFT          |    16|
++------+---------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:49 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 65 critical warnings and 131 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:48 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 597.984 ; free physical = 507 ; free virtual = 9801
+Synthesis Optimization Complete : Time (s): cpu = 00:01:49 ; elapsed = 00:01:49 . Memory (MB): peak = 2327.707 ; gain = 673.816 ; free physical = 507 ; free virtual = 9801
+INFO: [Project 1-571] Translating synthesized netlist
+INFO: [Project 1-454] Reading design checkpoint '/home/ryxiao/FPGA-3D/ip/adder/ip/adder/adder.dcp' for cell 'tf/add'
+INFO: [Project 1-454] Reading design checkpoint '/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier.dcp' for cell 'tf/mult'
+INFO: [Project 1-454] Reading design checkpoint '/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal/reciprocal.dcp' for cell 'tp/rec'
+INFO: [Project 1-454] Reading design checkpoint '/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed/float_to_fixed.dcp' for cell 'tp/round'
+Netlist sorting complete. Time (s): cpu = 00:00:00.06 ; elapsed = 00:00:00.06 . Memory (MB): peak = 2327.707 ; gain = 0.000 ; free physical = 790 ; free virtual = 10084
+INFO: [Netlist 29-17] Analyzing 530 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2023.1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/ryxiao/FPGA-3D/xdc/top_level.xdc]
+WARNING: [Vivado 12-584] No ports matched 'uart_rxd'. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:134]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:134]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'uart_txd'. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:135]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:135]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+WARNING: [Vivado 12-584] No ports matched 'uart*'. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:136]
+CRITICAL WARNING: [Common 17-55] 'set_property' expects at least one object. [/home/ryxiao/FPGA-3D/xdc/top_level.xdc:136]
+Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.
+Finished Parsing XDC File [/home/ryxiao/FPGA-3D/xdc/top_level.xdc]
+INFO: [Project 1-538] Using original IP XDC constraints instead of the XDC constraints in dcp '/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier.dcp'
+INFO: [Project 1-538] Using original IP XDC constraints instead of the XDC constraints in dcp '/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/multiplier.dcp'
+INFO: [Project 1-538] Using original IP XDC constraints instead of the XDC constraints in dcp '/home/ryxiao/FPGA-3D/ip/adder/ip/adder/adder.dcp'
+INFO: [Project 1-538] Using original IP XDC constraints instead of the XDC constraints in dcp '/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal/reciprocal.dcp'
+INFO: [Project 1-538] Using original IP XDC constraints instead of the XDC constraints in dcp '/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed/float_to_fixed.dcp'
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2330.676 ; gain = 0.000 ; free physical = 783 ; free virtual = 10077
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 4 instances were transformed.
+  OBUFDS => OBUFDS: 4 instances
+
+Synth Design complete | Checksum: 29084f7
+INFO: [Common 17-83] Releasing license: Synthesis
+150 Infos, 310 Warnings, 68 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:53 ; elapsed = 00:01:53 . Memory (MB): peak = 2330.676 ; gain = 986.863 ; free physical = 783 ; free virtual = 10077
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 2078.005; main = 1802.279; forked = 417.905
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3273.773; main = 2330.680; forked = 978.078
+# write_checkpoint -force $outputDir/post_synth.dcp
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2370.695 ; gain = 0.000 ; free physical = 782 ; free virtual = 10076
+INFO: [Common 17-1381] The checkpoint '/home/ryxiao/FPGA-3D/obj/post_synth.dcp' has been generated.
+# report_timing_summary -file $outputDir/post_synth_timing_summary.rpt
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-2] Deriving generated clocks
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+# report_utilization -file $outputDir/post_synth_util.rpt
+# report_timing -file $outputDir/post_synth_timing.rpt
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -1, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -max_paths 1 -nworst 1 -delay_type max -sort_by slack.
+# opt_design
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7s50'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7s50'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:00.61 ; elapsed = 00:00:00.34 . Memory (MB): peak = 2537.734 ; gain = 71.969 ; free physical = 802 ; free virtual = 10099
+
+Starting Cache Timing Information Task
+Ending Cache Timing Information Task | Checksum: 14ddc0bf7
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2537.734 ; gain = 0.000 ; free physical = 802 ; free virtual = 10099
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tvalid is driving LUT input pin I0 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_valid_i_2
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tvalid is driving LUT input pin I0 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_valid_i_2
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[0] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[0]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[10] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[10]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[11] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[11]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[12] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[12]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[13] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[13]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[14] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[14]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[15] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[15]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[16] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[16]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[17] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[17]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[18] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[18]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[19] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[19]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[1] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[1]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[20] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[20]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[21] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[21]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[22] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[22]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[23] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[23]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[24] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[24]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[25] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[25]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[26] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[26]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[27] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[27]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[28] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[28]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[29] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[29]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[2] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[2]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[30] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[30]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[31] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[31]_i_2
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[3] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[3]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[4] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[4]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[5] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[5]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[6] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[6]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[7] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[7]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[8] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[8]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tdata[9] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_a_tdata[9]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[0] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[0]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[10] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[10]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[11] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[11]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[12] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[12]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[13] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[13]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[14] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[14]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[15] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[15]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[16] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[16]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[17] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[17]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[18] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[18]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[19] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[19]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[1] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[1]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[20] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[20]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[21] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[21]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[22] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[22]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[23] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[23]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[24] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[24]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[25] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[25]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[26] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[26]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[27] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[27]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[28] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[28]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[29] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[29]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[2] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[2]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[30] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[30]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[31] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[31]_i_2
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[3] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[3]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[4] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[4]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[5] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[5]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[6] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[6]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[7] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[7]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[8] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[8]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tdata[9] is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg2_b_tdata[9]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tvalid is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata[31]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tvalid is driving LUT input pin I1 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata[31]_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_a_tvalid is driving LUT input pin I4 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_valid_i_1
+WARNING: [Opt 31-155] Driverless net tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/s_axis_b_tvalid is driving LUT input pin I4 which is used by the LUT equation. If the LUT is not removed or a driver added, this warning will become an error. LUT cell name: tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_valid_i_1
+INFO: [Opt 31-1566] Pulled 1 inverters resulting in an inversion of 21 pins
+INFO: [Opt 31-138] Pushed 1 inverter(s) to 9 load pin(s).
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[0]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[10]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[11]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[12]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[13]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[14]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[15]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[16]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[17]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[18]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[19]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[1]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[20]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[21]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[22]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[23]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[24]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[25]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[26]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[27]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[28]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[29]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[2]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[30]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[31]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[3]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[4]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[5]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[6]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[7]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[8]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[9]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[0]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[10]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[11]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[12]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[13]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[14]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[15]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[16]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[17]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[18]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[19]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[1]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[20]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[21]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[22]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[23]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[24]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[25]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[26]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[27]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[28]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[29]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[2]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[30]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[31]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[3]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[4]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[5]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[6]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[7]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[8]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[9]
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 24c9bafdc
+
+Time (s): cpu = 00:00:00.34 ; elapsed = 00:00:00.14 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 569 ; free virtual = 9865
+INFO: [Opt 31-389] Phase Retarget created 61 cells and removed 69 cells
+INFO: [Opt 31-1021] In phase Retarget, 1 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 2 Constant propagation
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[0]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[10]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[11]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[12]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[13]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[14]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[15]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[16]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[17]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[18]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[19]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[1]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[20]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[21]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[22]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[23]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[24]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[25]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[26]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[27]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[28]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[29]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[2]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[30]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[31]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[3]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[4]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[5]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[6]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[7]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[8]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_a_tdata_reg[9]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[0]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[10]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[11]
+CRITICAL WARNING: [Opt 31-430] Found a FDRE that its data pin is undriven. Driver is required to prevent unexpected behavior:tf/mult/inst/i_synth/need_combiner.use_2to1.skid_buffer_combiner/gen_has_z_tready.reg1_b_tdata_reg[12]
+INFO: [Common 17-14] Message 'Opt 31-430' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Opt 31-138] Pushed 1 inverter(s) to 2 load pin(s).
+Phase 2 Constant propagation | Checksum: 198b17725
+
+Time (s): cpu = 00:00:00.38 ; elapsed = 00:00:00.18 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9865
+INFO: [Opt 31-389] Phase Constant propagation created 176 cells and removed 346 cells
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 253caee55
+
+Time (s): cpu = 00:00:00.46 ; elapsed = 00:00:00.27 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9864
+INFO: [Opt 31-389] Phase Sweep created 0 cells and removed 670 cells
+
+Phase 4 BUFG optimization
+Phase 4 BUFG optimization | Checksum: 253caee55
+
+Time (s): cpu = 00:00:00.51 ; elapsed = 00:00:00.29 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9864
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: 1fe78126c
+
+Time (s): cpu = 00:00:00.65 ; elapsed = 00:00:00.36 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9864
+INFO: [Opt 31-389] Phase Shift Register Optimization created 0 cells and removed 0 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: 15e46aca4
+
+Time (s): cpu = 00:00:00.66 ; elapsed = 00:00:00.37 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9864
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |              61  |              69  |                                              1  |
+|  Constant propagation         |             176  |             346  |                                              0  |
+|  Sweep                        |               0  |             670  |                                              0  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               0  |               0  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                              0  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9864
+Ending Logic Optimization Task | Checksum: 22c6e6f05
+
+Time (s): cpu = 00:00:00.67 ; elapsed = 00:00:00.38 . Memory (MB): peak = 2722.688 ; gain = 0.000 ; free physical = 568 ; free virtual = 9864
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+INFO: [Pwropt 34-9] Applying IDT optimizations ...
+INFO: [Pwropt 34-10] Applying ODC optimizations ...
+
+
+Starting PowerOpt Patch Enables Task
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 304 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Pwropt 34-201] Structural ODC has moved 0 WE to EN ports
+Number of BRAM Ports augmented: 12 newly gated: 292 Total Ports: 608
+Number of Flops added for Enable Generation: 7
+
+Ending PowerOpt Patch Enables Task | Checksum: 2354cd937
+
+Time (s): cpu = 00:00:00.42 ; elapsed = 00:00:00.42 . Memory (MB): peak = 3122.773 ; gain = 0.000 ; free physical = 286 ; free virtual = 9582
+Ending Power Optimization Task | Checksum: 2354cd937
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 3122.773 ; gain = 400.086 ; free physical = 286 ; free virtual = 9582
+
+Starting Final Cleanup Task
+
+Starting Logic Optimization Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Logic Optimization Task | Checksum: 1a9848b2e
+
+Time (s): cpu = 00:00:00.66 ; elapsed = 00:00:00.27 . Memory (MB): peak = 3122.773 ; gain = 0.000 ; free physical = 312 ; free virtual = 9573
+Ending Final Cleanup Task | Checksum: 1a9848b2e
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:01 . Memory (MB): peak = 3122.773 ; gain = 0.000 ; free physical = 312 ; free virtual = 9573
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3122.773 ; gain = 0.000 ; free physical = 312 ; free virtual = 9573
+Ending Netlist Obfuscation Task | Checksum: 1a9848b2e
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3122.773 ; gain = 0.000 ; free physical = 312 ; free virtual = 9573
+INFO: [Common 17-83] Releasing license: Implementation
+25 Infos, 70 Warnings, 100 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:00:14 ; elapsed = 00:00:12 . Memory (MB): peak = 3122.773 ; gain = 657.008 ; free physical = 312 ; free virtual = 9573
+# place_design
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xc7s50'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xc7s50'
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+ERROR: [DRC UTLZ-1] Resource utilization: RAMB18 and RAMB36/FIFO over-utilized in Top Level Design (This design requires more RAMB18 and RAMB36/FIFO cells than are available in the target device. This design requires 608 of such cell types but only 150 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)
+ERROR: [DRC UTLZ-1] Resource utilization: RAMB36/FIFO over-utilized in Top Level Design (This design requires more RAMB36/FIFO cells than are available in the target device. This design requires 304 of such cell types but only 75 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)
+ERROR: [DRC UTLZ-1] Resource utilization: RAMB36E1 over-utilized in Top Level Design (This design requires more RAMB36E1 cells than are available in the target device. This design requires 304 of such cell types but only 75 compatible sites are available in the target device. Please analyze your synthesis results and constraints to ensure the design is mapped to Xilinx primitives as expected. If so, please consider targeting a larger device.)
+INFO: [Vivado_Tcl 4-198] DRC finished with 3 Errors, 1 Advisories
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+ERROR: [Vivado_Tcl 4-23] Error(s) found during DRC. Placer not run.
+INFO: [Common 17-83] Releasing license: Implementation
+8 Infos, 0 Warnings, 0 Critical Warnings and 4 Errors encountered.
+place_design failed
+ERROR: [Common 17-39] 'place_design' failed due to earlier errors.
+
+    while executing
+"place_design"
+    (file "build.tcl" line 47)
+INFO: [Common 17-206] Exiting Vivado at Fri Dec  8 15:57:51 2023...
