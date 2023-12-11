@@ -5,12 +5,34 @@ module pixel_shader(
     input wire clk_in,
     input wire rst_in,
     input wire data_valid_in, 
-    input wire [8:0] v1 [2:0],
-    input wire [8:0] v2 [2:0],
-    input wire [8:0] v3 [2:0],
+    // input wire [8:0] v1 [2:0],
+    // input wire [8:0] v2 [2:0],
+    // input wire [8:0] v3 [2:0],
+    input wire [31:0] triangle [3:0] [2:0],
     output logic valid_out, 
     output logic [7:0] color_out
 );
+
+    // GOAL OF THIS MODULE: given a triangle, find the color corresponding to its angle between the normal vector and the light source
+
+    /*
+    LIGHT SOURCE is (0, 0, -1)
+    STRAGEDY: 
+        if v1 = (a, b, c) and v2 = (d, e, f)
+        normal vector: (bf - ec, dc - af, ae - bd)
+        light source: (0, 0, -1)
+        cos(theta) = dot product / product of magnitudes
+        easier: 
+        1/cos(theta) = sqrt((bf - ec)^2 + (dc - af)^2 + (ae - bd)^2)/(bd - ae) 
+    */
+
+
+    logic signed [9:0] light_source [2:0];
+    assign light_source[0] = 0;
+    assign light_source[1] = 0;
+    assign light_source[2] = -1;
+
+    enum {RECEIVE, NORMAL_CALC_1, NORMAL_CALC_2, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, ANGLE_CALC_4, COLOR, SEND} state;
 
     // the vertices of the input, now with signs!
     logic signed [9:0] vert1 [2:0];
@@ -31,11 +53,6 @@ module pixel_shader(
     logic signed [9:0] vect2 [2:0];
     logic signed [9:0] tri_normal [2:0];
     logic signed [9:0] normal_cross_light [2:0];
-
-    logic signed [9:0] light_source [2:0];
-    assign light_source[0] = 0;
-    assign light_source[1] = 0;
-    assign light_source[2] = -1;
 
     logic [9:0] dot_product;
     logic [14:0] tri_normal_magnitude_squared;
@@ -80,8 +97,6 @@ module pixel_shader(
 
 
 
-    enum {RECEIVE, NORMAL, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, ANGLE_CALC_4, COLOR, SEND} state;
-
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             vect1[0] <= 0;
@@ -104,7 +119,7 @@ module pixel_shader(
                 RECEIVE: begin
                     valid_out <= 0;
                     if (data_valid_in) begin
-                        state <= NORMAL;
+                        state <= NORMAL_CALC_1;
                         vert1[0] <= {1'b0, v1[0]};
                         vert1[1] <= {1'b0, v1[1]};
                         vert1[2] <= {1'b0, v1[2]};
@@ -126,11 +141,16 @@ module pixel_shader(
 
                 end
                 // find the normal vector to the triangle
-                NORMAL: begin
+                NORMAL_CALC_1: begin
+                    state <= NORMAL_CALC_2;
+
+                    // tri_normal[0] <= vect1[1] * vect2[2] - vect1[2] * vect2[1];
+                    // tri_normal[1] <= -(vect1[0] * vect2[2] - vect1[2] * vect2[0]);
+                    // tri_normal[2] <= vect1[0] * vect2[1] - vect1[1] * vect2[0];
+                end
+                NORMAL_CALC_2: begin
                     state <= ANGLE_CALC_1;
-                    tri_normal[0] <= vect1[1] * vect2[2] - vect1[2] * vect2[1];
-                    tri_normal[1] <= -(vect1[0] * vect2[2] - vect1[2] * vect2[0]);
-                    tri_normal[2] <= vect1[0] * vect2[1] - vect1[1] * vect2[0];
+
                 end
                 // find the angle between the normal vector and the light source
                 // cos(theta) = (dot product a, b) / |a| * |b|
@@ -138,8 +158,8 @@ module pixel_shader(
                     state <= ANGLE_CALC_2;
                     // calculate the dot product of a and b and the magnitude 
                     // dot_product <= tri_normal[0] * light_source[0] + tri_normal[1] * light_source[1] + tri_normal[2] * light_source[2];
-                    dot_product <= -tri_normal[2];
-                    tri_normal_magnitude_squared <= tri_normal[0] * tri_normal[0] + tri_normal[1] * tri_normal[1] + tri_normal[2] * tri_normal[2];
+                    // dot_product <= -tri_normal[2];
+                    // tri_normal_magnitude_squared <= tri_normal[0] * tri_normal[0] + tri_normal[1] * tri_normal[1] + tri_normal[2] * tri_normal[2];
                     // light source magnitude is 1
                 end
                 ANGLE_CALC_2: begin
