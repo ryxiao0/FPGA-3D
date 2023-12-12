@@ -18,47 +18,85 @@ module pixel_shader(
     /*
     LIGHT SOURCE is (0, 0, -1)
     STRAGEDY: 
-        if v1 = (a, b, c) and v2 = (d, e, f)
-        normal vector: (bf - ec, dc - af, ae - bd)
+        if v1 = (d, e, f) and v2 = (g, h, i)
+        normal vector: (ei - fh, fg - di, dh - eg)
         light source: (0, 0, -1)
-        cos(theta) = dot product / product of magnitudes
-        easier: 
-        1/cos(theta) = sqrt((bf - ec)^2 + (dc - af)^2 + (ae - bd)^2)/(bd - ae) 
+
+        angle between two vectors:
+        cos(C) = (dot product)/(magntidues) between light source and normal vector 
+        light source = (0, 0, -1), so magnitude = 1. 
+
+        cos(C) = (eg - dh)/(sqrt((ei-fh)^2 + (fg-di)^2 + (dh-eg)^2))
+
+        instead solve for (1/cos(theta))^2, map that to 0 to pi/2 to get ANGLE, then if (dh - eg) < 0, result is pi - ANGLE. 
+
+        (1/cos(theta))^2 = ((ei-fh)^2 + (fg-di)^2 + (dh-eg)^2)/((eg - dh)^2)
+
+        PIPELINE;
+        RECEIVE 
+        VECTORS: do the subtraction between points to get two vectors. 
+
+        NORMAL CALC 1: multiplication. 
+            normal_calc = [ei, fh, fg, di, dh, eg]
+
+        NORMAL CALC 2: subtraction
+            norm = [ei - fh, fg - di, dh - eg]
+            (norm[0] = normal_calc[1] - normal_calc[0])
+
+        ANGLE CALC 1: squares 
+            sqares = [(ei - fh)^2, (fg - di)^2, (dh - eg)^2]
+
+        ANGLE CALC 2: reciprocal 
+            recip = (1/(eg  - dh)^2)
+            mag = (ei-fh)^2 + (fg-di)^2 + (dh-eg)^2)
+
+        ANGLE CACL 3: multiply. 
+            recip_cos_squared = mag * recip
+        
+        MAP: map that to a table of 1/cos^2 values from 0 to 90
+        FINAL_CALC: if (dh - eg) < 0, result is 180 - ANGLE. 
+
+        COLOR_MAP: now we have an angle in (0, 180). just use that as the grayscale color. 
+            convert to a diff format? 
+        
+
+
+        REQUIRED IPS: 6 multipliers, 3 adders/subtractors, 1 reciprocal 
+
     */
 
 
-    logic signed [9:0] light_source [2:0];
+    logic [31:0] light_source [2:0]; //(0,0, -1)
     assign light_source[0] = 0;
     assign light_source[1] = 0;
-    assign light_source[2] = -1;
+    assign light_source[2] = 32'b10111111100000000000000000000000;
 
-    enum {RECEIVE, NORMAL_CALC_1, NORMAL_CALC_2, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, ANGLE_CALC_4, COLOR, SEND} state;
-
-    // the vertices of the input, now with signs!
-    logic signed [9:0] vert1 [2:0];
-    logic signed [9:0] vert2 [2:0];
-    logic signed [9:0] vert3 [2:0];
-    assign vert1[0] = {1'b0, v1[0]};
-    assign vert1[1] = {1'b0, v1[1]};
-    assign vert1[2] = {1'b0, v1[2]};
-    assign vert2[0] = {1'b0, v2[0]};
-    assign vert2[1] = {1'b0, v2[1]};
-    assign vert2[2] = {1'b0, v2[2]};
-    assign vert3[0] = {1'b0, v3[0]};
-    assign vert3[1] = {1'b0, v3[1]};
-    assign vert3[2] = {1'b0, v3[2]};
+    enum {RECEIVE, VECTORS, NORMAL_CALC_1, NORMAL_CALC_2, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, MAP, FINAL_CALC, COLOR_MAP, SEND} state;
 
 
-    logic signed [9:0] vect1 [2:0];
-    logic signed [9:0] vect2 [2:0];
-    logic signed [9:0] tri_normal [2:0];
-    logic signed [9:0] normal_cross_light [2:0];
 
-    logic [9:0] dot_product;
-    logic [14:0] tri_normal_magnitude_squared;
+    logic  [31:0] vect1 [2:0];
+    logic  [31:0] vect2 [2:0];
+    logic  [31:0] normal_calc [5:0]; // how big is the float coming out of multiply? 
+    logic  [31:0] norm [2:0];
+    logic  [31:0] sqaures [2:0]; // this is really big — maybe there's a way to lose precision since we don't need it anyway. how to scale down floats? is there a float to float ip? 
+    logic [31:0] recip; 
+    logic [31:0] mag;
+    logic [31:0] recip_cos_squared;
+    logic [31:0] final_angle;
+    
 
-    logic [7:0] color;
-    logic [31:0] angle;
+
+
+
+
+    // logic signed [9:0] normal_cross_light [2:0];
+
+    // logic [9:0] dot_product;
+    // logic [14:0] tri_normal_magnitude_squared;
+
+    // logic [7:0] color;
+    // logic [31:0] angle;
 
 
     // reciprocal rec (
@@ -120,22 +158,14 @@ module pixel_shader(
                     valid_out <= 0;
                     if (data_valid_in) begin
                         state <= NORMAL_CALC_1;
-                        vert1[0] <= {1'b0, v1[0]};
-                        vert1[1] <= {1'b0, v1[1]};
-                        vert1[2] <= {1'b0, v1[2]};
-                        vert2[0] <= {1'b0, v2[0]};
-                        vert2[1] <= {1'b0, v2[1]};
-                        vert2[2] <= {1'b0, v2[2]};
-                        vert3[0] <= {1'b0, v3[0]};
-                        vert3[1] <= {1'b0, v3[1]};
-                        vert3[2] <= {1'b0, v3[2]};
-                        vect1[2] <= vert2[2]-vert1[2];
-                        vect1[1] <= vert2[1]-vert1[1];
-                        vect1[0] <= vert2[0]-vert1[0];
 
-                        vect1[2] <= vert3[2]-vert1[2];
-                        vect2[1] <= vert3[1]-vert1[1];
-                        vect2[0] <= vert3[0]-vert1[0];
+                        // vect1[2] <= vert2[2]-vert1[2];
+                        // vect1[1] <= vert2[1]-vert1[1];
+                        // vect1[0] <= vert2[0]-vert1[0];
+
+                        // vect1[2] <= vert3[2]-vert1[2];
+                        // vect2[1] <= vert3[1]-vert1[1];
+                        // vect2[0] <= vert3[0]-vert1[0];
 
                     end
 
@@ -143,10 +173,8 @@ module pixel_shader(
                 // find the normal vector to the triangle
                 NORMAL_CALC_1: begin
                     state <= NORMAL_CALC_2;
-
-                    // tri_normal[0] <= vect1[1] * vect2[2] - vect1[2] * vect2[1];
-                    // tri_normal[1] <= -(vect1[0] * vect2[2] - vect1[2] * vect2[0]);
-                    // tri_normal[2] <= vect1[0] * vect2[1] - vect1[1] * vect2[0];
+                        // NORMAL CALC 1: multiplication. 
+                        //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
                 NORMAL_CALC_2: begin
                     state <= ANGLE_CALC_1;
