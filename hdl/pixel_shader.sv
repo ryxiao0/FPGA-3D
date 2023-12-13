@@ -54,14 +54,20 @@ module pixel_shader(
             recip_cos_squared = mag * recip
         
         MAP: map that to a table of 1/cos^2 values from 0 to 90
+            use binary search to determine where to map this value to in the table (a table of 32 sec^2 values in the 0 to pi/2 range)
+
+
         FINAL_CALC: if (dh - eg) < 0, result is 180 - ANGLE. 
 
         COLOR_MAP: now we have an angle in (0, 180). just use that as the grayscale color. 
             convert to a diff format? 
         
+        REQUIRED IPS: 6 multipliers, 3 adders/subtractors, 1 reciprocal 
 
-
-        REQUIRED IPS: 6 multipliers, 3 adders/subtractors, 1 reciprocal, NEW: 1 sqrt?
+        TODO: 
+        set up a table of sec^2 values 
+        figure out how to compare floats lol 
+        implement each pipeline stage
 
     */
 
@@ -86,7 +92,7 @@ module pixel_shader(
     logic [31:0] mag;
     logic [31:0] recip_cos_squared;
     logic [31:0] final_angle;
-    
+
 
 
     // NEW VARIABLES
