@@ -104,10 +104,17 @@ module pixel_shader(
     logic [31:0] dh_out;
     logic [31:0] eg_out;
 
+    logic [31:0] d_in;
+    logic [31:0] e_in;
+    logic [31:0] f_in;
+    logic [31:0] g_in;
+    logic [31:0] h_in;
+    logic [31:0] i_in;
+
     logic ei_valid_out, fh_valid_out, fg_valid_out, di_valid_out, dh_valid_out, eg_valid_out; //multiplier valid signals
     logic mult_valid_in; //signal to begin multiplication
 
-    logic signed [31:0] dot_product_signed
+    logic signed [31:0] dot_product_signed;
 
     //END NEW VARIABLES
 
@@ -232,6 +239,7 @@ module pixel_shader(
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
+            /*
             vect1[0] <= 0;
             vect2[0] <= 0;
             vect1[1] <= 0;
@@ -244,6 +252,7 @@ module pixel_shader(
             normal_cross_light[0] <= 0;
             normal_cross_light[1] <= 0;
             normal_cross_light[2] <= 0;
+            */
             angle <= 0;
             state <= RECEIVE;
             valid_out <= 0;
@@ -252,6 +261,13 @@ module pixel_shader(
                 RECEIVE: begin
                     valid_out <= 0;
                     if (data_valid_in) begin
+                        
+                        logic [31:0] d_in <= triangle[0][0]; //given that triangles are 3 verticies with x,y,z,1
+                        logic [31:0] e_in <= triangle[0][1];
+                        logic [31:0] f_in <= triangle[0][2];
+                        logic [31:0] g_in <= triangle[1][0];
+                        logic [31:0] h_in <= triangle[1][1];
+                        logic [31:0] i_in <= triangle[1][2];
 
                         // vect1[2] <= vert2[2]-vert1[2];
                         // vect1[1] <= vert2[1]-vert1[1];
@@ -260,8 +276,6 @@ module pixel_shader(
                         // vect1[2] <= vert3[2]-vert1[2];
                         // vect2[1] <= vert3[1]-vert1[1];
                         // vect2[0] <= vert3[0]-vert1[0];
-
-                        //TODO: translate tri to vertecies
 
                         mult_valid_in <= 1;
                         state <= NORMAL_CALC_1;
@@ -285,9 +299,9 @@ module pixel_shader(
                         //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
                 NORMAL_CALC_2: begin
-                    norm[0] <= normal_calc[0][0] - normal_calc[0][1];
-                    norm[1] <= normal_calc[0][2] - normal_calc[1][0];
-                    norm[2] <= normal_calc[1][1] - normal_calc[1][2];
+                    norm[0] <= normal_calc[0][0] - normal_calc[0][1]; //ei - fh
+                    norm[1] <= normal_calc[0][2] - normal_calc[1][0]; //fg - di
+                    norm[2] <= normal_calc[1][1] - normal_calc[1][2]; //dh - eg
                     state <= ANGLE_CALC_1;
 
                 end
@@ -310,6 +324,7 @@ module pixel_shader(
                 end
                 ANGLE_CALC_2: begin
                     state <= ANGLE_CALC_3;
+
 
                     // get the square root  
                     
