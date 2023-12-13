@@ -61,7 +61,7 @@ module pixel_shader(
         
 
 
-        REQUIRED IPS: 6 multipliers, 3 adders/subtractors, 1 reciprocal 
+        REQUIRED IPS: 6 multipliers, 3 adders/subtractors, 1 reciprocal, NEW: 1 sqrt?
 
     */
 
@@ -78,7 +78,9 @@ module pixel_shader(
     logic  [31:0] vect1 [2:0];
     logic  [31:0] vect2 [2:0];
     logic  [31:0] normal_calc [5:0]; // how big is the float coming out of multiply? 
-    logic  [31:0] norm [2:0];
+
+    logic signed  [31:0] norm [2:0]; //IMPORTANT: CHANGED THIS TO SIGNED
+
     logic  [31:0] sqaures [2:0]; // this is really big — maybe there's a way to lose precision since we don't need it anyway. how to scale down floats? is there a float to float ip? 
     logic [31:0] recip; 
     logic [31:0] mag;
@@ -86,6 +88,22 @@ module pixel_shader(
     logic [31:0] final_angle;
     
 
+
+    // NEW VARIABLES
+
+    logic [31:0] ei_out; //these vars store output variables to put into normal vector, did not put directly into normal vector from ip blocks since that
+    logic [31:0] fh_out; //could unintentionally change to values during calculation
+    logic [31:0] fg_out;
+    logic [31:0] di_out;
+    logic [31:0] dh_out;
+    logic [31:0] eg_out;
+
+    logic ei_valid_out, fh_valid_out, fg_valid_out, di_valid_out, dh_valid_out, eg_valid_out; //multiplier valid signals
+    logic mult_valid_in; //signal to begin multiplication
+
+    logic signed [31:0] dot_product_signed
+
+    //END NEW VARIABLES
 
 
 
@@ -99,28 +117,99 @@ module pixel_shader(
     // logic [31:0] angle;
 
 
-    // reciprocal rec (
-    //     .aclk(clk_in),
-    //     .s_axis_a_tdata(rec_in),
-    //     .s_axis_a_tready(),
-    //     .s_axis_a_tvalid(rec_v_in),
-    //     .m_axis_result_tdata(rec_out),
-    //     .m_axis_result_tready(1'b1),
-    //     .m_axis_result_tvalid(rec_v_out)
-    // );
 
-    // multiplier pro (
-    //     .aclk(clk_in),
-    //     .s_axis_a_tdata(mult_a_in),
-    //     .s_axis_a_tready(),
-    //     .s_axis_a_tvalid(mult_v_in),
-    //     .s_axis_b_tdata(mult_b_in),
-    //     .s_axis_b_tready(),
-    //     .s_axis_b_tvalid(mult_v_in),
-    //     .m_axis_result_tdata(mult_out),
-    //     .m_axis_result_tready(1'b1),
-    //     .m_axis_result_tvalid(mult_v_out)
-    // );
+
+    reciprocal rec (
+        .aclk(clk_in),
+        .s_axis_a_tdata(rec_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(rec_v_in),
+        .m_axis_result_tdata(rec_out),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(rec_v_out)
+    );
+
+    
+
+    multiplier ei_mult (  //multiplies e and i 
+        .aclk(clk_in),
+        .s_axis_a_tdata(e_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_valid_in),
+        .s_axis_b_tdata(i_in),
+        .s_axis_b_tready(),
+        .s_axis_b_tvalid(mult_valid_in),
+        .m_axis_result_tdata(normal_calc[0][0]),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(ei_valid_out)
+    );
+
+    multiplier fh_mult (  //multiplies f and h 
+        .aclk(clk_in),
+        .s_axis_a_tdata(f_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_valid_in),
+        .s_axis_b_tdata(h_in),
+        .s_axis_b_tready(),
+        .s_axis_b_tvalid(mult_valid_in),
+        .m_axis_result_tdata(normal_calc[0][1]),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(fh_valid_out)
+    );
+
+
+    multiplier fg_mult (  //multiplies f and g 
+        .aclk(clk_in),
+        .s_axis_a_tdata(f_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_valid_in),
+        .s_axis_b_tdata(g_in),
+        .s_axis_b_tready(),
+        .s_axis_b_tvalid(mult_valid_in),
+        .m_axis_result_tdata(normal_calc[0][2]),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(fg_valid_out)
+    );
+
+    multiplier di_mult (  //multiplies d and i 
+        .aclk(clk_in),
+        .s_axis_a_tdata(d_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_valid_in),
+        .s_axis_b_tdata(i_in),
+        .s_axis_b_tready(),
+        .s_axis_b_tvalid(mult_valid_in),
+        .m_axis_result_tdata(normal_calc[1][0]),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(di_valid_out)
+    );
+
+    multiplier dh_mult (  //multiplies d and h 
+        .aclk(clk_in),
+        .s_axis_a_tdata(d_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_valid_in),
+        .s_axis_b_tdata(h_in),
+        .s_axis_b_tready(),
+        .s_axis_b_tvalid(mult_valid_in),
+        .m_axis_result_tdata(normal_calc[1][1]),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(dh_valid_out)
+    );
+
+    multiplier eg_mult (  //multiplies e and g 
+        .aclk(clk_in),
+        .s_axis_a_tdata(e_in),
+        .s_axis_a_tready(),
+        .s_axis_a_tvalid(mult_valid_in),
+        .s_axis_b_tdata(g_in),
+        .s_axis_b_tready(),
+        .s_axis_b_tvalid(mult_valid_in),
+        .m_axis_result_tdata(normal_calc[1][2]),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(eg_valid_out)
+    );
+
 
     // float_to_fixed round (
     //     .aclk(clk_in),
@@ -157,7 +246,6 @@ module pixel_shader(
                 RECEIVE: begin
                     valid_out <= 0;
                     if (data_valid_in) begin
-                        state <= NORMAL_CALC_1;
 
                         // vect1[2] <= vert2[2]-vert1[2];
                         // vect1[1] <= vert2[1]-vert1[1];
@@ -167,16 +255,33 @@ module pixel_shader(
                         // vect2[1] <= vert3[1]-vert1[1];
                         // vect2[0] <= vert3[0]-vert1[0];
 
+                        //TODO: translate tri to vertecies
+
+                        mult_valid_in <= 1;
+                        state <= NORMAL_CALC_1;
+
                     end
 
                 end
                 // find the normal vector to the triangle
                 NORMAL_CALC_1: begin
-                    state <= NORMAL_CALC_2;
+                        mult_valid_in <= 0;
+                        if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
+                            normal_calc[0][0] <= ei_out;
+                            normal_calc[0][1] <= fh_out;
+                            normal_calc[0][2] <= fg_out;
+                            normal_calc[1][0] <= di_out;
+                            normal_calc[1][1] <= dh_out;
+                            normal_calc[1][2] <= eg_out;
+                            state <= NORMAL_CALC_2;
+                        end
                         // NORMAL CALC 1: multiplication. 
                         //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
                 NORMAL_CALC_2: begin
+                    norm[0] <= normal_calc[0][0] - normal_calc[0][1];
+                    norm[1] <= normal_calc[0][2] - normal_calc[1][0];
+                    norm[2] <= normal_calc[1][1] - normal_calc[1][2];
                     state <= ANGLE_CALC_1;
 
                 end
@@ -187,16 +292,25 @@ module pixel_shader(
                     // calculate the dot product of a and b and the magnitude 
                     // dot_product <= tri_normal[0] * light_source[0] + tri_normal[1] * light_source[1] + tri_normal[2] * light_source[2];
                     // dot_product <= -tri_normal[2];
+
+                    dot_product_signed <= ~tri_normal + $signed(1'b1); //negate normal using twos complement
+
                     // tri_normal_magnitude_squared <= tri_normal[0] * tri_normal[0] + tri_normal[1] * tri_normal[1] + tri_normal[2] * tri_normal[2];
+                    squares[0] <= norm[0]*norm[0];
+                    squares[1] <= norm[1]*norm[1];
+                    squares[2] <= norm[2]*norm[2];
+
                     // light source magnitude is 1
                 end
                 ANGLE_CALC_2: begin
                     state <= ANGLE_CALC_3;
+
                     // get the square root  
                     
                 end
                 ANGLE_CALC_3: begin
                     state <= ANGLE_CALC_3;
+                    
                     // get the reciprocal 
 
 
@@ -225,4 +339,29 @@ module pixel_shader(
 
 endmodule
 
+function [8:0] greyscale_color (input [8:0] angle_to_source); //initial stab at mapping (light drops off expontentially)
+    case (angle_to_source)
+        8'd0:  greyscale_color = 8'b1111_1111;
+        8'd10:  greyscale_color = 8'b1111_1110;
+        8'd20:  greyscale_color = 8'b1110_1100;
+        8'd30:  greyscale_color = 8'b1110_1100;
+        8'd40:  greyscale_color = 8'b1100_1000;
+        8'd50:  greyscale_color = 8'b1000_1100;
+        8'd60:  greyscale_color = 8'b0100_1011;
+        8'd70:  greyscale_color = 8'b0010_1000;
+        8'd80:  greyscale_color = 8'b0001_0100;
+        8'd90:  greyscale_color = 8'b0000_0000;                 //peak brightness should be perpendicular to the light source? I think
+        8'd100:  greyscale_color = 8'b0001_0100;
+        8'd110:  greyscale_color = 8'b0010_1000;
+        8'd120:  greyscale_color = 8'b0100_1011;
+        8'd130:  greyscale_color = 8'b1000_1100;
+        8'd140:  greyscale_color = 8'b1100_1000;
+        8'd150:  greyscale_color = 8'b1110_1100;
+        8'd160:  greyscale_color = 8'b1111_1100;
+        8'd170:  greyscale_color = 8'b1111_1111;
+        
+    endcase;
+endfunction
+
 `default_nettype wire
+
