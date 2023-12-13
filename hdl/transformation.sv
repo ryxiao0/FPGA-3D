@@ -8,12 +8,16 @@ module transformation
         input wire [4:0] pitch, // x axis - like tilting up or down
         input wire [4:0] roll, // z axis - looking down z axis
         input wire [4:0] yaw, // y axis - like steering left or right
+        input wire obj_done_in,
         input wire valid_in,
         output logic valid_out,
+        output logic obj_done_out,
         output logic [31:0] new_pos [3:0]
     );
 
     enum {READY, TOVIEW} state;
+
+    assign obj_done_out = obj_done_in;
 
     logic [31:0] add_a_in, add_b_in, add_out;
     logic add_v_in, add_v_out;
@@ -34,18 +38,18 @@ module transformation
     logic [31:0] mult_a_in, mult_b_in, mult_out;
     logic mult_v_in, mult_v_out;
 
-    multiplier mult (
-        .aclk(clk_in),
-        .s_axis_a_tdata(mult_a_in),
-        .s_axis_a_tready(),
-        .s_axis_a_tvalid(mult_v_in),
-        .s_axis_b_tdata(mult_b_in),
-        .s_axis_b_tready(),
-        .s_axis_b_tvalid(mult_v_in),
-        .m_axis_result_tdata(mult_out),
-        .m_axis_result_tready(1'b1),
-        .m_axis_result_tvalid(mult_v_out)
-    );
+    // multiplier mult (
+    //     .aclk(clk_in),
+    //     .s_axis_a_tdata(mult_a_in),
+    //     .s_axis_a_tready(),
+    //     .s_axis_a_tvalid(mult_v_in),
+    //     .s_axis_b_tdata(mult_b_in),
+    //     .s_axis_b_tready(),
+    //     .s_axis_b_tvalid(mult_v_in),
+    //     .m_axis_result_tdata(mult_out),
+    //     .m_axis_result_tready(1'b1),
+    //     .m_axis_result_tvalid(mult_v_out)
+    // );
     
     always_ff @(posedge clk_in) begin
         if (rst_in) begin

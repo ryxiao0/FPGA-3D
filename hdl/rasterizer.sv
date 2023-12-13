@@ -31,6 +31,8 @@ module rasterizer #(
     // calculate rom address
     localparam STAGES = 2;
 
+
+    // CHANGE - pipelined incorrectly, should pipeline color
     // logic [$clog2(WIDTH*HEIGHT)-1:0] image_addr;
     logic [10:0] hcount_in_pipe [STAGES-1:0];
     logic [9:0] vcount_in_pipe [STAGES-1:0];

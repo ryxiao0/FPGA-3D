@@ -8,7 +8,7 @@ module tri_proj
         input wire obj_done_in,
         input wire [31:0] coor_in [3:0],
         input wire valid_in,
-        output logic [8:0] x, y, z,
+        output logic [8:0] coor_out [2:0],
         output logic valid_out,
         output logic obj_done_out
 );
@@ -35,6 +35,11 @@ module tri_proj
 
     logic [9:0] shift;
     assign shift = round_out[15:6] + 180;
+
+    logic [8:0] x, y, z;
+    assign coor_out[2] = x;
+    assign coor_out[1] = y;
+    assign coor_out[0] = z;
 
     reciprocal rec (
         .aclk(clk_in),

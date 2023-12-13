@@ -1,5 +1,5 @@
 // this module is untested
-
+/*
 module system_inputs#(
     parameter rot_max, // the maximum value of pitch, roll and yaw, 
     parameter translate_max, // the maximum value of translate in any direction
@@ -122,3 +122,4 @@ module system_inputs#(
     end
 
 endmodule
+*/

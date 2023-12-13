@@ -99,7 +99,7 @@ module get_vertices#(
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(96),                       // Specify RAM data width
-        .RAM_DEPTH(2048),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(4096),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(cube_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) vertex_inst (
@@ -115,7 +115,7 @@ module get_vertices#(
 
     xilinx_single_port_ram_read_first #(
         .RAM_WIDTH(48),                       // Specify RAM data width
-        .RAM_DEPTH(2048),                     // Specify RAM depth (number of entries)
+        .RAM_DEPTH(4096),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
         .INIT_FILE(`FPATH(cube_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) facet_inst (
