@@ -79,7 +79,7 @@ module pixel_shader(
     assign light_source[1] = 0;
     assign light_source[2] = 32'b10111111100000000000000000000000;
 
-    enum {RECEIVE, VECTORS, NORMAL_CALC_1, NORMAL_CALC_2, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, MAP, FINAL_CALC, COLOR_MAP, SEND} state;
+    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_1, NORMAL_CALC_2, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, COLOR, SEND} state;
 
 
 
@@ -557,19 +557,21 @@ module pixel_shader(
                     mult_valid_in <= 0; 
                     if(ei_valid_out) begin
                         sec_squared <= ei_out;
+                        state <= COLOR;
                     end
-
-
-                end
-                ANGLE_CALC_4: begin
-                    state <= COLOR;
 
                 end
                 // TODO: map that  (cos(angle)) to a color 
                 COLOR: begin 
-                    state <= SEND;
-                    color <= 0;
 
+                    if(norm[2][31]) begin 
+                        // the normal vector is pointing away from the screen - the color shouldn't be visible 
+                        color <= 8'b1111_1111;
+                        state <= SEND;
+                    end else begin 
+                        // the angle is positive and needs to be mapped 
+
+                    end
                 end
                 SEND: begin // need to figure out timing
                     valid_out <= 1; 
