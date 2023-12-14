@@ -5,9 +5,9 @@ module transformation
         input wire [31:0] pos [3:0],
         input wire [31:0] distance,
         input wire [31:0] scale,
-        input wire [4:0] pitch, // x axis - like tilting up or down
-        input wire [4:0] roll, // z axis - looking down z axis
-        input wire [4:0] yaw, // y axis - like steering left or right
+        input wire [3:0] pitch, // x axis - like tilting up or down
+        input wire [3:0] roll, // z axis - looking down z axis
+        input wire [3:0] yaw, // y axis - like steering left or right
         input wire obj_done_in,
         input wire valid_in,
         output logic valid_out,
@@ -42,7 +42,7 @@ module transformation
     logic [31:0] roll_a_in, roll_b_in, roll_out;
     logic roll_v_in, roll_v_out;
 
-    multiplier roll (
+    multiplier rollm (
         .aclk(clk_in),
         .s_axis_a_tdata(roll_a_in),
         .s_axis_a_tready(),
@@ -58,7 +58,7 @@ module transformation
     logic [31:0] yaw_a_in, yaw_b_in, yaw_out;
     logic yaw_v_in, yaw_v_out;
 
-    multiplier yaw (
+    multiplier yawm (
         .aclk(clk_in),
         .s_axis_a_tdata(yaw_a_in),
         .s_axis_a_tready(),
@@ -74,7 +74,7 @@ module transformation
     logic [31:0] pitch_a_in, pitch_b_in, pitch_out;
     logic pitch_v_in, pitch_v_out;
 
-    multiplier pitch (
+    multiplier pitchm (
         .aclk(clk_in),
         .s_axis_a_tdata(pitch_a_in),
         .s_axis_a_tready(),
@@ -86,6 +86,11 @@ module transformation
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(pitch_v_out)
     );
+
+    logic [31:0] sinp;
+    logic [31:0] cosp;
+    assign sinp = sin(pitch);
+    assign cosp = cos(pitch);
     
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
@@ -100,7 +105,7 @@ module transformation
                         // add_b_in <= distance;
                         // add_v_in <= 1;
                         pitch_a_in <= pos[2];
-                        pitch_b_in <= cos(pitch);
+                        pitch_b_in <= cosp;
                         pitch_v_in <= 1;
                         state <= COSA;
                         ready_out <= 0;
@@ -113,7 +118,7 @@ module transformation
                     if (pitch_v_out) begin
                         pitch_med <= pitch_out;
                         pitch_a_in <= pos[1];
-                        pitch_b_in <= sin(pitch);
+                        pitch_b_in <= sinp;
                         pitch_v_in <= 1;
                         state <= SINA;
                     end else pitch_v_in <= 0;
@@ -129,7 +134,7 @@ module transformation
                 ADDA: begin
                     if (add_v_out) begin
                         new_pos[2] <= add_out;
-                        pitch_a_in <= {1, sin(pitch)[30:0]};
+                        pitch_a_in <= {1, sinp[30:0]};
                         pitch_b_in <= pos[2];
                         pitch_v_in <= 1;
                         state <= SINB;
@@ -139,7 +144,7 @@ module transformation
                     if (pitch_v_out) begin
                         pitch_med <= pitch_out;
                         pitch_a_in <= pos[1];
-                        pitch_b_in <= cos(pitch);
+                        pitch_b_in <= cosp;
                         pitch_v_in <= 1;
                         state <= COSB;
                     end else pitch_v_in <= 0;
@@ -185,76 +190,44 @@ module transformation
 endmodule
 
 // 16 increments of rotation (4 bit lookup input), 32 bit float output
-function [31:0] sin (input [4:0] theta);
+function [31:0] sin (input [3:0] theta);
     case (theta)
-        5'd0:  sin = 32'h00000000;
-        5'd1:  sin = 32'h3e47c5c2;
-        5'd2:  sin = 32'h3ec3ef15;
-        5'd3:  sin = 32'h3f0e39da;
-        5'd4:  sin = 32'h3f3504f3;
-        5'd5:  sin = 32'h3f54db31;
-        5'd6:  sin = 32'h3f6c835e;
-        5'd7:  sin = 32'h3f7b14be;
-        5'd8:  sin = 32'h3f800000;
-        5'd9:  sin = 32'h3f7b14be;
-        5'd10: sin = 32'h3f6c835e;
-        5'd11: sin = 32'h3f54db31;
-        5'd12: sin = 32'h3f3504f3;
-        5'd13: sin = 32'h3f0e39da;
-        5'd14: sin = 32'h3ec3ef15;
-        5'd15: sin = 32'h3e47c5c2;
-        5'd16: sin = 32'ha65cb3b4;
-        5'd17: sin = 32'hbe47c5c2;
-        5'd18: sin = 32'hbec3ef15;
-        5'd19: sin = 32'hbf0e39da;
-        5'd20: sin = 32'hbf3504f3;
-        5'd21: sin = 32'hbf54db31;
-        5'd22: sin = 32'hbf6c835e;
-        5'd23: sin = 32'hbf7b14be;
-        5'd24: sin = 32'hbf800000;
-        5'd25: sin = 32'hbf7b14be;
-        5'd26: sin = 32'hbf6c835e;
-        5'd27: sin = 32'hbf54db31;
-        5'd28: sin = 32'hbf3504f3;
-        5'd29: sin = 32'hbf0e39da;
-        5'd30: sin = 32'hbec3ef15;
-        5'd31: sin = 32'hbe47c5c2;
+        4'd0: sin <= 32'h00000000;
+        4'd1: sin <= 32'h3ec3ef15;
+        4'd2: sin <= 32'h3f3504f3;
+        4'd3: sin <= 32'h3f6c835e;
+        4'd4: sin <= 32'h3f800000;
+        4'd5: sin <= 32'h3f6c835e;
+        4'd6: sin <= 32'h3f3504f3;
+        4'd7: sin <= 32'h3ec3ef15;
+        4'd8: sin <= 32'h250d3132;
+        4'd9: sin <= 32'hbec3ef15;
+        4'd10: sin <= 32'hbf3504f3;
+        4'd11: sin <= 32'hbf6c835e;
+        4'd12: sin <= 32'hbf800000;
+        4'd13: sin <= 32'hbf6c835e;
+        4'd14: sin <= 32'hbf3504f3;
+        4'd15: sin <= 32'hbec3ef15;
     endcase;
 endfunction
 
-function [31:0] cos (input [4:0] theta);
+function [31:0] cos (input [3:0] theta);
     case (theta)
-        5'd0:  cos = 32'h3f800000;
-        5'd1:  cos = 32'h3f7b14be;
-        5'd2:  cos = 32'h3f6c835e;
-        5'd3:  cos = 32'h3f54db31;
-        5'd4:  cos = 32'h3f3504f3;
-        5'd5:  cos = 32'h3f0e39da;
-        5'd6:  cos = 32'h3ec3ef15;
-        5'd7:  cos = 32'h3e47c5c2;
-        5'd8:  cos = 32'h248d3132;
-        5'd9:  cos = 32'hbe47c5c2;
-        5'd10: cos = 32'hbec3ef15;
-        5'd11: cos = 32'hbf0e39da;
-        5'd12: cos = 32'hbf3504f3;
-        5'd13: cos = 32'hbf54db31;
-        5'd14: cos = 32'hbf6c835e;
-        5'd15: cos = 32'hbf7b14be;
-        5'd16: cos = 32'hbf800000;
-        5'd17: cos = 32'hbf7b14be;
-        5'd18: cos = 32'hbf6c835e;
-        5'd19: cos = 32'hbf54db31;
-        5'd20: cos = 32'hbf3504f3;
-        5'd21: cos = 32'hbf0e39da;
-        5'd22: cos = 32'hbec3ef15;
-        5'd23: cos = 32'hbe47c5c2;
-        5'd24: cos = 32'h2732c363;
-        5'd25: cos = 32'h3e47c5c2;
-        5'd26: cos = 32'h3ec3ef15;
-        5'd27: cos = 32'h3f0e39da;
-        5'd28: cos = 32'h3f3504f3;
-        5'd29: cos = 32'h3f54db31;
-        5'd30: cos = 32'h3f6c835e;
-        5'd31: cos = 32'h3f7b14be;
+        4'd0: cos <= 32'h3f800000;
+        4'd1: cos <= 32'h3f6c835e;
+        4'd2: cos <= 32'h3f3504f3;
+        4'd3: cos <= 32'h3ec3ef15;
+        4'd4: cos <= 32'h248d3132;
+        4'd5: cos <= 32'hbec3ef15;
+        4'd6: cos <= 32'hbf3504f3;
+        4'd7: cos <= 32'hbf6c835e;
+        4'd8: cos <= 32'hbf800000;
+        4'd9: cos <= 32'hbf6c835e;
+        4'd10: cos <= 32'hbf3504f3;
+        4'd11: cos <= 32'hbec3ef15;
+        4'd12: cos <= 32'ha553c9ca;
+        4'd13: cos <= 32'h3ec3ef15;
+        4'd14: cos <= 32'h3f3504f3;
+        4'd15: cos <= 32'h3f6c835e;
     endcase;
 endfunction

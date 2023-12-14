@@ -14,6 +14,7 @@ module transformation_tb;
     logic [31:0] distance;
     logic ready_out, ready_in;
     logic obj_done_in, obj_done_out;
+    logic [4:0] pitch;
 
     assign x = new_pos[3];
     assign y = new_pos[2];
@@ -31,6 +32,7 @@ module transformation_tb;
         .pos(pos),
         .distance(distance),
         .obj_done_in(obj_done_in),
+        .pitch(pitch),
         .valid_in(v_in),
         .valid_out(v_out),
         .obj_done_out(obj_done_out),
@@ -59,6 +61,7 @@ module transformation_tb;
         y_in = 32'h3f800000;
         z_in = 32'h3f800000;
         distance = 32'h41200000;
+        pitch = 4'd8;
         obj_done_in = 1;
         v_in = 1;
         ready_in = 1;

@@ -63,7 +63,7 @@ module top_level(
     logic [31:0] tf_pos_in_3 [3:0];
     logic [31:0] tf_dist; // depth from viewpoint
     logic [31:0] tf_scale; // scale
-    logic [4:0] tf_pitch, tf_yaw, tf_roll; // rotatations, btn[0] increases pitch (x), btn[1] increases yaw (y), btn[2] increases roll (z)
+    logic [3:0] tf_pitch, tf_yaw, tf_roll; // rotatations, btn[0] increases pitch (x), btn[1] increases yaw (y), btn[2] increases roll (z)
     logic tf_valid_in;
     logic tf_valid_out_1, tf_valid_out_2, tf_valid_out_3;
     logic tf_obj_done_in;
@@ -238,8 +238,8 @@ module top_level(
             tf_roll <= 0;
         end else begin
             if (btn[1]) tf_pitch <= tf_pitch + 1;
-            if (btn[2]) tf_yaw <= tf_yaw + 1;
-            if (btn[3]) tf_roll <= tf_roll + 1;
+            // if (btn[2]) tf_yaw <= tf_yaw + 1;
+            // if (btn[3]) tf_roll <= tf_roll + 1;
         end
     end
 
