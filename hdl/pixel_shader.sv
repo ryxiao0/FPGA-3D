@@ -621,30 +621,27 @@ module pixel_shader(
 
 endmodule
 
-// the input is a value between 0 and 16
-function [7:0] color_map (input [31:0] angle_to_source); //initial stab at mapping (light drops off expontentially)
-    case (angle_to_source)
-        8'd0:  greyscale_color = 8'b1111_1111;
-        8'd10:  greyscale_color = 8'b1111_1110;
-        8'd20:  greyscale_color = 8'b1110_1100;
-        8'd30:  greyscale_color = 8'b1110_1100;
-        8'd40:  greyscale_color = 8'b1100_1000;
-        8'd50:  greyscale_color = 8'b1000_1100;
-        8'd60:  greyscale_color = 8'b0100_1011;
-        8'd70:  greyscale_color = 8'b0010_1000;
-        8'd80:  greyscale_color = 8'b0001_0100;
-        8'd90:  greyscale_color = 8'b0000_0000;                 //peak brightness should be perpendicular to the light source? I think
-        8'd100:  greyscale_color = 8'b0001_0100;
-        8'd110:  greyscale_color = 8'b0010_1000;
-        8'd120:  greyscale_color = 8'b0100_1011;
-        8'd130:  greyscale_color = 8'b1000_1100;
-        8'd140:  greyscale_color = 8'b1100_1000;
-        8'd150:  greyscale_color = 8'b1110_1100;
-        8'd160:  greyscale_color = 8'b1111_1100;
-        8'd170:  greyscale_color = 8'b1111_1111;
+function [8:0] greyscale_color (input [8:0] cos_squared_x); //initial stab at mapping (light drops off expontentially)
+    case (cos_squared_x) //floor of 16*cos2x
+        8'd0:  greyscale_color = 8'd0;
+        8'd1:  greyscale_color = 8'd20;
+        8'd2:  greyscale_color = 8'd40;
+        8'd3:  greyscale_color = 8'd60;
+        8'd4:  greyscale_color = 8'd78;
+        8'd5:  greyscale_color = 8'd96;
+        8'd6:  greyscale_color = 8'd114;
+        8'd7:  greyscale_color = 8'd130;
+        8'd8:  greyscale_color = 8'd146;
+        8'd9:  greyscale_color = 8'd162;                 //peak brightness should be perpendicular to the light source? I think
+        8'd10:  greyscale_color = 8'd178;
+        8'd11:  greyscale_color = 8'd194;
+        8'd12:  greyscale_color = 8'd210;
+        8'd13:  greyscale_color = 8'd226;
+        8'd14:  greyscale_color = 8'd242;
+        8'd15:  greyscale_color = 8'd256;
+
         
     endcase;
 endfunction
-
 `default_nettype wire
 
