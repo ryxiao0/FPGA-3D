@@ -621,24 +621,24 @@ module pixel_shader(
 
 endmodule
 
-function [8:0] greyscale_color (input [8:0] cos_squared_x); //initial stab at mapping (light drops off expontentially)
+function [8:0] greyscale_color (input [16:0] cos_squared_x); //initial stab at mapping (light drops off expontentially)
     case (cos_squared_x) //floor of 16*cos2x
-        8'd0:  greyscale_color = 8'd0;
-        8'd1:  greyscale_color = 8'd20;
-        8'd2:  greyscale_color = 8'd40;
-        8'd3:  greyscale_color = 8'd60;
-        8'd4:  greyscale_color = 8'd78;
-        8'd5:  greyscale_color = 8'd96;
-        8'd6:  greyscale_color = 8'd114;
-        8'd7:  greyscale_color = 8'd130;
-        8'd8:  greyscale_color = 8'd146;
-        8'd9:  greyscale_color = 8'd162;                 //peak brightness should be perpendicular to the light source? I think
-        8'd10:  greyscale_color = 8'd178;
-        8'd11:  greyscale_color = 8'd194;
-        8'd12:  greyscale_color = 8'd210;
-        8'd13:  greyscale_color = 8'd226;
-        8'd14:  greyscale_color = 8'd242;
-        8'd15:  greyscale_color = 8'd256;
+        16'd0:  greyscale_color = 8'd0;
+        16'd1:  greyscale_color = 8'd20;
+        16'd2:  greyscale_color = 8'd40;
+        16'd3:  greyscale_color = 8'd60;
+        16'd4:  greyscale_color = 8'd78;
+        16'd5:  greyscale_color = 8'd96;
+        16'd6:  greyscale_color = 8'd114;
+        16'd7:  greyscale_color = 8'd130;
+        16'd8:  greyscale_color = 8'd146;
+        16'd9:  greyscale_color = 8'd162;                 //peak brightness should be perpendicular to the light source? I think
+        16'd10:  greyscale_color = 8'd178;
+        16'd11:  greyscale_color = 8'd194;
+        16'd12:  greyscale_color = 8'd210;
+        16'd13:  greyscale_color = 8'd226;
+        16'd14:  greyscale_color = 8'd242;
+        16'd15:  greyscale_color = 8'd256;
 
         
     endcase;
