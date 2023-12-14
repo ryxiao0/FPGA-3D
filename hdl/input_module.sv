@@ -87,13 +87,12 @@ module system_inputs#(
                         adder_data_2 <= 32'b00111111100000000000000000000000;
                         add_valid <= 1;
                     end
-                end 
-                // end else if(sw[7]) begin
-                //     adder_data_1 <= current_scale;
-                //     adder_data_2 <= 32'b10111111100000000000000000000000;
-                //     add_valid <= 1;
+                end else if(sw[7]) begin
+                    adder_data_1 <= current_scale;
+                    adder_data_2 <= 32'b10111111100000000000000000000000;
+                    add_valid <= 1;
 
-                // end
+                end
 
                 // switches for translating
                 if (sw[10]) begin

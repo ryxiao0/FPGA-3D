@@ -1,4 +1,4 @@
-/*
+
 
 `timescale 1ns / 1ps
 `default_nettype none
@@ -70,7 +70,7 @@ module pixel_shader(
         set up a table of sec^2 values 
         figure out how to compare floats lol 
         implement each pipeline stage
-
+    */
     
 
 
@@ -85,14 +85,14 @@ module pixel_shader(
 
     logic  [31:0] vect1 [2:0];
     logic  [31:0] vect2 [2:0];
-    logic  [31:0] normal_calc [5:0]; // how big is the float coming out of multiply? 
+    logic  [31:0] normal_calc [1:0] [2:0]; 
 
-    logic signed  [31:0] norm [2:0]; //IMPORTANT: CHANGED THIS TO SIGNED
+    logic  [31:0] norm [2:0]; 
 
-    logic  [31:0] sqaures [2:0]; // this is really big — maybe there's a way to lose precision since we don't need it anyway. how to scale down floats? is there a float to float ip? 
+    logic  [31:0] sqaures [2:0]; 
     logic [31:0] recip; 
     logic [31:0] mag;
-    logic [31:0] recip_cos_squared;
+    logic [31:0] sec_squared;
     logic [31:0] final_angle;
 
 
@@ -120,28 +120,19 @@ module pixel_shader(
 
     //END NEW VARIABLES
 
-
-
-
-    // logic signed [9:0] normal_cross_light [2:0];
-
-    // logic [9:0] dot_product;
-    // logic [14:0] tri_normal_magnitude_squared;
-
-    // logic [7:0] color;
-    // logic [31:0] angle;
-
-
-
+    logic [31:0] rec_in;
+    logic rec_valid_in;
+    logic [31:0] rec_out;
+    logic rec_valid_out;
 
     reciprocal rec (
         .aclk(clk_in),
         .s_axis_a_tdata(rec_in),
-        .s_axis_a_tready(),
-        .s_axis_a_tvalid(rec_v_in),
+        .s_axis_a_tready(1'b1),
+        .s_axis_a_tvalid(rec_valid_in),
         .m_axis_result_tdata(rec_out),
         .m_axis_result_tready(1'b1),
-        .m_axis_result_tvalid(rec_v_out)
+        .m_axis_result_tvalid(rec_valid_out)
     );
 
     
@@ -149,12 +140,12 @@ module pixel_shader(
     multiplier ei_mult (  //multiplies e and i 
         .aclk(clk_in),
         .s_axis_a_tdata(e_in),
-        .s_axis_a_tready(),
+        .s_axis_a_tready(1'b1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(i_in),
-        .s_axis_b_tready(),
+        .s_axis_b_tready(1'b1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(normal_calc[0][0]),
+        .m_axis_result_tdata(ei_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(ei_valid_out)
     );
@@ -162,12 +153,12 @@ module pixel_shader(
     multiplier fh_mult (  //multiplies f and h 
         .aclk(clk_in),
         .s_axis_a_tdata(f_in),
-        .s_axis_a_tready(),
+        .s_axis_a_tready(1'b1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(h_in),
-        .s_axis_b_tready(),
+        .s_axis_b_tready(1'b1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(normal_calc[0][1]),
+        .m_axis_result_tdata(fh_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(fh_valid_out)
     );
@@ -176,12 +167,12 @@ module pixel_shader(
     multiplier fg_mult (  //multiplies f and g 
         .aclk(clk_in),
         .s_axis_a_tdata(f_in),
-        .s_axis_a_tready(),
+        .s_axis_a_tready(1'b1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(g_in),
-        .s_axis_b_tready(),
+        .s_axis_b_tready(1'b1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(normal_calc[0][2]),
+        .m_axis_result_tdata(fg_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(fg_valid_out)
     );
@@ -189,12 +180,12 @@ module pixel_shader(
     multiplier di_mult (  //multiplies d and i 
         .aclk(clk_in),
         .s_axis_a_tdata(d_in),
-        .s_axis_a_tready(),
+        .s_axis_a_tready(1'b1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(i_in),
-        .s_axis_b_tready(),
+        .s_axis_b_tready(1'b1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(normal_calc[1][0]),
+        .m_axis_result_tdata(di_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(di_valid_out)
     );
@@ -202,12 +193,12 @@ module pixel_shader(
     multiplier dh_mult (  //multiplies d and h 
         .aclk(clk_in),
         .s_axis_a_tdata(d_in),
-        .s_axis_a_tready(),
+        .s_axis_a_tready(1'b1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(h_in),
-        .s_axis_b_tready(),
+        .s_axis_b_tready(1'b1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(normal_calc[1][1]),
+        .m_axis_result_tdata(dh_mult),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(dh_valid_out)
     );
@@ -215,15 +206,74 @@ module pixel_shader(
     multiplier eg_mult (  //multiplies e and g 
         .aclk(clk_in),
         .s_axis_a_tdata(e_in),
-        .s_axis_a_tready(),
+        .s_axis_a_tready(1'b1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(g_in),
-        .s_axis_b_tready(),
+        .s_axis_b_tready(1'b1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(normal_calc[1][2]),
+        .m_axis_result_tdata(eg_mult),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(eg_valid_out)
     );
+
+    logic [31:0] a1_in_1;
+    logic [31:0] a1_in_2;
+    logic [31:0] a1_out;
+    logic a1_valid_in;
+    logic a1_valid_out;
+    logic [31:0] a2_in_1;
+    logic [31:0] a2_in_2;
+    logic [31:0] a2_out;
+    logic a2_valid_in;
+    logic a2_valid_out;
+    logic [31:0] a3_in_1;
+    logic [31:0] a3_in_2;
+    logic [31:0] a3_out;
+    logic a3_valid_in;
+    logic a3_valid_out;
+
+
+    adder a1(
+        .s_axis_a_tdata(a1_in_1),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(a1_valid_in),
+        .s_axis_b_tdata(a1_in_2),
+        .s_axis_b_tready(1),
+        .s_axis_b_tvalid(a1_valid_in),
+        .aclk(clk_in),
+        .m_axis_result_tdata(a1_out),
+        .m_axis_result_tready(1),
+        .m_axis_result_tvalid(a1_valid_out)
+    );
+
+    adder a2(
+        .s_axis_a_tdata(a2_in_1),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(a2_valid_in),
+        .s_axis_b_tdata(a2_in_2),
+        .s_axis_b_tready(1),
+        .s_axis_b_tvalid(a2_valid_in),
+        .aclk(clk_in),
+        .m_axis_result_tdata(a2_out),
+        .m_axis_result_tready(1),
+        .m_axis_result_tvalid(a2_valid_out)
+    );
+
+    adder a3(
+        .s_axis_a_tdata(a3_in_1),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(a3_valid_in),
+        .s_axis_b_tdata(a3_in_2),
+        .s_axis_b_tready(1),
+        .s_axis_b_tvalid(a3_valid_in),
+        .aclk(clk_in),
+        .m_axis_result_tdata(a3_out),
+        .m_axis_result_tready(1),
+        .m_axis_result_tvalid(a3_valid_out)
+    );
+
+    logic recip_done;
+    logic magnitude_done;
 
 
     // float_to_fixed round (
@@ -241,19 +291,22 @@ module pixel_shader(
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
-            /*
-            vect1[0] <= 0;
-            vect2[0] <= 0;
-            vect1[1] <= 0;
-            vect2[1] <= 0;
-            vect1[2] <= 0;
-            vect2[2] <= 0;
-            tri_normal[0] <= 0;
-            tri_normal[1] <= 0;
-            tri_normal[2] <= 0;
-            normal_cross_light[0] <= 0;
-            normal_cross_light[1] <= 0;
-            normal_cross_light[2] <= 0;
+            
+            // vect1[0] <= 0;
+            // vect2[0] <= 0;
+            // vect1[1] <= 0;
+            // vect2[1] <= 0;
+            // vect1[2] <= 0;
+            // vect2[2] <= 0;
+            // tri_normal[0] <= 0;
+            // tri_normal[1] <= 0;
+            // tri_normal[2] <= 0;
+            // normal_cross_light[0] <= 0;
+            // normal_cross_light[1] <= 0;
+            // normal_cross_light[2] <= 0;
+            recip_done <= 0;
+            magnitude_done <= 0;
+
             
             angle <= 0;
             state <= RECEIVE;
@@ -290,50 +343,131 @@ module pixel_shader(
                         mult_valid_in <= 0;
                         if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
                             normal_calc[0][0] <= ei_out;
-                            normal_calc[0][1] <= fh_out;
+                            normal_calc[0][1] <= {1, fh_out[30:0]};
                             normal_calc[0][2] <= fg_out;
-                            normal_calc[1][0] <= di_out;
+                            normal_calc[1][0] <= {1, di_out[30:0]}; 
                             normal_calc[1][1] <= dh_out;
-                            normal_calc[1][2] <= eg_out;
+                            normal_calc[1][2] <= {1, eg_out[30:0]};  
+                            mult_valid_in <= 0;
                             state <= NORMAL_CALC_2;
+
+
                         end
                         // NORMAL CALC 1: multiplication. 
                         //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
                 NORMAL_CALC_2: begin
-                    norm[0] <= normal_calc[0][0] - normal_calc[0][1]; //ei - fh
-                    norm[1] <= normal_calc[0][2] - normal_calc[1][0]; //fg - di
-                    norm[2] <= normal_calc[1][1] - normal_calc[1][2]; //dh - eg
-                    state <= ANGLE_CALC_1;
+                    if(~a1_valid_in) begin
+                        a1_valid_in <= 1; 
+                        a2_valid_in <= 1;
+                        a3_valid_in <= 1;
+
+                        a1_in_1 <= normal_calc[0][0];
+                        a1_in_2 <= normal_calc[0][1];
+                        a2_in_1 <= normal_calc[0][2];
+                        a2_in_2 <= normal_calc[1][0];
+                        a3_in_1 <= normal_calc[1][1];
+                        a3_in_2 <= normal_calc[1][2];
+                    end else begin 
+                        a1_valid_in <= 0; 
+                        a2_valid_in <= 0;
+                        a3_valid_in <= 0;
+                        
+                    end
+
+                    if(a1_valid_out) begin
+                        // all adders should be done here 
+                        norm[0] <= a1_out;
+                        norm[1] <= a2_out;
+                        norm[2] <= a3_out;
+                        state <= ANGLE_CALC_1; 
+
+
+                        // set up for next state 
+                        mult_valid_in <= 1; 
+
+                        e_in <= a1_out;
+                        i_in <= a1_out;
+                        f_in <= a2_out;
+                        g_in <= a2_out;
+                        d_in <= a3_out;
+                        h_in <= a3_out;
+                    end
 
                 end
                 // find the angle between the normal vector and the light source
                 // cos(theta) = (dot product a, b) / |a| * |b|
                 ANGLE_CALC_1: begin
-                    state <= ANGLE_CALC_2;
-                    // calculate the dot product of a and b and the magnitude 
-                    // dot_product <= tri_normal[0] * light_source[0] + tri_normal[1] * light_source[1] + tri_normal[2] * light_source[2];
-                    // dot_product <= -tri_normal[2];
+                    mult_valid_in <= 0;
 
-                    dot_product_signed <= ~tri_normal + $signed(1'b1); //negate normal using twos complement
+                    // mult_valid_in <= 1; 
 
-                    // tri_normal_magnitude_squared <= tri_normal[0] * tri_normal[0] + tri_normal[1] * tri_normal[1] + tri_normal[2] * tri_normal[2];
-                    squares[0] <= norm[0]*norm[0];
-                    squares[1] <= norm[1]*norm[1];
-                    squares[2] <= norm[2]*norm[2];
+                    // e_in <= norm[0];
+                    // i_in <= norm[0];
+                    // f_in <= norm[1];
+                    // g_in <= norm[1];
+                    // d_in <= norm[2];
+                    // h_in <= norm[2];
+
+                    if(ei_valid_out) begin
+                        // mult finished 
+                        squares[0] <= ei_out;
+                        squares[1] <= fg_out;
+                        squares[2] <= dh_out;
+                        state <= ANGLE_CALC_2;
+
+                        // set up for next state 
+                        a1_valid_in <= 1;
+                        a1_in_1 <= ei_out;
+                        a1_in_2 <= fg_out;
+
+                        rec_valid_in <= 1;
+                        rec_in <= dh_out;
+                    end
+
+                    // squares[0] <= norm[0]*norm[0];
+                    // squares[1] <= norm[1]*norm[1];
+                    // squares[2] <= norm[2]*norm[2];
 
                     // light source magnitude is 1
                 end
                 ANGLE_CALC_2: begin
-                    state <= ANGLE_CALC_3;
 
+                    a1_valid_in <= 0;
+                    a2_valid_in <= 0;
+                    rec_in <= 0; 
 
-                    // get the square root  
+                    if(a1_valid_out) begin
+                        a2_in_1 <= a1_out;
+                        a2_in_2 <= squares[2];
+                        a2_valid_in <= 1;
+                    end
+                    if(a2_valid_out) begin
+                        mag <= a2_out;
+                        magnitude_done <= 1;
+                    end
+                    if(rec_valid_out) begin
+                        recip <= rec_out;
+                        recip_done <= 1;
+                    end
+
+                    if(magnitude_done && recip_done) begin
+                        state <= ANGLE_CALC_3;
+                        magnitude_done <= 0;
+                        recip_done <= 0; 
+
+                        // set up for next stage 
+                        e_in <= mag;
+                        i_in <= recip;
+                        mult_valid_in <= 1; 
+                    end
                     
                 end
                 ANGLE_CALC_3: begin
-                    state <= ANGLE_CALC_3;
-                    
+                    mult_valid_in <= 0; 
+                    if(ei_valid_out) begin
+                        sec_squared <= ei_out;
+                    end
                     // get the reciprocal 
 
 
@@ -388,4 +522,3 @@ endfunction
 
 `default_nettype wire
 
-*/
