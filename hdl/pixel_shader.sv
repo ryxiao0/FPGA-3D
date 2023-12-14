@@ -621,7 +621,7 @@ module pixel_shader(
 
 endmodule
 
-function [8:0] greyscale_color (input [16:0] cos_squared_x); //initial stab at mapping (light drops off expontentially)
+function [8:0] greyscale_color (input [15:0] cos_squared_x); //initial stab at mapping (light drops off expontentially)
     case (cos_squared_x) //floor of 16*cos2x
         16'd0:  greyscale_color = 8'd0;
         16'd1:  greyscale_color = 8'd20;
