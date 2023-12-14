@@ -79,10 +79,10 @@ module top_level(
     logic fifo_in_ready;
     logic fifo_out_valid;
     logic fifo_out_ready;
-    logic [31:0] fifo_in_triangle [2:0] [3:0];
+    logic [31:0] fifo_in_triangle [3:0] [2:0];
     logic [383:0] fifo_in_triangle_unrolled;
     logic [383:0] fifo_out_triangle_unrolled;
-    logic [31:0] fifo_out_triangle [2:0] [3:0];
+    logic [31:0] fifo_out_triangle [3:0] [2:0];
 
     // Triangle Projection
     logic tp_obj_done_in;
@@ -310,7 +310,7 @@ module top_level(
     // assign fifo_in_valid = tf_valid_out_3;
 
     // fifo my_fifo (
-    //     .s_axis_aresetn(btn[0]),
+    //     .s_axis_aresetn(sys_rst),
     //     .s_axis_aclk(clk_pixel),
     //     .s_axis_tvalid(fifo_in_valid),
     //     .s_axis_tready(fifo_in_ready),
@@ -445,10 +445,23 @@ module top_level(
         .ready_out(tp_ready_out_3)
     );
 
-    // assign 
-
+    // color mapping
     /*
-    Add color mapping here
+    logic [31:0] triangle [3:0] [2:0]; 
+    assign triangle[0] = tf_pos_out_1;
+    assign triangle[1] = tf_pos_out_2;
+    assign triangle[2] = tf_pos_out_3; 
+    logic [7:0] color_out;
+    logic color_valid_out;
+
+    module pixel_shader(
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .data_valid_in(tf_valid_out_1), 
+        .triangle(triangle),
+        .valid_out(color_valid_out), 
+        .color_out(color_out)
+    );
     */
 
     // Tests a single triangle
