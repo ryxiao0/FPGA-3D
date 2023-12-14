@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Thu Dec 14 11:34:06 2023
+| Date         : Thu Dec 14 11:51:26 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing_summary -file obj/post_synth_timing_summary.rpt
 | Design       : top_level
@@ -137,7 +137,7 @@ Table of Contents
 
     WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
     -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
-      1.571        0.000                      0                31335        0.067        0.000                      0                31335        0.538        0.000                       0                  8730  
+      1.571        0.000                      0                32085        0.067        0.000                      0                32085        0.538        0.000                       0                  9058  
 
 
 All user specified timing constraints are met.
@@ -164,7 +164,7 @@ gclk                   {0.000 4.000}        10.000          100.000
 Clock                      WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
 -----                      -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
 gclk                                                                                                                                                                     2.000        0.000                       0                     1  
-  clk_pixel_clk_wiz_0        1.571        0.000                      0                31335        0.067        0.000                      0                31335        5.484        0.000                       0                  8718  
+  clk_pixel_clk_wiz_0        1.571        0.000                      0                32085        0.067        0.000                      0                32085        5.484        0.000                       0                  9046  
   clk_tmds_clk_wiz_0                                                                                                                                                     0.538        0.000                       0                     8  
   clkfbout_clk_wiz_0                                                                                                                                                    47.845        0.000                       0                     3  
 
@@ -261,7 +261,7 @@ Slack (MET) :             1.571ns  (required time - arrival time)
                                                      -5.108    -3.083 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.800    -2.284    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.096    -2.188 r  mhdmicw/clkout1_buf/O
-                         net (fo=8721, unplaced)      0.800    -1.388    tp3/clk_pixel
+                         net (fo=9049, unplaced)      0.800    -1.388    tp3/clk_pixel
                          FDRE                                         r  tp3/x_reg[1]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.456    -0.932 r  tp3/x_reg[1]/Q
@@ -315,7 +315,7 @@ Slack (MET) :             1.571ns  (required time - arrival time)
                                                      -5.378     9.899 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.760    10.659    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.091    10.750 r  mhdmicw/clkout1_buf/O
-                         net (fo=8721, unplaced)      0.655    11.405    rast/intri/clk_pixel
+                         net (fo=9049, unplaced)      0.655    11.405    rast/intri/clk_pixel
                          FDRE                                         r  rast/intri/detv1v2_reg[16]/C
                          clock pessimism              0.530    11.935    
                          clock uncertainty           -0.168    11.767    
@@ -359,7 +359,7 @@ Slack (MET) :             0.067ns  (arrival time - required time)
                                                      -1.776    -1.454 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.337    -1.116    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.026    -1.090 r  mhdmicw/clkout1_buf/O
-                         net (fo=8721, unplaced)      0.210    -0.881    tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma2_delay_balance/i_pipe/aclk
+                         net (fo=9049, unplaced)      0.210    -0.881    tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma2_delay_balance/i_pipe/aclk
                          FDRE                                         r  tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma2_delay_balance/i_pipe/opt_has_pipe.i_pipe[3].pipe_reg[3][0]/C
   -------------------------------------------------------------------    -------------------
                          FDRE (Prop_fdre_C_Q)         0.131    -0.750 r  tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma2_delay_balance/i_pipe/opt_has_pipe.i_pipe[3].pipe_reg[3][0]/Q
@@ -377,7 +377,7 @@ Slack (MET) :             0.067ns  (arrival time - required time)
                                                      -2.410    -1.755 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, unplaced)         0.355    -1.400    mhdmicw/clk_pixel_clk_wiz_0
                          BUFG (Prop_bufg_I_O)         0.029    -1.371 r  mhdmicw/clkout1_buf/O
-                         net (fo=8721, unplaced)      0.355    -1.016    tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma3_delay_balance/i_pipe/aclk
+                         net (fo=9049, unplaced)      0.355    -1.016    tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma3_delay_balance/i_pipe/aclk
                          SRL16E                                       r  tp1/rec/inst/i_synth/RECIP_OP.OP/i_sp_or_dp.evaluation/a2_ma3_delay_balance/i_pipe/opt_has_pipe.i_pipe[5].pipe_reg[5][0]_srl2/CLK
                          clock pessimism              0.281    -0.736    
                          SRL16E (Hold_srl16e_CLK_D)

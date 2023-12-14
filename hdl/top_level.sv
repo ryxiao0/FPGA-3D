@@ -11,7 +11,7 @@ module top_level(
     output logic hdmi_clk_p, hdmi_clk_n //differential hdmi clock
 );
 
-    parameter NF=12; // get number of facets from python
+    parameter NF=1570; // get number of facets from python
 
     assign led = sw;
     logic sys_rst;
@@ -220,7 +220,7 @@ module top_level(
     // assign tf_valid_in = 1;
     // assign tf_obj_done_in = 1;
 
-    assign tf_dist = 32'h41f00000; // 30 units away
+    assign tf_dist = 32'h450ca000;//41f00000; // 30 units away
 
     assign tf_pos_in_1 = gv_v1_out;
     assign tf_pos_in_2 = gv_v2_out;
@@ -230,6 +230,18 @@ module top_level(
     assign gv_ready_in = tf_ready_out_1;
 
     assign tf_obj_done_in = gv_obj_done;
+
+    always_ff @(posedge clk_pixel) begin
+        if (sys_rst) begin
+            tf_pitch <= 0;
+            tf_yaw <= 0;
+            tf_roll <= 0;
+        end else begin
+            if (btn[1]) tf_pitch <= tf_pitch + 1;
+            if (btn[2]) tf_yaw <= tf_yaw + 1;
+            if (btn[3]) tf_roll <= tf_roll + 1;
+        end
+    end
 
     transformation tf1 (
         .clk_in(clk_pixel),
@@ -372,6 +384,18 @@ module top_level(
 
     // assign tp_valid_in = 1;
     // assign tp_obj_done_in = 1;
+
+    // logic [10:0] hcount_in_pipe [STAGES-1:0];
+    // logic [9:0] vcount_in_pipe [STAGES-1:0];
+
+    // always_ff @(posedge clk_in) begin
+    //     hcount_in_pipe[0] <= hcount;
+    //     vcount_in_pipe[0] <= vcount;
+    //     for (int i=1;i<STAGES;i=i+1) begin // 2 3 or 4 stages
+    //         hcount_in_pipe[i] <= hcount_in_pipe[i-1];
+    //         vcount_in_pipe[i] <= vcount_in_pipe[i-1];
+    //     end
+    // end
 
     assign tp_coor_in_1 = tf_pos_out_1;
     assign tp_coor_in_2 = tf_pos_out_2;

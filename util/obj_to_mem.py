@@ -59,9 +59,14 @@ if __name__ == "__main__":
         zVal = hex((struct.unpack("i", struct.pack("f", zCOM))[0] + (1 << 32)) % (1 << 32))
         hexCOM = xVal[2:].zfill(8)+yVal[2:].zfill(8)+zVal[2:].zfill(8)
 
+        print(len(facets))
+        print(max([c[2] for c in vertices]))
+        print(max([c[1] for c in vertices]))
+        print(min([c[0] for c in vertices]))
+
         vert_str = []
         vert = [(a[0]-xCOM, a[1]-yCOM, a[2]-zCOM) for a in vertices]
-        print(vert)
+        # print(vert)
         for v in vert:
             xVal = hex((struct.unpack("i", struct.pack("f", v[0]))[0] + (1 << 32)) % (1 << 32))
             yVal = hex((struct.unpack("i", struct.pack("f", v[1]))[0] + (1 << 32)) % (1 << 32))
