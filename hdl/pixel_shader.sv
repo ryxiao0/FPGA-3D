@@ -48,22 +48,19 @@ module pixel_shader(
         SQUARE_NORMAL: squares 
             sqares = [(ei - fh)^2, (fg - di)^2, (dh - eg)^2]
 
-        MAGNITUDE: reciprocal and magnitudes
-            recip = (1/(eg  - dh)^2)
+        MAGNITUDE: magnitudes
             mag = (ei-fh)^2 + (fg-di)^2 + (dh-eg)^2)
 
-        SEC_SQUARED: multiply. 
-            sec_squared = mag * recip
+        RECIP: reciprocal of the magnitude. 
+            mag_recip = 1 / magnitude
+            at the same time dot_product_squared_times_16 = squares[2] * 16 
 
-        COS_SQUARED: reciprocal
-            cos_squared = 1/sec_squared
-
-        MULT_16: multiply by 16
+        COS_SQUARED (*16): 
+            cos_squared = mag_recip * dot_product_squared_times_16
 
         ROUND: round to the nearest integer to get an index for the lookup table 
 
-        COLOR: look up in the table and return the value. d
-        
+        COLOR: look up in the table and return the value. if the z coordinate of the normal vector is 0, then this should be just 0. 
 
         
         REQUIRED IPS: 6 multipliers, 6 adders/subtractors, 1 reciprocal, 1 float to fixed 
@@ -90,7 +87,7 @@ module pixel_shader(
     logic  [31:0] squares [2:0]; 
     logic [31:0] mag;
     logic [31:0] mag_recip;
-    logic [31:0] dot_product_times_16;
+    logic [31:0] dot_product_squared_times_16;
     logic [31:0] cos_squared;
     logic [31:0] to_round;
     logic [15:0] table_index;
@@ -116,8 +113,6 @@ module pixel_shader(
 
     logic ei_valid_out, fh_valid_out, fg_valid_out, di_valid_out, dh_valid_out, eg_valid_out; //multiplier valid signals
     logic mult_valid_in; //signal to begin multiplication
-
-    logic signed [31:0] dot_product_signed;
 
     //END NEW VARIABLES
 
@@ -413,7 +408,6 @@ module pixel_shader(
                         // vect2[1] <= vert3[1]-vert1[1];
                         // vect2[0] <= vert3[0]-vert1[0];
 
-                        mult_valid_in <= 1;
                         state <= VECTOR_CALC;
 
                     end
@@ -422,29 +416,42 @@ module pixel_shader(
                 VECTOR_CALC: begin
                     if(a2_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
 
-                        d_in <= a1_out; //given that triangles are 3 verticies with x,y,z,1
+                        d_in <= a1_out; //(d, e, f) is vector 1
                         e_in <= a2_out;
                         f_in <= a3_out;
-                        g_in <= a4_out;
+                        g_in <= a4_out; // (g, h, i) is vector 2
                         h_in <= a5_out;
                         i_in <= a6_out;
+
                         state <= NORMAL_CALC_MULT;
+                        mult_valid_in <= 1;
                     end
 
 
                 end
                 // find the normal vector to the triangle
                 NORMAL_CALC_MULT: begin
-                        mult_valid_in <= 0;
                         if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
+                            mult_valid_in <= 0;
                             normal_calc[0][0] <= ei_out;
                             normal_calc[0][1] <= {~fh_out[31], fh_out[30:0]};
                             normal_calc[0][2] <= fg_out;
                             normal_calc[1][0] <= {~di_out[31], di_out[30:0]}; 
                             normal_calc[1][1] <= dh_out;
                             normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
-                            mult_valid_in <= 0;
+                            
+
                             state <= NORMAL_CALC_ADD;
+
+                            a1_in_1 <= ei_out; // subtracting to get the normal vector coordinates
+                            a1_in_2 <= {~fh_out[31], fh_out[30:0]};
+                            a2_in_1 <= fg_out;
+                            a2_in_2 <= {~di_out[31], di_out[30:0]};
+                            a3_in_1 <= dh_out;
+                            a3_in_2 <= {~eg_out[31], eg_out[30:0]};  
+                            a1_valid_in <= 1; 
+                            a2_valid_in <= 1;
+                            a3_valid_in <= 1;
 
 
                         end
@@ -452,26 +459,14 @@ module pixel_shader(
                         //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
                 NORMAL_CALC_ADD: begin
-                    if(~a1_valid_in) begin
-                        a1_valid_in <= 1; 
-                        a2_valid_in <= 1;
-                        a3_valid_in <= 1;
-
-                        a1_in_1 <= normal_calc[0][0];
-                        a1_in_2 <= normal_calc[0][1];
-                        a2_in_1 <= normal_calc[0][2];
-                        a2_in_2 <= normal_calc[1][0];
-                        a3_in_1 <= normal_calc[1][1];
-                        a3_in_2 <= normal_calc[1][2];
-                    end else begin 
-                        a1_valid_in <= 0; 
-                        a2_valid_in <= 0;
-                        a3_valid_in <= 0;
                         
-                    end
 
                     if(a1_valid_out) begin
                         // all adders should be done here 
+                        a1_valid_in <= 0; 
+                        a2_valid_in <= 0;
+                        a3_valid_in <= 0;
+
                         norm[0] <= a1_out;
                         norm[1] <= a2_out;
                         norm[2] <= a3_out;
@@ -481,7 +476,7 @@ module pixel_shader(
                         // set up for next state 
                         mult_valid_in <= 1; 
 
-                        e_in <= a1_out;
+                        e_in <= a1_out; // squaring each coordinate of the normal vector
                         i_in <= a1_out;
                         f_in <= a2_out;
                         g_in <= a2_out;
@@ -493,7 +488,7 @@ module pixel_shader(
                 // find the angle between the normal vector and the light source
                 // cos(theta) = (dot product a, b) / |a| * |b|
                 SQUARE_NORMAL: begin
-                    mult_valid_in <= 0;
+                
 
                     // mult_valid_in <= 1; 
 
@@ -505,6 +500,7 @@ module pixel_shader(
                     // h_in <= norm[2];
 
                     if(ei_valid_out) begin
+                        mult_valid_in <= 0;
                         // mult finished 
                         squares[0] <= ei_out;
                         squares[1] <= fg_out;
@@ -513,7 +509,7 @@ module pixel_shader(
 
                         // set up for next state 
                         a1_valid_in <= 1;
-                        a1_in_1 <= ei_out;
+                        a1_in_1 <= ei_out; // square[0] + squares[1]
                         a1_in_2 <= fg_out;
                     end
 
@@ -525,23 +521,21 @@ module pixel_shader(
                 end
                 MAGNITUDE: begin
 
-                    a1_valid_in <= 0;
-                    a2_valid_in <= 0;
-                    rec_in <= 0; 
-
                     if(a1_valid_out) begin
+                        a1_valid_in <= 0;
                         a2_in_1 <= a1_out;
                         a2_in_2 <= squares[2];
-                        a2_valid_in <= 1;
+                        a2_valid_in <= 1; // (squares[0] +squares[1]) + squares[2]
                     end
                     if(a2_valid_out) begin
+                        a2_valid_in <= 0;
                         mag <= a2_out;
                         
-                        state <= RECIP;
+                        state <= RECIP; // 1/magntidue
                         rec_in <= a2_out;
                         rec_valid_in <= 1;
 
-                        mult_valid_in <= 1;
+                        mult_valid_in <= 1; // dot_product_squared_times_16
                         e_in <= squares[2];
                         i_in <= 32'b01000001100000000000000000000000;
 
@@ -549,13 +543,14 @@ module pixel_shader(
                     
                 end
                 RECIP: begin
-                    rec_valid_in <= 0;
                     if(rec_valid_out) begin
+                        rec_valid_in <= 0;
                         mag_recip <= rec_out;
                         recip_done <= 1;
                     end
                     if(ei_valid_out) begin
-                        dot_product_times_16 <= ei_out;
+                        dot_product_squared_times_16 <= ei_out;
+                        mult_valid_in <= 0;
                         magnitude_done <= 1;
                     end
                     if(magnitude_done && recip_done) begin
@@ -565,13 +560,13 @@ module pixel_shader(
                         state <= COS_SQUARED;
                         mult_valid_in <= 1;
                         e_in <= mag_recip;
-                        i_in <= dot_product_times_16;
+                        i_in <= dot_product_squared_times_16;
                     end
 
                 end
                 COS_SQUARED: begin
-                    mult_valid_in <= 0; 
                     if(ei_valid_out) begin
+                        mult_valid_in <= 0; 
                         cos_squared <= ei_out;
 
                         state <= MULT_16;
@@ -582,8 +577,8 @@ module pixel_shader(
 
                 end
                 ROUND: begin 
-                    round_valid_in <= 0;
                     if(round_valid_out) begin
+                        round_valid_in <= 0;
                         table_index <= round_out; 
                         map_data_valid_in <= 1;
                         state <= COLOR;

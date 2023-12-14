@@ -79,10 +79,10 @@ module top_level(
     logic fifo_in_ready;
     logic fifo_out_valid;
     logic fifo_out_ready;
-    logic [31:0] fifo_in_triangle [2:0] [3:0];
+    logic [31:0] fifo_in_triangle [3:0] [2:0];
     logic [383:0] fifo_in_triangle_unrolled;
     logic [383:0] fifo_out_triangle_unrolled;
-    logic [31:0] fifo_out_triangle [2:0] [3:0];
+    logic [31:0] fifo_out_triangle [3:0] [2:0];
 
     // Triangle Projection
     logic tp_obj_done_in;
@@ -310,7 +310,7 @@ module top_level(
     // assign fifo_in_valid = tf_valid_out_3;
 
     // fifo my_fifo (
-    //     .s_axis_aresetn(btn[0]),
+    //     .s_axis_aresetn(sys_rst),
     //     .s_axis_aclk(clk_pixel),
     //     .s_axis_tvalid(fifo_in_valid),
     //     .s_axis_tready(fifo_in_ready),
