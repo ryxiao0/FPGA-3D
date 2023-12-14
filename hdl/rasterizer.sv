@@ -21,7 +21,7 @@ module rasterizer #(
     output logic ready_out
 );
 
-    parameter BLACK=8'h00, COLOR=8'hCC;
+    parameter BLACK=8'h00, COLOR=8'hFF;
 
     ////////////////
     ///Rasterizer///

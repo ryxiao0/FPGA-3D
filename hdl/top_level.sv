@@ -156,6 +156,8 @@ module top_level(
         .ready_in(gv_ready_in)
     );
 
+    assign led[0] = gv_obj_done;
+
     // assign led[0] = gv_valid_out;
 
 
@@ -203,31 +205,31 @@ module top_level(
     // end
 
     // Transformation Test - works, theres an odd gray square tho
-    assign tf_pos_in_1[3] = 32'h3f800000; // 1
-    assign tf_pos_in_1[2] = 32'h3f800000; // 1
-    assign tf_pos_in_1[1] = 32'h00000000; // from 0 units away
+    // assign tf_pos_in_1[3] = 32'h3f800000; // 1
+    // assign tf_pos_in_1[2] = 32'h3f800000; // 1
+    // assign tf_pos_in_1[1] = 32'h00000000; // from 0 units away
 
-    assign tf_pos_in_2[3] = 32'hbf800000; // 1
-    assign tf_pos_in_2[2] = 32'h3f800000; // -1
-    assign tf_pos_in_2[1] = 32'h00000000; // from 10 units away
+    // assign tf_pos_in_2[3] = 32'hbf800000; // 1
+    // assign tf_pos_in_2[2] = 32'h3f800000; // -1
+    // assign tf_pos_in_2[1] = 32'h00000000; // from 10 units away
 
-    assign tf_pos_in_3[3] = 32'h00000000; // 0
-    assign tf_pos_in_3[2] = 32'h00000000; // 0
-    assign tf_pos_in_3[1] = 32'h00000000; // from 0 units away
+    // assign tf_pos_in_3[3] = 32'h00000000; // 0
+    // assign tf_pos_in_3[2] = 32'h00000000; // 0
+    // assign tf_pos_in_3[1] = 32'h00000000; // from 0 units away
 
-    assign tf_valid_in = 1;
-    assign tf_obj_done_in = new_frame;
+    // assign tf_valid_in = 1;
+    // assign tf_obj_done_in = new_frame;
 
-    assign tf_dist = 32'h41200000; // 10 units away
+    assign tf_dist = 32'h41f00000; // 10 units away
 
-    // assign tf_pos_in_1 = gv_v1_out;
-    // assign tf_pos_in_2 = gv_v2_out;
-    // assign tf_pos_in_3 = gv_v3_out;
+    assign tf_pos_in_1 = gv_v1_out;
+    assign tf_pos_in_2 = gv_v2_out;
+    assign tf_pos_in_3 = gv_v3_out;
 
-    // assign tf_valid_in = gv_valid_out;
-    // assign gv_ready_in = tf_ready_out_1;
+    assign tf_valid_in = gv_valid_out;
+    assign gv_ready_in = tf_ready_out_1;
 
-    // assign tf_obj_done_in = gv_obj_done;
+    assign tf_obj_done_in = gv_obj_done;
 
     transformation tf1 (
         .clk_in(clk_pixel),
@@ -465,7 +467,7 @@ module top_level(
         .ready_out(rast_ready_out)
     );
 
-    // assign led[15:8] = gray;
+    // assign led[0] = gray;
 
     //three tmds_encoders (blue, green, red)
     //will ise gray value for each rgb value

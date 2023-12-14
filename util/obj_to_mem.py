@@ -45,7 +45,7 @@ if __name__ == "__main__":
                     i1 = hex(struct.unpack("i", struct.pack("i", ind[0]))[0])
                     i2 = hex(struct.unpack("i", struct.pack("i", ind[1]))[0])
                     i3 = hex(struct.unpack("i", struct.pack("i", ind[2]))[0])
-                    facets.append(i1[2:].zfill(4)+i2[2:].zfill(4)+i3[2:].zfill(4))
+                    facets.append(i1[2:].zfill(3)+i2[2:].zfill(3)+i3[2:].zfill(3))
 
                     # hex((val + (1 << nbits)) % (1 << nbits)) to get hex of twos complement
 

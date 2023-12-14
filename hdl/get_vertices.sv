@@ -21,7 +21,7 @@ module get_vertices#(
     input wire ready_in
 );
 
-    enum {INIT, GETF, GETTINGF, GETV1, GETTINGV1, GETV2, GETTINGV2, GETV3, GETTINGV3, OUT} state;
+    enum {INIT, GF, GETF, GETTINGF, GV1, GETV1, GETTINGV1, GV2, GETV2, GETTINGV2, GV3, GETV3, GETTINGV3, OUT} state;
 
     logic [11:0] facet_read, vertex_read;
     logic [11:0] f1, f2, f3;
@@ -41,17 +41,23 @@ module get_vertices#(
             case (state)
                 INIT: begin
                     facet_read <= 0;
-                    state <= GETF;
+                    state <= GF;
                     obj_done <= 0;
                     valid_out <= 0;
                 end
-                GETF: begin
+                GF: begin
                     obj_done <= 0;
                     valid_out <= 0;
+                    state <= GETF;
+                end
+                GETF: begin
                     state <= GETTINGF;
                 end
                 GETTINGF: begin
-                    vertex_read <= f1-1;
+                    vertex_read <= f1;
+                    state <= GV1;
+                end
+                GV1: begin
                     state <= GETV1;
                 end
                 GETV1: begin
@@ -62,7 +68,10 @@ module get_vertices#(
                     v1_temp[2] <= y;
                     v1_temp[1] <= z;
                     v1_temp[0] <= 1;
-                    vertex_read <= f2-1;
+                    vertex_read <= f2;
+                    state <= GV2;
+                end
+                GV2: begin
                     state <= GETV2;
                 end
                 GETV2: begin
@@ -73,7 +82,10 @@ module get_vertices#(
                     v2_temp[2] <= y;
                     v2_temp[1] <= z;
                     v2_temp[0] <= 1;
-                    vertex_read <= f3-1;
+                    vertex_read <= f3;
+                    state <= GV3;
+                end
+                GV3: begin
                     state <= GETV3;
                 end
                 GETV3: begin
@@ -96,7 +108,7 @@ module get_vertices#(
                             state <= INIT;
                             obj_done <= 1;
                         end else begin
-                            state <= GETF;
+                            state <= GF;
                             facet_read <= facet_read + 1;
                         end
                     end
