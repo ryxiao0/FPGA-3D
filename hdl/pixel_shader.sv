@@ -87,7 +87,7 @@ module pixel_shader(
 
     logic  [31:0] norm [2:0]; 
 
-    logic  [31:0] sqaures [2:0]; 
+    logic  [31:0] squares [2:0]; 
     logic [31:0] recip; 
     logic [31:0] mag;
     logic [31:0] sec_squared;
@@ -141,10 +141,10 @@ module pixel_shader(
     multiplier ei_mult (  //multiplies e and i 
         .aclk(clk_in),
         .s_axis_a_tdata(e_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(i_in),
-        .s_axis_b_tready(1'b1),
+        .s_axis_b_tready(1),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(ei_out),
         .m_axis_result_tready(1'b1),
@@ -154,10 +154,10 @@ module pixel_shader(
     multiplier fh_mult (  //multiplies f and h 
         .aclk(clk_in),
         .s_axis_a_tdata(f_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(h_in),
-        .s_axis_b_tready(1'b1),
+        .s_axis_b_tready(1),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(fh_out),
         .m_axis_result_tready(1'b1),
@@ -168,10 +168,10 @@ module pixel_shader(
     multiplier fg_mult (  //multiplies f and g 
         .aclk(clk_in),
         .s_axis_a_tdata(f_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(g_in),
-        .s_axis_b_tready(1'b1),
+        .s_axis_b_tready(1),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(fg_out),
         .m_axis_result_tready(1'b1),
@@ -181,10 +181,10 @@ module pixel_shader(
     multiplier di_mult (  //multiplies d and i 
         .aclk(clk_in),
         .s_axis_a_tdata(d_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(i_in),
-        .s_axis_b_tready(1'b1),
+        .s_axis_b_tready(1),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(di_out),
         .m_axis_result_tready(1'b1),
@@ -194,12 +194,12 @@ module pixel_shader(
     multiplier dh_mult (  //multiplies d and h 
         .aclk(clk_in),
         .s_axis_a_tdata(d_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(h_in),
-        .s_axis_b_tready(1'b1),
+        .s_axis_b_tready(1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(dh_mult),
+        .m_axis_result_tdata(dh_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(dh_valid_out)
     );
@@ -207,12 +207,12 @@ module pixel_shader(
     multiplier eg_mult (  //multiplies e and g 
         .aclk(clk_in),
         .s_axis_a_tdata(e_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(1),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(g_in),
-        .s_axis_b_tready(1'b1),
+        .s_axis_b_tready(1),
         .s_axis_b_tvalid(mult_valid_in),
-        .m_axis_result_tdata(eg_mult),
+        .m_axis_result_tdata(eg_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(eg_valid_out)
     );
@@ -301,7 +301,7 @@ module pixel_shader(
         .m_axis_result_tvalid(a4_valid_out)
     );
 
-    adder a3(
+    adder a5(
         .s_axis_a_tdata(a5_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a5_valid_in),
@@ -314,7 +314,7 @@ module pixel_shader(
         .m_axis_result_tvalid(a5_valid_out)
     );
 
-    adder a3(
+    adder a6(
         .s_axis_a_tdata(a6_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a6_valid_in),
@@ -346,6 +346,12 @@ module pixel_shader(
     );
 
 
+    logic map_data_valid_in;
+    color_map_module color_map (
+        .clk(clk_in),
+        .data_valid_in(map_data_valid_in),
+        .cos_squared_x(table_index),
+        .greyscale_color(final_calc_color));
 
 
     always_ff @(posedge clk_in) begin
@@ -424,7 +430,7 @@ module pixel_shader(
                         g_in <= a4_out;
                         h_in <= a5_out;
                         i_in <= a6_out;
-                        state <= NORMAL_CALC_1;
+                        state <= NORMAL_CALC_MULT;
                     end
 
 
@@ -440,7 +446,7 @@ module pixel_shader(
                             normal_calc[1][1] <= dh_out;
                             normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
                             mult_valid_in <= 0;
-                            state <= NORMAL_CALC_2;
+                            state <= NORMAL_CALC_ADD;
 
 
                         end
@@ -471,7 +477,7 @@ module pixel_shader(
                         norm[0] <= a1_out;
                         norm[1] <= a2_out;
                         norm[2] <= a3_out;
-                        state <= ANGLE_CALC_1; 
+                        state <= SQUARE_NORMAL; 
 
 
                         // set up for next state 
@@ -505,7 +511,7 @@ module pixel_shader(
                         squares[0] <= ei_out;
                         squares[1] <= fg_out;
                         squares[2] <= dh_out;
-                        state <= ANGLE_CALC_2;
+                        state <= MAGNITUDE;
 
                         // set up for next state 
                         a1_valid_in <= 1;
@@ -522,7 +528,7 @@ module pixel_shader(
 
                     // light source magnitude is 1
                 end
-                MAGNTIDUE: begin
+                MAGNITUDE: begin
 
                     a1_valid_in <= 0;
                     a2_valid_in <= 0;
@@ -543,7 +549,7 @@ module pixel_shader(
                     end
 
                     if(magnitude_done && recip_done) begin
-                        state <= ANGLE_CALC_3;
+                        state <= SEC_SQUARED;
                         magnitude_done <= 0;
                         recip_done <= 0; 
 
@@ -560,7 +566,7 @@ module pixel_shader(
                         sec_squared <= ei_out;
                         rec_valid_in <= 1;
                         rec_in <= ei_out;
-                        state <= ANGLE_CALC_4;
+                        state <= COS_SQUARED;
                     end
 
                 end
@@ -593,12 +599,14 @@ module pixel_shader(
                     round_valid_in <= 0;
                     if(round_valid_out) begin
                         table_index <= round_out; 
-                        final_calc_color <= color_map(round_out);
+                        map_data_valid_in <= 1;
+                        state <= COLOR;
                     end
 
                 end
                 // TODO: map that  (cos(angle)) to a color 
                 COLOR: begin 
+                    map_data_valid_in <= 0;
 
                     if(norm[2][31]) begin 
                         // the normal vector is pointing away from the screen - the color shouldn't be visible 
@@ -621,27 +629,34 @@ module pixel_shader(
 
 endmodule
 
-function [8:0] greyscale_color (input [15:0] cos_squared_x); //initial stab at mapping (light drops off expontentially)
+`default_nettype wire
+
+module color_map_module (
+    input wire clk,
+    input wire data_valid_in,
+    input wire [15:0] cos_squared_x,
+    output logic [7:0] greyscale_color); //initial stab at mapping (light drops off expontentially)
+
+    always_ff @(posedge clk)begin
     case (cos_squared_x) //floor of 16*cos2x
-        16'd0:  greyscale_color = 8'd0;
-        16'd1:  greyscale_color = 8'd20;
-        16'd2:  greyscale_color = 8'd40;
-        16'd3:  greyscale_color = 8'd60;
-        16'd4:  greyscale_color = 8'd78;
-        16'd5:  greyscale_color = 8'd96;
-        16'd6:  greyscale_color = 8'd114;
-        16'd7:  greyscale_color = 8'd130;
-        16'd8:  greyscale_color = 8'd146;
-        16'd9:  greyscale_color = 8'd162;                 //peak brightness should be perpendicular to the light source? I think
-        16'd10:  greyscale_color = 8'd178;
-        16'd11:  greyscale_color = 8'd194;
-        16'd12:  greyscale_color = 8'd210;
-        16'd13:  greyscale_color = 8'd226;
-        16'd14:  greyscale_color = 8'd242;
-        16'd15:  greyscale_color = 8'd256;
+        16'd0:  greyscale_color <= 8'd0;
+        16'd1:  greyscale_color <= 8'd20;
+        16'd2:  greyscale_color <= 8'd40;
+        16'd3:  greyscale_color <= 8'd60;
+        16'd4:  greyscale_color <= 8'd78;
+        16'd5:  greyscale_color <= 8'd96;
+        16'd6:  greyscale_color <= 8'd114;
+        16'd7:  greyscale_color <= 8'd130;
+        16'd8:  greyscale_color <= 8'd146;
+        16'd9:  greyscale_color <= 8'd162;               
+        16'd10:  greyscale_color <= 8'd178;
+        16'd11:  greyscale_color <= 8'd194;
+        16'd12:  greyscale_color <= 8'd210;
+        16'd13:  greyscale_color <= 8'd226;
+        16'd14:  greyscale_color <= 8'd242;
+        16'd15:  greyscale_color <= 8'd256;
 
         
     endcase;
-endfunction
-`default_nettype wire
-
+    end
+endmodule
