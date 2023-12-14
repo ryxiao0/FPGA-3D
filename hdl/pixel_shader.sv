@@ -126,7 +126,6 @@ module pixel_shader(
     logic [15:0] rec_out;
     logic rec_valid_out;
 
-    assign norm_out = norm;
     reciprocal rec (
         .aclk(clk_in),
         .s_axis_a_tdata(rec_in),
