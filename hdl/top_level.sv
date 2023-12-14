@@ -202,16 +202,32 @@ module top_level(
     //     end
     // end
 
+    // Transformation Test - works, theres an odd gray square tho
+    assign tf_pos_in_1[3] = 32'h3f800000; // 1
+    assign tf_pos_in_1[2] = 32'h3f800000; // 1
+    assign tf_pos_in_1[1] = 32'h00000000; // from 0 units away
+
+    assign tf_pos_in_2[3] = 32'hbf800000; // 1
+    assign tf_pos_in_2[2] = 32'h3f800000; // -1
+    assign tf_pos_in_2[1] = 32'h00000000; // from 10 units away
+
+    assign tf_pos_in_3[3] = 32'h00000000; // 0
+    assign tf_pos_in_3[2] = 32'h00000000; // 0
+    assign tf_pos_in_3[1] = 32'h00000000; // from 0 units away
+
+    assign tf_valid_in = 1;
+    assign tf_obj_done_in = new_frame;
+
     assign tf_dist = 32'h41200000; // 10 units away
 
-    assign tf_pos_in_1 = gv_v1_out;
-    assign tf_pos_in_2 = gv_v2_out;
-    assign tf_pos_in_3 = gv_v3_out;
+    // assign tf_pos_in_1 = gv_v1_out;
+    // assign tf_pos_in_2 = gv_v2_out;
+    // assign tf_pos_in_3 = gv_v3_out;
 
-    assign tf_valid_in = gv_valid_out;
-    assign gv_ready_in = tf_ready_out_1;
+    // assign tf_valid_in = gv_valid_out;
+    // assign gv_ready_in = tf_ready_out_1;
 
-    assign tf_obj_done_in = gv_obj_done;
+    // assign tf_obj_done_in = gv_obj_done;
 
     transformation tf1 (
         .clk_in(clk_pixel),
@@ -339,30 +355,30 @@ module top_level(
 
     // assign tp_valid_in = fifo_out_valid;
 
-    // Triangle Projection Test
-    assign tp_coor_in_1[3] = 32'h3f800000; // 2
-    assign tp_coor_in_1[2] = 32'h3f800000; // 2
-    assign tp_coor_in_1[1] = 32'h41200000; // from 10 units away
+    // Triangle Projection Test - works
+    // assign tp_coor_in_1[3] = 32'h3f800000; // 1
+    // assign tp_coor_in_1[2] = 32'h3f800000; // 1
+    // assign tp_coor_in_1[1] = 32'h41200000; // from 10 units away
 
-    assign tp_coor_in_2[3] = 32'hbf800000; // 2
-    assign tp_coor_in_2[2] = 32'h3f800000; // -2
-    assign tp_coor_in_2[1] = 32'h41200000; // from 10 units away
+    // assign tp_coor_in_2[3] = 32'hbf800000; // 1
+    // assign tp_coor_in_2[2] = 32'h3f800000; // -1
+    // assign tp_coor_in_2[1] = 32'h41200000; // from 10 units away
 
-    assign tp_coor_in_3[3] = 32'h00000000; // 0
-    assign tp_coor_in_3[2] = 32'h00000000; // 0
-    assign tp_coor_in_3[1] = 32'h41200000; // from 10 units away
+    // assign tp_coor_in_3[3] = 32'h00000000; // 0
+    // assign tp_coor_in_3[2] = 32'h00000000; // 0
+    // assign tp_coor_in_3[1] = 32'h41200000; // from 10 units away
 
-    assign tp_valid_in = 1;
-    assign tp_obj_done_in = new_frame;
+    // assign tp_valid_in = 1;
+    // assign tp_obj_done_in = new_frame;
 
-    // assign tp_coor_in_1 = tf_pos_out_1;
-    // assign tp_coor_in_2 = tf_pos_out_2;
-    // assign tp_coor_in_3 = tf_pos_out_3; 
+    assign tp_coor_in_1 = tf_pos_out_1;
+    assign tp_coor_in_2 = tf_pos_out_2;
+    assign tp_coor_in_3 = tf_pos_out_3; 
 
-    // assign tp_valid_in = tf_valid_out_1;
-    // assign tf_ready_in = tp_ready_out_1;
+    assign tp_valid_in = tf_valid_out_1;
+    assign tf_ready_in = tp_ready_out_1;
 
-    // assign tp_obj_done_in = tf_obj_done_out_1;
+    assign tp_obj_done_in = tf_obj_done_out_1;
 
     tri_proj tp1 (
         .clk_in(clk_pixel),
