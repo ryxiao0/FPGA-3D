@@ -3,7 +3,7 @@
 
 module rasterizer_tb;
 
-    parameter W=64, H=64;
+    parameter W=16, H=16;
 
     logic clk;
     logic rst;
@@ -13,13 +13,14 @@ module rasterizer_tb;
     logic valid_tri;
     logic obj_done;
     logic new_frame;
-    logic [5:0] hcount_in;
-    logic [5:0] vcount_in;
+    logic [10:0] hcount_in;
+    logic [9:0] vcount_in;
     logic [7:0] color;
+    logic ready;
 
     rasterizer #(
-        .WIDTH(64),
-        .HEIGHT(64)
+        .WIDTH(360),
+        .HEIGHT(360)
         )uut(
         .clk_in(clk),
         .rst_in(rst),
@@ -31,7 +32,8 @@ module rasterizer_tb;
         .new_frame(new_frame),
         .hcount(hcount_in),
         .vcount(vcount_in),
-        .color_out(color)
+        .color_out(color),
+        .ready_out(ready)
     );
 
     always begin
@@ -45,34 +47,31 @@ module rasterizer_tb;
         $display("Starting Sim"); //print nice message at start
         clk = 0;
         rst = 0;
-        v1[2] = 20;
-        v1[1] = 20;
-        v2[2] = 20;
-        v2[1] = 40;
-        v3[2] = 40;
-        v3[1] = 20;
+        v1[2] = 5;
+        v1[1] = 5;
+        v2[2] = 10;
+        v2[1] = 5;
+        v3[2] = 5;
+        v3[1] = 10;
         #5;
         rst = 1;
         #10;
         rst = 0;
-        valid_tri = 1;
-        for (integer i = 0; i<64; i = i + 1)begin
-            for (integer j = 0; j<64; j = j + 1) begin
-                hcount_in = j;
-                vcount_in = i;
-                #10;
+        for (integer n = 0; n<4; n = n+1) begin
+            valid_tri = 1;
+            obj_done = 1;
+            #10;
+            valid_tri = 0;
+            obj_done = 0;
+            #10;
+            for (integer i = 0; i<16; i = i + 1)begin
+                for (integer j = 0; j<16; j = j + 1) begin
+                    hcount_in = j;
+                    vcount_in = i;
+                    #10;
+                end
             end
         end
-        obj_done = 1;
-        #10;
-        for (integer i = 0; i<64; i = i + 1)begin
-            for (integer j = 0; j<64; j = j + 1) begin
-                hcount_in = j;
-                vcount_in = i;
-                #10;
-            end
-        end
-        #30000;
         $display("Finishing Sim"); //print nice message
         $finish;
     end

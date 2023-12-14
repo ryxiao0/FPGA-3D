@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Thu Dec 14 05:41:20 2023
+| Date         : Thu Dec 14 06:48:10 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_timing -file obj/post_route_timing.rpt
 | Design       : top_level
@@ -12,19 +12,19 @@ Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanc
 
 Timing Report
 
-Slack (MET) :             1.658ns  (required time - arrival time)
-  Source:                 tp3/x_reg[0]/C
+Slack (MET) :             1.943ns  (required time - arrival time)
+  Source:                 tp2/y_reg[1]/C
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Destination:            rast/intri/detv1v2_reg[16]/D
                             (rising edge-triggered cell FDRE clocked by clk_pixel_clk_wiz_0  {rise@0.000ns fall@6.734ns period=13.468ns})
   Path Group:             clk_pixel_clk_wiz_0
   Path Type:              Setup (Max at Slow Process Corner)
   Requirement:            13.468ns  (clk_pixel_clk_wiz_0 rise@13.468ns - clk_pixel_clk_wiz_0 rise@0.000ns)
-  Data Path Delay:        11.724ns  (logic 6.209ns (52.961%)  route 5.515ns (47.039%))
-  Logic Levels:           17  (CARRY4=10 LUT1=1 LUT2=2 LUT3=1 LUT4=1 LUT6=2)
-  Clock Path Skew:        -0.027ns (DCD - SCD + CPR)
+  Data Path Delay:        11.366ns  (logic 5.889ns (51.813%)  route 5.477ns (48.187%))
+  Logic Levels:           15  (CARRY4=8 LUT1=1 LUT2=2 LUT3=1 LUT4=1 LUT6=2)
+  Clock Path Skew:        -0.100ns (DCD - SCD + CPR)
     Destination Clock Delay (DCD):    -1.561ns = ( 11.907 - 13.468 ) 
-    Source Clock Delay      (SCD):    -0.972ns
+    Source Clock Delay      (SCD):    -0.899ns
     Clock Pessimism Removal (CPR):    0.562ns
   Clock Uncertainty:      0.168ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter     (TSJ):    0.071ns
@@ -43,56 +43,50 @@ Slack (MET) :             1.658ns  (required time - arrival time)
                                                      -6.965    -4.291 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.666    -2.625    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.096    -2.529 r  mhdmicw/clkout1_buf/O
-                         net (fo=5390, routed)        1.557    -0.972    tp3/clk_pixel
-    SLICE_X10Y30         FDRE                                         r  tp3/x_reg[0]/C
+                         net (fo=5392, routed)        1.630    -0.899    tp2/clk_pixel
+    SLICE_X5Y35          FDRE                                         r  tp2/y_reg[1]/C
   -------------------------------------------------------------------    -------------------
-    SLICE_X10Y30         FDRE (Prop_fdre_C_Q)         0.518    -0.454 r  tp3/x_reg[0]/Q
-                         net (fo=12, routed)          0.882     0.428    tp3/coor_out[2][0]
-    SLICE_X11Y30         LUT2 (Prop_lut2_I0_O)        0.124     0.552 r  tp3/vect2[1]_carry_i_4/O
-                         net (fo=1, routed)           0.000     0.552    rast/intri/detvv2_reg_2[0]
-    SLICE_X11Y30         CARRY4 (Prop_carry4_S[0]_O[2])
-                                                      0.547     1.099 r  rast/intri/vect2[1]_carry/O[2]
-                         net (fo=22, routed)          1.360     2.459    rast/intri/x_reg[7][1]
-    SLICE_X13Y37         LUT6 (Prop_lut6_I0_O)        0.302     2.761 r  rast/intri/detv1v21__0_carry__0_i_4/O
-                         net (fo=2, routed)           0.603     3.364    rast/intri/detv1v21__0_carry__0_i_4_n_0
-    SLICE_X12Y38         LUT6 (Prop_lut6_I0_O)        0.124     3.488 r  rast/intri/detv1v21__0_carry__0_i_8/O
-                         net (fo=1, routed)           0.000     3.488    rast/intri/detv1v21__0_carry__0_i_8_n_0
-    SLICE_X12Y38         CARRY4 (Prop_carry4_S[0]_CO[3])
-                                                      0.513     4.001 r  rast/intri/detv1v21__0_carry__0/CO[3]
-                         net (fo=1, routed)           0.000     4.001    rast/intri/detv1v21__0_carry__0_n_0
-    SLICE_X12Y39         CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.219     4.220 r  rast/intri/detv1v21__0_carry__1/O[0]
-                         net (fo=1, routed)           0.602     4.822    rast/intri/detv1v21__0_carry__1_n_7
-    SLICE_X14Y43         CARRY4 (Prop_carry4_S[0]_O[0])
-                                                      0.547     5.369 r  rast/intri/detv1v21__102_carry/O[0]
-                         net (fo=2, routed)           0.586     5.954    rast/intri/detv1v21__102_carry_n_7
-    SLICE_X12Y43         LUT3 (Prop_lut3_I0_O)        0.321     6.275 r  rast/intri/detv1v21__125_carry__0_i_2/O
-                         net (fo=2, routed)           0.365     6.640    rast/intri/detv1v21__125_carry__0_i_2_n_0
-    SLICE_X12Y43         LUT4 (Prop_lut4_I3_O)        0.348     6.988 r  rast/intri/detv1v21__125_carry__0_i_6/O
-                         net (fo=1, routed)           0.000     6.988    rast/intri/detv1v21__125_carry__0_i_6_n_0
-    SLICE_X12Y43         CARRY4 (Prop_carry4_S[2]_CO[3])
-                                                      0.380     7.368 r  rast/intri/detv1v21__125_carry__0/CO[3]
-                         net (fo=1, routed)           0.000     7.368    rast/intri/detv1v21__125_carry__0_n_0
-    SLICE_X12Y44         CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.323     7.691 f  rast/intri/detv1v21__125_carry__1/O[1]
-                         net (fo=1, routed)           0.597     8.289    rast/intri/detv1v21[12]
-    SLICE_X9Y43          LUT1 (Prop_lut1_I0_O)        0.306     8.595 r  rast/intri/detv1v20_carry__1_i_6/O
-                         net (fo=1, routed)           0.000     8.595    rast/intri/detv1v20_carry__1_i_6_n_0
-    SLICE_X9Y43          CARRY4 (Prop_carry4_S[3]_CO[3])
-                                                      0.401     8.996 r  rast/intri/detv1v20_carry__1_i_5/CO[3]
-                         net (fo=1, routed)           0.000     8.996    rast/intri/detv1v20_carry__1_i_5_n_0
-    SLICE_X9Y44          CARRY4 (Prop_carry4_CI_O[1])
-                                                      0.334     9.330 r  rast/intri/detv1v20_carry__2_i_5/O[1]
-                         net (fo=1, routed)           0.521     9.850    rast/intri/detv1v20_carry__2_i_5_n_6
-    SLICE_X8Y44          LUT2 (Prop_lut2_I1_O)        0.303    10.153 r  rast/intri/detv1v20_carry__2_i_2/O
-                         net (fo=1, routed)           0.000    10.153    rast/intri/detv1v20_carry__2_i_2_n_0
-    SLICE_X8Y44          CARRY4 (Prop_carry4_S[2]_CO[3])
-                                                      0.380    10.533 r  rast/intri/detv1v20_carry__2/CO[3]
-                         net (fo=1, routed)           0.000    10.533    rast/intri/detv1v20_carry__2_n_0
-    SLICE_X8Y45          CARRY4 (Prop_carry4_CI_O[0])
-                                                      0.219    10.752 r  rast/intri/detv1v20_carry__3/O[0]
-                         net (fo=1, routed)           0.000    10.752    rast/intri/detv1v200_out[16]
-    SLICE_X8Y45          FDRE                                         r  rast/intri/detv1v2_reg[16]/D
+    SLICE_X5Y35          FDRE (Prop_fdre_C_Q)         0.456    -0.443 r  tp2/y_reg[1]/Q
+                         net (fo=12, routed)          0.703     0.260    tp2/coor_out[1][1]
+    SLICE_X5Y35          LUT2 (Prop_lut2_I0_O)        0.124     0.384 r  tp2/vect1[0]_carry_i_3/O
+                         net (fo=1, routed)           0.000     0.384    rast/intri/S[1]
+    SLICE_X5Y35          CARRY4 (Prop_carry4_S[1]_O[2])
+                                                      0.580     0.964 r  rast/intri/vect1[0]_carry/O[2]
+                         net (fo=23, routed)          1.447     2.411    rast/intri/A_0[2]
+    SLICE_X11Y40         LUT6 (Prop_lut6_I1_O)        0.302     2.713 r  rast/intri/detv1v21__0_carry__0_i_3/O
+                         net (fo=2, routed)           0.438     3.151    rast/intri/detv1v21__0_carry__0_i_3_n_0
+    SLICE_X10Y41         LUT6 (Prop_lut6_I0_O)        0.124     3.275 r  rast/intri/detv1v21__0_carry__0_i_7/O
+                         net (fo=1, routed)           0.000     3.275    rast/intri/detv1v21__0_carry__0_i_7_n_0
+    SLICE_X10Y41         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.533     3.808 r  rast/intri/detv1v21__0_carry__0/CO[3]
+                         net (fo=1, routed)           0.000     3.808    rast/intri/detv1v21__0_carry__0_n_0
+    SLICE_X10Y42         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.323     4.131 r  rast/intri/detv1v21__0_carry__1/O[1]
+                         net (fo=2, routed)           0.620     4.751    rast/intri/detv1v21__0_carry__1_n_6
+    SLICE_X10Y44         CARRY4 (Prop_carry4_DI[1]_O[2])
+                                                      0.729     5.480 r  rast/intri/detv1v21__102_carry/O[2]
+                         net (fo=2, routed)           0.559     6.038    rast/intri/detv1v21__102_carry_n_5
+    SLICE_X7Y44          LUT3 (Prop_lut3_I0_O)        0.301     6.339 r  rast/intri/detv1v21__125_carry__1_i_4/O
+                         net (fo=2, routed)           0.650     6.990    rast/intri/detv1v21__125_carry__1_i_4_n_0
+    SLICE_X9Y44          LUT4 (Prop_lut4_I3_O)        0.124     7.114 r  rast/intri/detv1v21__125_carry__1_i_8/O
+                         net (fo=1, routed)           0.000     7.114    rast/intri/detv1v21__125_carry__1_i_8_n_0
+    SLICE_X9Y44          CARRY4 (Prop_carry4_S[0]_O[2])
+                                                      0.547     7.661 f  rast/intri/detv1v21__125_carry__1/O[2]
+                         net (fo=1, routed)           0.443     8.104    rast/intri/detv1v21[13]
+    SLICE_X11Y44         LUT1 (Prop_lut1_I0_O)        0.302     8.406 r  rast/intri/detv1v20_carry__2_i_9/O
+                         net (fo=1, routed)           0.000     8.406    rast/intri/detv1v20_carry__2_i_9_n_0
+    SLICE_X11Y44         CARRY4 (Prop_carry4_S[0]_O[2])
+                                                      0.547     8.953 r  rast/intri/detv1v20_carry__2_i_5/O[2]
+                         net (fo=1, routed)           0.617     9.570    rast/intri/detv1v20_carry__2_i_5_n_5
+    SLICE_X12Y44         LUT2 (Prop_lut2_I1_O)        0.302     9.872 r  rast/intri/detv1v20_carry__2_i_1/O
+                         net (fo=1, routed)           0.000     9.872    rast/intri/detv1v20_carry__2_i_1_n_0
+    SLICE_X12Y44         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.376    10.248 r  rast/intri/detv1v20_carry__2/CO[3]
+                         net (fo=1, routed)           0.000    10.248    rast/intri/detv1v20_carry__2_n_0
+    SLICE_X12Y45         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.219    10.467 r  rast/intri/detv1v20_carry__3/O[0]
+                         net (fo=1, routed)           0.000    10.467    rast/intri/detv1v200_out[16]
+    SLICE_X12Y45         FDRE                                         r  rast/intri/detv1v2_reg[16]/D
   -------------------------------------------------------------------    -------------------
 
                          (clock clk_pixel_clk_wiz_0 rise edge)
@@ -105,16 +99,16 @@ Slack (MET) :             1.658ns  (required time - arrival time)
                                                      -7.221     8.779 r  mhdmicw/mmcm_adv_inst/CLKOUT0
                          net (fo=1, routed)           1.587    10.366    mhdmicw/clk_pixel_clk_wiz_0
     BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.091    10.457 r  mhdmicw/clkout1_buf/O
-                         net (fo=5390, routed)        1.450    11.907    rast/intri/clk_pixel
-    SLICE_X8Y45          FDRE                                         r  rast/intri/detv1v2_reg[16]/C
+                         net (fo=5392, routed)        1.450    11.907    rast/intri/clk_pixel
+    SLICE_X12Y45         FDRE                                         r  rast/intri/detv1v2_reg[16]/C
                          clock pessimism              0.562    12.469    
                          clock uncertainty           -0.168    12.301    
-    SLICE_X8Y45          FDRE (Setup_fdre_C_D)        0.109    12.410    rast/intri/detv1v2_reg[16]
+    SLICE_X12Y45         FDRE (Setup_fdre_C_D)        0.109    12.410    rast/intri/detv1v2_reg[16]
   -------------------------------------------------------------------
                          required time                         12.410    
-                         arrival time                         -10.752    
+                         arrival time                         -10.467    
   -------------------------------------------------------------------
-                         slack                                  1.658    
+                         slack                                  1.943    
 
 
 

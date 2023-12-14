@@ -6,9 +6,7 @@
 
 module rasterizer #(
     parameter WIDTH = 360,
-    parameter HEIGHT = 360,
-    parameter BITWIDTH = $clog(WIDTH)-1,
-    parameter BITHEIGHT = $clog(HEIGHT)-1
+    parameter HEIGHT = 360
     )
     (
     input wire clk_in,
@@ -16,6 +14,9 @@ module rasterizer #(
     input wire [8:0] vert1 [2:0],
     input wire [8:0] vert2 [2:0],
     input wire [8:0] vert3 [2:0],
+    // input wire [3:0] vert1 [2:0],
+    // input wire [3:0] vert2 [2:0],
+    // input wire [3:0] vert3 [2:0],
     input wire valid_tri,
     input wire obj_done,
     input wire new_frame,
@@ -50,20 +51,21 @@ module rasterizer #(
         hcount_in_pipe[0] <= hcount;
         vcount_in_pipe[0] <= vcount;
         for (int i=1;i<STAGES;i=i+1) begin // 2 3 or 4 stages
-        hcount_in_pipe[i] <= hcount_in_pipe[i-1];
-        vcount_in_pipe[i] <= vcount_in_pipe[i-1];
+            hcount_in_pipe[i] <= hcount_in_pipe[i-1];
+            vcount_in_pipe[i] <= vcount_in_pipe[i-1];
         end
     end
 
     // buffer swap
     logic buf_sel;
-    always_ff @(posedge clk_in) begin
-        if (rst_in) buf_sel <= 0;
-        else if (valid_tri && obj_done) buf_sel <= ~buf_sel;
-    end
+    // always_ff @(posedge clk_in) begin
+    //     if (rst_in) buf_sel <= 0;
+    //     else if (valid_tri && obj_done) buf_sel <= ~buf_sel;
+    // end
 
     // write buffer: 0 means buffer0 is being read, 1 means buffer1 is being read
-    logic [16:0] write_addr, write_in;
+    logic [16:0] write_addr, write_in, rewrite_addr;
+    // logic [7:0] write_addr, write_in, rewrite_addr;
     logic wea0, wea1;
     logic [8:0] read_out_w;
 
@@ -71,6 +73,9 @@ module rasterizer #(
     logic [8:0] x_max, x_min, y_max, y_min;
     logic [8:0] x_iter, y_iter;
     logic [8:0] depth; 
+    // logic [3:0] x_max, x_min, y_max, y_min;
+    // logic [3:0] x_iter, y_iter;
+    // logic [3:0] depth; 
 
     assign x_max = (vert1[2] > vert2[2] && 
                     vert1[2] > vert3[2])? vert1[2]:
@@ -96,21 +101,25 @@ module rasterizer #(
     // read buffer 0 means buffer1 is read, 1 means buffer0 is read
     logic valid_r;
     logic [7:0] read_pipe [1:0];
-    logic [15:0] buffer_in0, buffer_in1;
     logic [7:0] color_val;
     logic [16:0] read_out0, read_out1;
+    // logic [11:0] read_out0, read_out1;
     logic [7:0] read_out;
     logic [16:0] read_addr0, read_addr1;
     logic [16:0] write_addr0, write_addr1;
+    // logic [7:0] read_addr0, read_addr1;
+    // logic [7:0] write_addr0, write_addr1;
 
     assign read_out_w = (buf_sel)? read_out0[8:0]: read_out1[8:0]; // buffer being written
     assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
-    assign write_addr0 = write_addr;
-    assign write_addr1 = write_addr;
+    assign write_addr0 = write_addr; //(buf_sel)? write_addr: rewrite_addr;
+    assign write_addr1 = write_addr; //(~buf_sel)? rewrite_addr: write_addr;
 
     logic in_tri_v_in, in_tri_out, in_tri_v_out;
+
+    logic obj_done_med;
 
     in_triangle intri (
         .clk_in(clk_in),
@@ -133,12 +142,14 @@ module rasterizer #(
             wea1 <= 0;
             state <= RECEIVE;
             in_tri_v_in <= 0;
+            buf_sel <= 0;
         end else begin
             case (state)
                 RECEIVE: begin
                     if (valid_tri) begin
                         state <= ITER;
                         ready_out <= 0;
+                        obj_done_med <= obj_done;
                     end else ready_out <= 1;
                     x_iter <= x_min-1;
                     y_iter <= y_min-1;
@@ -173,6 +184,7 @@ module rasterizer #(
                     end else in_tri_v_in <= 0;
                 end
                 SEND: begin // need to figure out timing
+                    if (obj_done_med) buf_sel <= ~buf_sel;
                     state <= RECEIVE;
                 end
             endcase;
@@ -183,10 +195,19 @@ module rasterizer #(
     ///Frame Buffer///
     //////////////////
 
-    assign color_out = read_out;
+    always_ff @(posedge clk_in) begin
+        if (rst_in) begin
+            color_out <= 0;
+        end else begin
+            color_out <= read_out;
+            // rewrite_addr <= hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
+        end
+    end
+    // assign color_out = read_out;
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)
+        // .RAM_WIDTH(12),
         .RAM_DEPTH(WIDTH*HEIGHT),
         .INIT_FILE(`FPATH(zbuffer_init.mem)))
         z_buffer0 (
@@ -210,6 +231,7 @@ module rasterizer #(
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)
+        // .RAM_WIDTH(12),
         .RAM_DEPTH(WIDTH*HEIGHT),
         .INIT_FILE(`FPATH(zbuffer_init.mem)))
         z_buffer1 (
