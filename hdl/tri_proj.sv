@@ -29,8 +29,6 @@ module tri_proj
     logic [15:0] round_out; // fixed point, index [14:6] for 9 bit int, [15:6] for signed
     logic round_v_in, round_v_out;
 
-    assign obj_done_out = obj_done_in;
-
     logic [31:0] x_f, y_f, z_f;
 
     assign z_f = coor_in[1];
@@ -42,6 +40,8 @@ module tri_proj
     assign coor_out[2] = x;
     assign coor_out[1] = y;
     assign coor_out[0] = z;
+
+    logic obj_done_med;
 
     reciprocal rec (
         .aclk(clk_in),
@@ -89,6 +89,7 @@ module tri_proj
                         mult_b_in <= RECIP_D;
                         state <= DIV;
                         ready_out <= 0;
+                        obj_done_med <= obj_done_in;
                     end else ready_out <= 1;
                     valid_out <= 0;
 
@@ -167,6 +168,7 @@ module tri_proj
                         if (ready_in) begin
                             z <= shift[8:0]; // drop sign
                             valid_out <= 1;
+                            obj_done_out <= obj_done_med;
                             state <= IDLE;
                         end
                     end else round_v_in <= 0;

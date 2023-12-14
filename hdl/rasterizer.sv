@@ -53,7 +53,7 @@ module rasterizer #(
     logic buf_sel;
     always_ff @(posedge clk_in) begin
         if (rst_in) buf_sel <= 0;
-        else if (obj_done) buf_sel <= ~buf_sel;
+        else if (valid_tri && obj_done) buf_sel <= ~buf_sel;
     end
 
     // write buffer: 0 means buffer0 is being read, 1 means buffer1 is being read
@@ -98,8 +98,8 @@ module rasterizer #(
     logic [16:0] write_addr0, write_addr1;
 
     assign read_out_w = (buf_sel)? read_out0[8:0]: read_out1[8:0]; // buffer being written
-    assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
-    assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
+    assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
+    assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount + vcount*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
     assign write_addr0 = write_addr;
     assign write_addr1 = write_addr;
@@ -151,15 +151,15 @@ module rasterizer #(
                 CHECK: begin
                     if (in_tri_v_out) begin
                         if (in_tri_out) begin
-                            // if (depth <= read_out_w[8:0]) begin
+                            if (depth <= read_out_w[8:0]) begin
                                 write_addr <= x_iter + y_iter*WIDTH;
                                 write_in <= {COLOR, depth};
                                 if (buf_sel) wea0 <= 1;
                                 else wea1 <= 1;
-                            // end else begin
-                            //     wea0 <= 0;
-                            //     wea1 <= 0;
-                            // end
+                            end else begin
+                                wea0 <= 0;
+                                wea1 <= 0;
+                            end
                         end
 
                         if (y_iter > y_max) state <= SEND;

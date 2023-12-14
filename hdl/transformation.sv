@@ -19,10 +19,9 @@ module transformation
 
     enum {READY, TOVIEW} state;
 
-    assign obj_done_out = obj_done_in;
-
     logic [31:0] add_a_in, add_b_in, add_out;
     logic add_v_in, add_v_out;
+    logic obj_done_med;
 
     adder add (
         .aclk(clk_in),
@@ -65,18 +64,23 @@ module transformation
                         add_b_in <= distance;
                         add_v_in <= 1;
                         state <= TOVIEW;
-                    end
+                        ready_out <= 0;
+                        obj_done_med <= obj_done_in;
+                    end else ready_out <= 1;
                     valid_out <= 0;
                 end
                 TOVIEW: begin
-                    if (add_v_out) begin
-                        valid_out <= 1;
-                        new_pos[3] <= pos[3];
-                        new_pos[2] <= pos[2];
-                        new_pos[1] <= add_out;
-                        new_pos[0] <= pos[0];
-                        state <= READY;
-                    end else add_v_in <= 0;
+                    if (ready_in) begin
+                        if (add_v_out) begin
+                            valid_out <= 1;
+                            obj_done_out <= obj_done_med;
+                            new_pos[3] <= pos[3];
+                            new_pos[2] <= pos[2];
+                            new_pos[1] <= add_out;
+                            new_pos[0] <= pos[0];
+                            state <= READY;
+                        end else add_v_in <= 0;
+                    end
                 end
             endcase;
         end

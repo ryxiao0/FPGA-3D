@@ -156,7 +156,7 @@ module top_level(
         .ready_in(gv_ready_in)
     );
 
-    assign led[0] = gv_obj_done;
+    // assign led[0] = gv_obj_done;
 
     // assign led[0] = gv_valid_out;
 
@@ -205,22 +205,22 @@ module top_level(
     // end
 
     // Transformation Test - works, theres an odd gray square tho
-    // assign tf_pos_in_1[3] = 32'h3f800000; // 1
-    // assign tf_pos_in_1[2] = 32'h3f800000; // 1
-    // assign tf_pos_in_1[1] = 32'h00000000; // from 0 units away
+    // assign tf_pos_in_1[3] = 32'hc0200000; // 1
+    // assign tf_pos_in_1[2] = 32'h40200000; // 1
+    // assign tf_pos_in_1[1] = 32'hc0200000; // from 0 units away
 
-    // assign tf_pos_in_2[3] = 32'hbf800000; // 1
-    // assign tf_pos_in_2[2] = 32'h3f800000; // -1
-    // assign tf_pos_in_2[1] = 32'h00000000; // from 10 units away
+    // assign tf_pos_in_2[3] = 32'hc0200000; // 1
+    // assign tf_pos_in_2[2] = 32'hc0200000; // -1
+    // assign tf_pos_in_2[1] = 32'hc0200000; // from 10 units away
 
-    // assign tf_pos_in_3[3] = 32'h00000000; // 0
-    // assign tf_pos_in_3[2] = 32'h00000000; // 0
-    // assign tf_pos_in_3[1] = 32'h00000000; // from 0 units away
+    // assign tf_pos_in_3[3] = 32'hc0200000; // 0
+    // assign tf_pos_in_3[2] = 32'h40200000; // 0
+    // assign tf_pos_in_3[1] = 32'h40200000; // from 0 units away
 
     // assign tf_valid_in = 1;
     // assign tf_obj_done_in = new_frame;
 
-    assign tf_dist = 32'h41f00000; // 10 units away
+    assign tf_dist = 32'h41f00000; // 30 units away
 
     assign tf_pos_in_1 = gv_v1_out;
     assign tf_pos_in_2 = gv_v2_out;
