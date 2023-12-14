@@ -10,9 +10,12 @@ module pixel_shader(
     input wire [31:0] triangle [2:0] [3:0],
     // output logic [31:0] test_out,
     // output logic [31:0] mag_out,
+    // output logic [31:0] mag_recip_out, 
+    // output logic [31:0] dot_prod_out, 
     // output logic [31:0] vector_out [5:0],
     // output logic [31:0] norm_calc_mult [5:0],
     // output logic [31:0] norm_out [2:0],
+    // output logic [31:0] squares_out [2:0],
     output logic valid_out, 
     output logic [7:0] color_out
 );
@@ -123,7 +126,7 @@ module pixel_shader(
     logic [15:0] rec_out;
     logic rec_valid_out;
 
-    // assign norm_out = norm;
+    assign norm_out = norm;
     reciprocal rec (
         .aclk(clk_in),
         .s_axis_a_tdata(rec_in),
@@ -429,6 +432,12 @@ module pixel_shader(
 
                 end
                 VECTOR_CALC: begin
+                    a1_valid_in <= 0;
+                    a2_valid_in <= 0;
+                    a3_valid_in <= 0;
+                    a4_valid_in <= 0;
+                    a5_valid_in <= 0;
+                    a6_valid_in <= 0;
                     if(a1_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
                         d_in <= a1_out; //(d, e, f) is vector 1
                         e_in <= a2_out;
@@ -453,58 +462,55 @@ module pixel_shader(
                 end
                 // find the normal vector to the triangle
                 NORMAL_CALC_MULT: begin
-                        if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
-                            mult_valid_in <= 0;
-                            // normal_calc[0][0] <= ei_out;
-                            // normal_calc[0][1] <= {~fh_out[31], fh_out[30:0]};
-                            // normal_calc[0][2] <= fg_out;
-                            // normal_calc[1][0] <= {~di_out[31], di_out[30:0]}; 
-                            // normal_calc[1][1] <= dh_out;
-                            // normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
-                            
+                    mult_valid_in <= 0;
+                    if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
+                        
 
-                            state <= NORMAL_CALC_ADD;
-                            // norm_calc_mult[0] <= ei_out;
-                            // norm_calc_mult[1] <= fh_out;
-                            // norm_calc_mult[2] <= fg_out;
-                            // norm_calc_mult[3] <= di_out;
-                            // norm_calc_mult[4] <= dh_out;
-                            // norm_calc_mult[5] <= eg_out;
+                        state <= NORMAL_CALC_ADD;
+                        // norm_calc_mult[0] <= ei_out;
+                        // norm_calc_mult[1] <= fh_out;
+                        // norm_calc_mult[2] <= fg_out;
+                        // norm_calc_mult[3] <= di_out;
+                        // norm_calc_mult[4] <= dh_out;
+                        // norm_calc_mult[5] <= eg_out;
 
 
-                            a1_in_1 <= ei_out; // subtracting to get the normal vector coordinates
-                            a1_in_2 <= fh_out;
-                            a1_op <= 1;
+                        a1_in_1 <= ei_out; // subtracting to get the normal vector coordinates
+                        a1_in_2 <= fh_out;
+                        a1_op <= 1;
 
-                            a2_in_1 <= fg_out;
-                            a2_in_2 <= di_out;
-                            a2_op <= 1;
+                        a2_in_1 <= fg_out;
+                        a2_in_2 <= di_out;
+                        a2_op <= 1;
 
-                            a3_in_1 <= dh_out;
-                            a3_in_2 <= eg_out;  
-                            a3_op <= 1;
+                        a3_in_1 <= dh_out;
+                        a3_in_2 <= eg_out;  
+                        a3_op <= 1;
 
-                            a1_valid_in <= 1; 
-                            a2_valid_in <= 1;
-                            a3_valid_in <= 1;
+                        a1_valid_in <= 1; 
+                        a2_valid_in <= 1;
+                        a3_valid_in <= 1;
 
 
-                        end
+                    end
                         // NORMAL CALC 1: multiplication. 
                         //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
                 NORMAL_CALC_ADD: begin
+                        a1_valid_in <= 0; 
+                        a2_valid_in <= 0;
+                        a3_valid_in <= 0;
                         
 
                     if(a1_valid_out) begin
                         // all adders should be done here 
-                        a1_valid_in <= 0; 
-                        a2_valid_in <= 0;
-                        a3_valid_in <= 0;
 
                         norm[0] <= a1_out;
                         norm[1] <= a2_out;
                         norm[2] <= a3_out;
+                        // norm_out[0] <= a1_out;
+                        // norm_out[1] <= a2_out;
+                        // norm_out[2] <= a3_out;
                         state <= SQUARE_NORMAL; 
 
 
@@ -523,6 +529,7 @@ module pixel_shader(
                 // find the angle between the normal vector and the light source
                 // cos(theta) = (dot product a, b) / |a| * |b|
                 SQUARE_NORMAL: begin
+                    mult_valid_in <= 0;
                 
 
                     // mult_valid_in <= 1; 
@@ -540,6 +547,9 @@ module pixel_shader(
                         squares[0] <= ei_out;
                         squares[1] <= fg_out;
                         squares[2] <= dh_out;
+                        // squares_out[0] <= ei_out;
+                        // squares_out[1] <= fg_out;
+                        // squares_out[2] <= dh_out;
                         state <= MAGNITUDE;
 
                         // set up for next state 
@@ -557,8 +567,8 @@ module pixel_shader(
                 end
                 MAGNITUDE: begin
 
-                    if(a1_valid_out) begin
                         a1_valid_in <= 0;
+                    if(a1_valid_out) begin
                         a2_in_1 <= a1_out;
                         a1_op <= 1;
                         a2_op <= 0;
@@ -588,10 +598,12 @@ module pixel_shader(
                     if(rec_valid_out) begin
                         rec_valid_in <= 0;
                         mag_recip <= rec_out;
+                        // mag_recip_out <= rec_out;
                         recip_done <= 1;
                     end
                     if(ei_valid_out) begin
                         dot_product_squared_times_16 <= ei_out;
+                        // dot_prod_out <= ei_out;
                         mult_valid_in <= 0;
                         magnitude_done <= 1;
                     end
@@ -602,21 +614,22 @@ module pixel_shader(
                         state <= COS_SQUARED;
                         mult_valid_in <= 1;
                         e_in <= mag_recip;
-                        i_in <= dot_product_squared_times_16;
+                        g_in <= dot_product_squared_times_16;
                     end
 
                 end
                 COS_SQUARED: begin
-                    if(ei_valid_out) begin
+                    if(eg_valid_out) begin
                         mult_valid_in <= 0; 
-                        cos_squared <= ei_out;
+                        cos_squared <= eg_out;
 
                         round_valid_in <= 1;
-                        round_in <= ei_out;
+                        round_in <= eg_out;
                         state <= ROUND;
                     end
 
                 end
+
                 ROUND: begin 
                     if(round_valid_out) begin
                         round_valid_in <= 0;
@@ -624,8 +637,8 @@ module pixel_shader(
                         map_data_valid_in <= 1;
                         state <= COLOR;
                     end
-
                 end
+
                 COLOR: begin 
                     map_data_valid_in <= 0;
 

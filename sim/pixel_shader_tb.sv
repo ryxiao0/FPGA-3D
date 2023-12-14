@@ -36,22 +36,27 @@ module pixel_shader_tb;
         #10;
         rst = 0;
         #10;
-        tri_in[0][3] <= 32'd1; //should get 90 (0 in greyscale) if my traingle translation is correct
-        tri_in[0][2] <= 32'd1;
-        tri_in[0][1] <= 32'd0;
+        tri_in[0][0] <= 32'd7; //should get 90 (0 in greyscale) if my traingle translation is correct
+        tri_in[0][1] <= 32'd21;
+        tri_in[0][2] <= 32'd30;
 
-        tri_in[1][3] <= 32'd2;
-        tri_in[1][2] <= 32'd2;
-        tri_in[1][1] <= 32'd0;
+        tri_in[1][0] <= 32'd7;
+        tri_in[1][1] <= 32'd23;
+        tri_in[1][2] <= 32'd30;
         
-        tri_in[2][3] <= 32'd2;
-        tri_in[2][2] <= 32'd1;
-        tri_in[2][1] <= 32'd0;
+        tri_in[2][0] <= 32'd9;
+        tri_in[2][1] <= 32'd21;
+        tri_in[2][2] <= 32'd32;
         
         v_in <= 1;
         #10;
         v_in <= 0;
-        #3000;
+        for(integer i = 0; i < 500; i = i + 1) begin
+            #10;
+            if(v_out) begin
+                $display("Should be 0 and it's %d", color_out);
+            end
+        end
         $display("Finishing Sim");
         $finish;
     end
