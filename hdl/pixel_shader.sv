@@ -621,7 +621,8 @@ module pixel_shader(
 
 endmodule
 
-function [8:0] greyscale_color (input [8:0] angle_to_source); //initial stab at mapping (light drops off expontentially)
+// the input is a value between 0 and 16
+function [7:0] color_map (input [31:0] angle_to_source); //initial stab at mapping (light drops off expontentially)
     case (angle_to_source)
         8'd0:  greyscale_color = 8'b1111_1111;
         8'd10:  greyscale_color = 8'b1111_1110;
