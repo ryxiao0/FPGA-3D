@@ -569,7 +569,6 @@ module pixel_shader(
                         mult_valid_in <= 0; 
                         cos_squared <= ei_out;
 
-                        state <= MULT_16;
                         round_valid_in <= 1;
                         round_in <= ei_out;
                         state <= ROUND;

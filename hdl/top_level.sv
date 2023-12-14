@@ -445,10 +445,23 @@ module top_level(
         .ready_out(tp_ready_out_3)
     );
 
-    // assign 
-
+    // color mapping
     /*
-    Add color mapping here
+    logic [31:0] triangle [3:0] [2:0]; 
+    assign triangle[0] = tf_pos_out_1;
+    assign triangle[1] = tf_pos_out_2;
+    assign triangle[2] = tf_pos_out_3; 
+    logic [7:0] color_out;
+    logic color_valid_out;
+
+    module pixel_shader(
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .data_valid_in(tf_valid_out_1), 
+        .triangle(triangle),
+        .valid_out(color_valid_out), 
+        .color_out(color_out)
+    );
     */
 
     // Tests a single triangle
