@@ -5,7 +5,7 @@ module pixel_shader_tb;
 
     logic clk;
     logic rst;
-    logic [31:0] tri_in [3:0] [2:0];
+    logic [31:0] tri_in [2:0] [3:0];
     logic v_in, v_out;
     logic color_out;
 
@@ -27,7 +27,7 @@ module pixel_shader_tb;
 
     initial begin
         $dumpfile("pixel_shader_tb.sv");
-        $dumpvars(0, tri_proj_tb);
+        $dumpvars(0, pixel_shader_tb);
         $display("Starting Sim");
         clk = 0;
         rst = 0;

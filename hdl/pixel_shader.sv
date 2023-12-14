@@ -250,10 +250,10 @@ module pixel_shader(
 
     add_subtract a1(
         .s_axis_a_tdata(a1_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a1_valid_in),
         .s_axis_b_tdata(a1_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a1_valid_in),
         .s_axis_operation_tdata(a1_op),
         .s_axis_operation_tready(1),
@@ -266,10 +266,10 @@ module pixel_shader(
 
     add_subtract a2(
         .s_axis_a_tdata(a2_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a2_valid_in),
         .s_axis_b_tdata(a2_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a2_valid_in),
         .s_axis_operation_tdata(a2_op),
         .s_axis_operation_tready(1),
@@ -282,10 +282,10 @@ module pixel_shader(
 
     add_subtract a3(
         .s_axis_a_tdata(a3_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a3_valid_in),
         .s_axis_b_tdata(a3_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a3_valid_in),
         .s_axis_operation_tdata(a3_op),
         .s_axis_operation_tready(1),
@@ -298,10 +298,10 @@ module pixel_shader(
 
     add_subtract a4(
         .s_axis_a_tdata(a4_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a4_valid_in),
         .s_axis_b_tdata(a4_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a4_valid_in),
         .s_axis_operation_tdata(a4_op),
         .s_axis_operation_tready(1),
@@ -314,10 +314,10 @@ module pixel_shader(
 
     add_subtract a5(
         .s_axis_a_tdata(a5_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a5_valid_in),
         .s_axis_b_tdata(a5_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a5_valid_in),
         .s_axis_operation_tdata(a5_op),
         .s_axis_operation_tready(1),
