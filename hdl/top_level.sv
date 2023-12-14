@@ -339,14 +339,17 @@ module top_level(
 
     // assign tp_valid_in = fifo_out_valid;
 
-    assign tp_coor_in_1 = tf_pos_out_1;
-    assign tp_coor_in_2 = tf_pos_out_2;
-    assign tp_coor_in_3 = tf_pos_out_3;
+    // Triangle Projection Test
+    // assign tp_coor_in_1 = 
 
-    assign tp_valid_in = tf_valid_out_1;
-    assign tf_ready_in = tp_ready_out_1;
+    // assign tp_coor_in_1 = tf_pos_out_1;
+    // assign tp_coor_in_2 = tf_pos_out_2;
+    // assign tp_coor_in_3 = tf_pos_out_3;
 
-    assign tp_obj_done_in = tf_obj_done_out_1;
+    // assign tp_valid_in = tf_valid_out_1;
+    // assign tf_ready_in = tp_ready_out_1;
+
+    // assign tp_obj_done_in = tf_obj_done_out_1;
 
     tri_proj tp1 (
         .clk_in(clk_pixel),

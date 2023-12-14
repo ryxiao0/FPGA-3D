@@ -1,7 +1,8 @@
 Time resolution is 1 ps
 Starting Sim
 INFO: HDL object /tri_proj_tb/coor_in is an unpacked array. VCD does not support unpacked array type according to IEEE LRM 1800-2009, section21.7.5.
+INFO: HDL object /tri_proj_tb/coor_out is an unpacked array. VCD does not support unpacked array type according to IEEE LRM 1800-2009, section21.7.5.
 ERROR: Could not open vcd file tri_proj_tb.sv. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
 Starting Sim
 Finishing Sim
-$finish called at time : 3035 ns : File "/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv" Line 54
+$finish called at time : 3035 ns : File "/home/ryxiao/FPGA-3D/sim/tri_proj_tb.sv" Line 64
