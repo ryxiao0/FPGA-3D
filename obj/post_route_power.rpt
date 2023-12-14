@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date             : Thu Dec 14 06:48:12 2023
+| Date             : Thu Dec 14 09:09:50 2023
 | Host             : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.458        |
+| Total On-Chip Power (W)  | 0.514        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.385        |
-| Device Static (W)        | 0.073        |
+| Dynamic (W)              | 0.439        |
+| Device Static (W)        | 0.075        |
 | Effective TJA (C/W)      | 4.9          |
-| Max Ambient (C)          | 82.7         |
-| Junction Temperature (C) | 27.3         |
+| Max Ambient (C)          | 82.5         |
+| Junction Temperature (C) | 27.5         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -49,25 +49,26 @@ Table of Contents
 1.1 On-Chip Components
 ----------------------
 
-+-------------------------+-----------+----------+-----------+-----------------+
-| On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
-+-------------------------+-----------+----------+-----------+-----------------+
-| Clocks                  |     0.015 |        6 |       --- |             --- |
-| Slice Logic             |     0.015 |     9788 |       --- |             --- |
-|   LUT as Logic          |     0.010 |     2533 |     32600 |            7.77 |
-|   LUT as Shift Register |     0.002 |      276 |      9600 |            2.88 |
-|   Register              |     0.002 |     4876 |     65200 |            7.48 |
-|   CARRY4                |    <0.001 |      270 |      8150 |            3.31 |
-|   F7/F8 Muxes           |    <0.001 |        8 |     32600 |            0.02 |
-|   Others                |     0.000 |      855 |       --- |             --- |
-| Signals                 |     0.024 |     7522 |       --- |             --- |
-| Block RAM               |     0.018 |       19 |        75 |           25.33 |
-| MMCM                    |     0.105 |        1 |         5 |           20.00 |
-| DSPs                    |     0.030 |       45 |       120 |           37.50 |
-| I/O                     |     0.178 |       42 |       210 |           20.00 |
-| Static Power            |     0.073 |          |           |                 |
-| Total                   |     0.458 |          |           |                 |
-+-------------------------+-----------+----------+-----------+-----------------+
++--------------------------+-----------+----------+-----------+-----------------+
+| On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
++--------------------------+-----------+----------+-----------+-----------------+
+| Clocks                   |     0.023 |        6 |       --- |             --- |
+| Slice Logic              |     0.013 |    14582 |       --- |             --- |
+|   LUT as Logic           |     0.009 |     2841 |     32600 |            8.71 |
+|   LUT as Shift Register  |     0.002 |      280 |      9600 |            2.92 |
+|   Register               |     0.001 |     5141 |     65200 |            7.88 |
+|   CARRY4                 |    <0.001 |      274 |      8150 |            3.36 |
+|   F7/F8 Muxes            |    <0.001 |     1844 |     32600 |            5.66 |
+|   Others                 |     0.000 |      849 |       --- |             --- |
+|   LUT as Distributed RAM |     0.000 |     2304 |      9600 |           24.00 |
+| Signals                  |     0.030 |     8509 |       --- |             --- |
+| Block RAM                |     0.061 |       51 |        75 |           68.00 |
+| MMCM                     |     0.105 |        1 |         5 |           20.00 |
+| DSPs                     |     0.029 |       45 |       120 |           37.50 |
+| I/O                      |     0.178 |       42 |       210 |           20.00 |
+| Static Power             |     0.075 |          |           |                 |
+| Total                    |     0.514 |          |           |                 |
++--------------------------+-----------+----------+-----------+-----------------+
 
 
 1.2 Power Supply Summary
@@ -76,7 +77,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.114 |       0.103 |      0.011 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.165 |       0.153 |      0.012 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.073 |       0.060 |      0.013 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.053 |       0.052 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -85,7 +86,7 @@ Table of Contents
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vccaux_io |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
-| Vccbram   |       1.000 |     0.002 |       0.001 |      0.001 |       NA    | Unspecified | NA         |
+| Vccbram   |       1.000 |     0.007 |       0.005 |      0.001 |       NA    | Unspecified | NA         |
 | Vccadc    |       1.800 |     0.020 |       0.000 |      0.020 |       NA    | Unspecified | NA         |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 
@@ -146,34 +147,28 @@ Table of Contents
 +-----------------+-----------+
 | Name            | Power (W) |
 +-----------------+-----------+
-| top_level       |     0.385 |
-|   gv            |     0.015 |
-|     facet_inst  |     0.002 |
-|     vertex_inst |     0.011 |
+| top_level       |     0.439 |
+|   gv            |     0.021 |
+|     facet_inst  |     0.006 |
+|     vertex_inst |     0.010 |
 |   mhdmicw       |     0.105 |
-|   rast          |     0.019 |
+|   rast          |     0.071 |
 |     intri       |     0.010 |
-|     z_buffer0   |     0.003 |
-|     z_buffer1   |     0.004 |
-|   tf1           |     0.002 |
-|     add         |     0.002 |
-|       inst      |     0.002 |
-|   tf2           |     0.002 |
-|     add         |     0.002 |
-|       inst      |     0.002 |
-|   tf3           |     0.002 |
-|     add         |     0.002 |
-|       inst      |     0.002 |
-|   tp1           |     0.019 |
-|     pro         |     0.004 |
-|       inst      |     0.004 |
+|     z_buffer0   |     0.029 |
+|     z_buffer1   |     0.029 |
+|   tf1           |     0.001 |
+|   tf2           |     0.001 |
+|   tf3           |     0.001 |
+|   tp1           |     0.020 |
+|     pro         |     0.005 |
+|       inst      |     0.005 |
 |     rec         |     0.011 |
 |       inst      |     0.011 |
 |     round       |     0.002 |
 |       inst      |     0.002 |
 |   tp2           |     0.019 |
-|     pro         |     0.004 |
-|       inst      |     0.004 |
+|     pro         |     0.005 |
+|       inst      |     0.005 |
 |     rec         |     0.011 |
 |       inst      |     0.011 |
 |     round       |     0.002 |

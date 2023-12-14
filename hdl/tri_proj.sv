@@ -15,7 +15,7 @@ module tri_proj
         input wire ready_in
 );
 
-    parameter M=32'h43340000; // 180
+    parameter M=32'h42f00000; // 120
 
     enum {IDLE, DIV, REC, X, Y, MULTX, ROUNDX, MULTY, ROUNDY, MULTZ, ROUNDZ} state;
 
@@ -34,7 +34,7 @@ module tri_proj
     assign z_f = coor_in[1];
 
     logic [9:0] shift;
-    assign shift = round_out[15:6] + 180;
+    assign shift = round_out[15:6] + 120;
 
     logic [8:0] x, y, z;
     assign coor_out[2] = x;

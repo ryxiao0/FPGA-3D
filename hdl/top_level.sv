@@ -463,6 +463,7 @@ module top_level(
         .new_frame(new_frame),
         .hcount(hcount_scaled),
         .vcount(vcount_scaled),
+        .count_valid(valid_addr_scaled),
         .color_out(gray),
         .ready_out(rast_ready_out)
     );

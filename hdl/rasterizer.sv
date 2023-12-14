@@ -5,8 +5,8 @@
 `endif  /* ! SYNTHESIS */
 
 module rasterizer #(
-    parameter WIDTH = 360,
-    parameter HEIGHT = 360
+    parameter WIDTH = 240,
+    parameter HEIGHT = 240
     )
     (
     input wire clk_in,
@@ -24,6 +24,7 @@ module rasterizer #(
     // input wire [5:0] vcount,
     input wire [10:0] hcount,
     input wire [9:0] vcount,
+    input wire count_valid,
     output logic [7:0] color_out,
     output logic ready_out
 );
@@ -105,8 +106,8 @@ module rasterizer #(
     logic [16:0] read_out0, read_out1;
     // logic [11:0] read_out0, read_out1;
     logic [7:0] read_out;
-    logic [16:0] read_addr0, read_addr1;
-    logic [16:0] write_addr0, write_addr1;
+    logic [15:0] read_addr0, read_addr1;
+    logic [15:0] write_addr0, write_addr1;
     // logic [7:0] read_addr0, read_addr1;
     // logic [7:0] write_addr0, write_addr1;
 
@@ -157,6 +158,8 @@ module rasterizer #(
                     wea1 <= 0;
                 end
                 ITER: begin
+                    wea0 <= 0;
+                    wea1 <= 0;
                     if (x_iter <= x_max) x_iter <= x_iter + 1;
                     else begin
                         x_iter <= x_min;
@@ -168,15 +171,10 @@ module rasterizer #(
                 CHECK: begin
                     if (in_tri_v_out) begin
                         if (in_tri_out) begin
-                            // if (depth <= read_out_w[8:0]) begin
-                                write_addr <= x_iter + y_iter*WIDTH;
-                                write_in <= {COLOR, depth};
-                                if (buf_sel) wea0 <= 1;
-                                else wea1 <= 1;
-                            // end else begin
-                            //     wea0 <= 0;
-                            //     wea1 <= 0;
-                            // end
+                            write_addr <= x_iter + y_iter*WIDTH;
+                            write_in <=  (depth <= read_out_w[8:0])? {COLOR, depth}: read_out_w;
+                            if (buf_sel) wea0 <= 1;
+                            else wea1 <= 1;
                         end
 
                         if (y_iter > y_max) state <= SEND;
@@ -199,7 +197,7 @@ module rasterizer #(
         if (rst_in) begin
             color_out <= 0;
         end else begin
-            color_out <= read_out;
+            if (count_valid) color_out <= read_out;
             // rewrite_addr <= hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
         end
     end
