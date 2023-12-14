@@ -386,7 +386,6 @@ module pixel_shader(
             recip_done <= 0;
             magnitude_done <= 0;
             color_out <= 0;
-            final_calc_color <= 0;
             state <= RECEIVE;
             valid_out <= 0;
         end else begin
