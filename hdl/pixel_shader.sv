@@ -7,10 +7,12 @@ module pixel_shader(
     input wire clk_in,
     input wire rst_in,
     input wire data_valid_in, 
-    // input wire [8:0] v1 [2:0],
-    // input wire [8:0] v2 [2:0],
-    // input wire [8:0] v3 [2:0],
-    input wire [31:0] triangle [3:0] [2:0],
+    input wire [31:0] triangle [2:0] [3:0],
+    // output logic [31:0] test_out,
+    // output logic [31:0] mag_out,
+    // output logic [31:0] vector_out [5:0],
+    // output logic [31:0] norm_calc_mult [5:0],
+    // output logic [31:0] norm_out [2:0],
     output logic valid_out, 
     output logic [7:0] color_out
 );
@@ -121,6 +123,7 @@ module pixel_shader(
     logic [15:0] rec_out;
     logic rec_valid_out;
 
+    // assign norm_out = norm;
     reciprocal rec (
         .aclk(clk_in),
         .s_axis_a_tdata(rec_in),
@@ -240,80 +243,99 @@ module pixel_shader(
     logic [31:0] a6_out;
     logic a6_valid_in;
     logic a6_valid_out;
+    logic [7:0] a1_op, a2_op, a3_op, a4_op, a5_op, a6_op;
 
 
-    adder a1(
+    add_subtract a1(
         .s_axis_a_tdata(a1_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a1_valid_in),
         .s_axis_b_tdata(a1_in_2),
         .s_axis_b_tready(1),
         .s_axis_b_tvalid(a1_valid_in),
+        .s_axis_operation_tdata(a1_op),
+        .s_axis_operation_tready(1),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a1_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a1_valid_out)
     );
 
-    adder a2(
+    add_subtract a2(
         .s_axis_a_tdata(a2_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a2_valid_in),
         .s_axis_b_tdata(a2_in_2),
         .s_axis_b_tready(1),
         .s_axis_b_tvalid(a2_valid_in),
+        .s_axis_operation_tdata(a2_op),
+        .s_axis_operation_tready(1),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a2_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a2_valid_out)
     );
 
-    adder a3(
+    add_subtract a3(
         .s_axis_a_tdata(a3_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a3_valid_in),
         .s_axis_b_tdata(a3_in_2),
         .s_axis_b_tready(1),
         .s_axis_b_tvalid(a3_valid_in),
+        .s_axis_operation_tdata(a3_op),
+        .s_axis_operation_tready(1),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a3_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a3_valid_out)
     );
 
-    adder a4(
+    add_subtract a4(
         .s_axis_a_tdata(a4_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a4_valid_in),
         .s_axis_b_tdata(a4_in_2),
         .s_axis_b_tready(1),
         .s_axis_b_tvalid(a4_valid_in),
+        .s_axis_operation_tdata(a4_op),
+        .s_axis_operation_tready(1),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a4_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a4_valid_out)
     );
 
-    adder a5(
+    add_subtract a5(
         .s_axis_a_tdata(a5_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a5_valid_in),
         .s_axis_b_tdata(a5_in_2),
         .s_axis_b_tready(1),
         .s_axis_b_tvalid(a5_valid_in),
+        .s_axis_operation_tdata(a5_op),
+        .s_axis_operation_tready(1),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a5_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a5_valid_out)
     );
 
-    adder a6(
+    add_subtract a6(
         .s_axis_a_tdata(a6_in_1),
         .s_axis_a_tready(1),
         .s_axis_a_tvalid(a6_valid_in),
         .s_axis_b_tdata(a6_in_2),
         .s_axis_b_tready(1),
         .s_axis_b_tvalid(a6_valid_in),
+        .s_axis_operation_tdata(a6_op),
+        .s_axis_operation_tready(1),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a6_out),
         .m_axis_result_tready(1),
@@ -381,32 +403,25 @@ module pixel_shader(
                         a6_valid_in <= 1;
                         
                         a1_in_1 <= triangle[1][0];
-                        a1_in_2 <= {~triangle[0][0][31], triangle[0][0][30:0]};
+                        a1_in_2 <= triangle[0][0];
+                        a1_op <= 1;
                         a2_in_1 <= triangle[1][1];
-                        a2_in_2 <= {~triangle[0][1][31], triangle[0][1][30:0]};
+                        a2_in_2 <= triangle[0][1];
+                        a2_op <= 1;
                         a3_in_1 <= triangle[1][2];
-                        a3_in_2 <= {~triangle[0][2][31], triangle[0][2][30:0]};
+                        a3_in_2 <= triangle[0][2];
+                        a3_op <= 1;
                         a4_in_1 <= triangle[2][0];
-                        a4_in_2 <= {~triangle[0][0][31], triangle[0][0][30:0]};
+                        a4_in_2 <= triangle[0][0];
+                        a4_op <= 1;
                         a5_in_1 <= triangle[2][1];
-                        a5_in_2 <= {~triangle[0][1][31], triangle[0][1][30:0]};
+                        a5_in_2 <= triangle[0][1];
+                        a5_op <= 1;
                         a6_in_1 <= triangle[2][2];
-                        a6_in_2 <= {~triangle[0][2][31], triangle[0][2][30:0]};
+                        a6_in_2 <= triangle[0][2];
+                        a6_op <= 1;
 
-                        // logic [31:0] d_in <= triangle[0][0]; //given that triangles are 3 verticies with x,y,z,1
-                        // logic [31:0] e_in <= triangle[0][1];
-                        // logic [31:0] f_in <= triangle[0][2];
-                        // logic [31:0] g_in <= triangle[1][0];
-                        // logic [31:0] h_in <= triangle[1][1];
-                        // logic [31:0] i_in <= triangle[1][2];
-
-                        // vect1[2] <= vert2[2]-vert1[2];
-                        // vect1[1] <= vert2[1]-vert1[1];
-                        // vect1[0] <= vert2[0]-vert1[0];
-
-                        // vect1[2] <= vert3[2]-vert1[2];
-                        // vect2[1] <= vert3[1]-vert1[1];
-                        // vect2[0] <= vert3[0]-vert1[0];
+                        
 
                         state <= VECTOR_CALC;
 
@@ -414,14 +429,21 @@ module pixel_shader(
 
                 end
                 VECTOR_CALC: begin
-                    if(a2_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
-
+                    if(a1_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
                         d_in <= a1_out; //(d, e, f) is vector 1
                         e_in <= a2_out;
                         f_in <= a3_out;
                         g_in <= a4_out; // (g, h, i) is vector 2
                         h_in <= a5_out;
                         i_in <= a6_out;
+
+                        // vector_out[0] <= a1_out; //(d, e, f) is vector 1
+                        // vector_out[1] <= a2_out;
+                        // vector_out[2] <= a3_out;
+                        // vector_out[3] <= a4_out; // (g, h, i) is vector 2
+                        // vector_out[4] <= a5_out;
+                        // vector_out[5] <= a6_out;
+                        
 
                         state <= NORMAL_CALC_MULT;
                         mult_valid_in <= 1;
@@ -433,22 +455,35 @@ module pixel_shader(
                 NORMAL_CALC_MULT: begin
                         if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
                             mult_valid_in <= 0;
-                            normal_calc[0][0] <= ei_out;
-                            normal_calc[0][1] <= {~fh_out[31], fh_out[30:0]};
-                            normal_calc[0][2] <= fg_out;
-                            normal_calc[1][0] <= {~di_out[31], di_out[30:0]}; 
-                            normal_calc[1][1] <= dh_out;
-                            normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
+                            // normal_calc[0][0] <= ei_out;
+                            // normal_calc[0][1] <= {~fh_out[31], fh_out[30:0]};
+                            // normal_calc[0][2] <= fg_out;
+                            // normal_calc[1][0] <= {~di_out[31], di_out[30:0]}; 
+                            // normal_calc[1][1] <= dh_out;
+                            // normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
                             
 
                             state <= NORMAL_CALC_ADD;
+                            // norm_calc_mult[0] <= ei_out;
+                            // norm_calc_mult[1] <= fh_out;
+                            // norm_calc_mult[2] <= fg_out;
+                            // norm_calc_mult[3] <= di_out;
+                            // norm_calc_mult[4] <= dh_out;
+                            // norm_calc_mult[5] <= eg_out;
+
 
                             a1_in_1 <= ei_out; // subtracting to get the normal vector coordinates
-                            a1_in_2 <= {~fh_out[31], fh_out[30:0]};
+                            a1_in_2 <= fh_out;
+                            a1_op <= 1;
+
                             a2_in_1 <= fg_out;
-                            a2_in_2 <= {~di_out[31], di_out[30:0]};
+                            a2_in_2 <= di_out;
+                            a2_op <= 1;
+
                             a3_in_1 <= dh_out;
-                            a3_in_2 <= {~eg_out[31], eg_out[30:0]};  
+                            a3_in_2 <= eg_out;  
+                            a3_op <= 1;
+
                             a1_valid_in <= 1; 
                             a2_valid_in <= 1;
                             a3_valid_in <= 1;
@@ -509,6 +544,7 @@ module pixel_shader(
 
                         // set up for next state 
                         a1_valid_in <= 1;
+                        a1_op <= 0;
                         a1_in_1 <= ei_out; // square[0] + squares[1]
                         a1_in_2 <= fg_out;
                     end
@@ -524,11 +560,17 @@ module pixel_shader(
                     if(a1_valid_out) begin
                         a1_valid_in <= 0;
                         a2_in_1 <= a1_out;
+                        a1_op <= 1;
+                        a2_op <= 0;
                         a2_in_2 <= squares[2];
                         a2_valid_in <= 1; // (squares[0] +squares[1]) + squares[2]
                     end
                     if(a2_valid_out) begin
+                        // test_out <= 32'b01000010100010100000000000000000;
+                        // mag_out <= a2_out;
+
                         a2_valid_in <= 0;
+                        a2_op <= 1;
                         mag <= a2_out;
                         
                         state <= RECIP; // 1/magntidue
