@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date             : Wed Dec 13 17:53:30 2023
-| Host             : eecs-digital-33 running 64-bit Ubuntu 22.04.3 LTS
+| Date             : Thu Dec 14 00:49:20 2023
+| Host             : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
 | Device           : xc7s50csga324-1
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.370        |
+| Total On-Chip Power (W)  | 0.434        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.297        |
+| Dynamic (W)              | 0.361        |
 | Device Static (W)        | 0.073        |
 | Effective TJA (C/W)      | 4.9          |
-| Max Ambient (C)          | 83.2         |
-| Junction Temperature (C) | 26.8         |
+| Max Ambient (C)          | 82.9         |
+| Junction Temperature (C) | 27.1         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -49,23 +49,25 @@ Table of Contents
 1.1 On-Chip Components
 ----------------------
 
-+----------------+-----------+----------+-----------+-----------------+
-| On-Chip        | Power (W) | Used     | Available | Utilization (%) |
-+----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.003 |        6 |       --- |             --- |
-| Slice Logic    |     0.002 |      261 |       --- |             --- |
-|   LUT as Logic |     0.002 |      120 |     32600 |            0.37 |
-|   Register     |    <0.001 |       67 |     65200 |            0.10 |
-|   F7/F8 Muxes  |    <0.001 |        2 |     32600 |           <0.01 |
-|   Others       |     0.000 |       22 |       --- |             --- |
-| Signals        |     0.002 |      236 |       --- |             --- |
-| Block RAM      |     0.005 |        8 |        75 |           10.67 |
-| MMCM           |     0.105 |        1 |         5 |           20.00 |
-| DSPs           |    <0.001 |        1 |       120 |            0.83 |
-| I/O            |     0.180 |       42 |       210 |           20.00 |
-| Static Power   |     0.073 |          |           |                 |
-| Total          |     0.370 |          |           |                 |
-+----------------+-----------+----------+-----------+-----------------+
++-------------------------+-----------+----------+-----------+-----------------+
+| On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
++-------------------------+-----------+----------+-----------+-----------------+
+| Clocks                  |     0.010 |        6 |       --- |             --- |
+| Slice Logic             |     0.012 |     7046 |       --- |             --- |
+|   LUT as Logic          |     0.008 |     1864 |     32600 |            5.72 |
+|   LUT as Shift Register |     0.002 |      253 |      9600 |            2.64 |
+|   Register              |     0.001 |     3364 |     65200 |            5.16 |
+|   CARRY4                |    <0.001 |      225 |      8150 |            2.76 |
+|   F7/F8 Muxes           |    <0.001 |       11 |     32600 |            0.03 |
+|   Others                |     0.000 |      578 |       --- |             --- |
+| Signals                 |     0.019 |     5317 |       --- |             --- |
+| Block RAM               |     0.005 |        8 |        75 |           10.67 |
+| MMCM                    |     0.105 |        1 |         5 |           20.00 |
+| DSPs                    |     0.029 |       39 |       120 |           32.50 |
+| I/O                     |     0.180 |       42 |       210 |           20.00 |
+| Static Power            |     0.073 |          |           |                 |
+| Total                   |     0.434 |          |           |                 |
++-------------------------+-----------+----------+-----------+-----------------+
 
 
 1.2 Power Supply Summary
@@ -74,7 +76,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.024 |       0.014 |      0.010 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.088 |       0.078 |      0.010 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.073 |       0.060 |      0.013 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.054 |       0.053 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -144,10 +146,32 @@ Table of Contents
 +---------------+-----------+
 | Name          | Power (W) |
 +---------------+-----------+
-| top_level     |     0.297 |
+| top_level     |     0.361 |
 |   mhdmicw     |     0.105 |
-|   rast        |     0.008 |
-|     z_buffer0 |     0.007 |
+|   rast        |     0.018 |
+|     intri     |     0.010 |
+|     z_buffer0 |     0.006 |
+|   tp1         |     0.018 |
+|     pro       |     0.004 |
+|       inst    |     0.004 |
+|     rec       |     0.011 |
+|       inst    |     0.011 |
+|     round     |     0.002 |
+|       inst    |     0.002 |
+|   tp2         |     0.018 |
+|     pro       |     0.004 |
+|       inst    |     0.004 |
+|     rec       |     0.011 |
+|       inst    |     0.011 |
+|     round     |     0.002 |
+|       inst    |     0.002 |
+|   tp3         |     0.018 |
+|     pro       |     0.005 |
+|       inst    |     0.005 |
+|     rec       |     0.011 |
+|       inst    |     0.011 |
+|     round     |     0.002 |
+|       inst    |     0.002 |
 +---------------+-----------+
 
 

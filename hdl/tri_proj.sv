@@ -10,7 +10,9 @@ module tri_proj
         input wire valid_in,
         output logic [8:0] coor_out [2:0],
         output logic valid_out,
-        output logic obj_done_out
+        output logic obj_done_out,
+        output logic ready_out,
+        input wire ready_in
 );
 
     parameter M=32'h43340000; // 180
@@ -86,8 +88,10 @@ module tri_proj
                         mult_a_in <= coor_in[1];
                         mult_b_in <= RECIP_D;
                         state <= DIV;
-                    end
+                        ready_out <= 0;
+                    end else ready_out <= 1;
                     valid_out <= 0;
+
                 end
                 DIV: begin // z/d
                     if (mult_v_out) begin
@@ -160,9 +164,11 @@ module tri_proj
                 end
                 ROUNDZ: begin
                     if (round_v_out) begin
-                        z <= shift[8:0]; // drop sign
-                        valid_out <= 1;
-                        state <= IDLE;
+                        if (ready_in) begin
+                            z <= shift[8:0]; // drop sign
+                            valid_out <= 1;
+                            state <= IDLE;
+                        end
                     end else round_v_in <= 0;
                 end
             endcase;

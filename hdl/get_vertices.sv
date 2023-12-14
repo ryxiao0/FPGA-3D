@@ -17,15 +17,19 @@ module get_vertices#(
     output logic [31:0] v2 [3:0],
     output logic [31:0] v3 [3:0],
     output logic valid_out,
-    output logic obj_done 
+    output logic obj_done,
+    input wire ready_in
 );
 
-    enum {INIT, GETF, GETTINGF, GETV1, GETTINGV1, GETV2, GETTINGV2, GETV3, GETTINGV3} state;
+    enum {INIT, GETF, GETTINGF, GETV1, GETTINGV1, GETV2, GETTINGV2, GETV3, GETTINGV3, OUT} state;
 
     logic [11:0] facet_read, vertex_read;
     logic [11:0] f1, f2, f3;
     logic [31:0] x, y, z;
     logic [47:0] facet_out;
+    logic [31:0] v1_temp [3:0];
+    logic [31:0] v2_temp [3:0];
+    logic [31:0] v3_temp [3:0];
 
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
@@ -54,10 +58,10 @@ module get_vertices#(
                     state <= GETTINGV1;
                 end
                 GETTINGV1: begin
-                    v1[3] <= x;
-                    v1[2] <= y;
-                    v1[1] <= z;
-                    v1[0] <= 1;
+                    v1_temp[3] <= x;
+                    v1_temp[2] <= y;
+                    v1_temp[1] <= z;
+                    v1_temp[0] <= 1;
                     vertex_read <= f2-1;
                     state <= GETV2;
                 end
@@ -65,10 +69,10 @@ module get_vertices#(
                     state <= GETTINGV2;
                 end
                 GETTINGV2: begin
-                    v2[3] <= x;
-                    v2[2] <= y;
-                    v2[1] <= z;
-                    v2[0] <= 1;
+                    v2_temp[3] <= x;
+                    v2_temp[2] <= y;
+                    v2_temp[1] <= z;
+                    v2_temp[0] <= 1;
                     vertex_read <= f3-1;
                     state <= GETV3;
                 end
@@ -76,17 +80,25 @@ module get_vertices#(
                     state <= GETTINGV3;
                 end
                 GETTINGV3: begin
-                    v3[3] <= x;
-                    v3[2] <= y;
-                    v3[1] <= z;
-                    v3[0] <= 1;
-                    valid_out <= 1;
-                    if (facet_read == NUM_FACETS-1) begin
-                        state <= INIT;
-                        obj_done <= 1;
-                    end else begin
-                        state <= GETF;
-                        facet_read <= facet_read + 1;
+                    v3_temp[3] <= x;
+                    v3_temp[2] <= y;
+                    v3_temp[1] <= z;
+                    v3_temp[0] <= 1;
+                    state <= OUT;
+                end
+                OUT: begin
+                    if (ready_in) begin
+                        v1 <= v1_temp;
+                        v2 <= v2_temp;
+                        v3 <= v3_temp;
+                        valid_out <= 1;
+                        if (facet_read == NUM_FACETS-1) begin
+                            state <= INIT;
+                            obj_done <= 1;
+                        end else begin
+                            state <= GETF;
+                            facet_read <= facet_read + 1;
+                        end
                     end
                 end
             endcase;

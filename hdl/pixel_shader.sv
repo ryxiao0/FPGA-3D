@@ -1,3 +1,5 @@
+/*
+
 `timescale 1ns / 1ps
 `default_nettype none
 
@@ -69,7 +71,7 @@ module pixel_shader(
         figure out how to compare floats lol 
         implement each pipeline stage
 
-    */
+    
 
 
     logic [31:0] light_source [2:0]; //(0,0, -1)
@@ -252,7 +254,7 @@ module pixel_shader(
             normal_cross_light[0] <= 0;
             normal_cross_light[1] <= 0;
             normal_cross_light[2] <= 0;
-            */
+            
             angle <= 0;
             state <= RECEIVE;
             valid_out <= 0;
@@ -386,3 +388,4 @@ endfunction
 
 `default_nettype wire
 
+*/

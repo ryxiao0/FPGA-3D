@@ -12,7 +12,9 @@ module transformation
         input wire valid_in,
         output logic valid_out,
         output logic obj_done_out,
-        output logic [31:0] new_pos [3:0]
+        output logic [31:0] new_pos [3:0],
+        output logic ready_out,
+        input wire ready_in
     );
 
     enum {READY, TOVIEW} state;

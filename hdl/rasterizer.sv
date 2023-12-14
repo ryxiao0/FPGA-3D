@@ -17,7 +17,8 @@ module rasterizer #(
     // input wire [5:0] vcount,
     input wire [10:0] hcount,
     input wire [9:0] vcount,
-    output logic [7:0] color_out
+    output logic [7:0] color_out,
+    output logic ready_out
 );
 
     parameter BLACK=8'h00, COLOR=8'hCC;
@@ -100,8 +101,8 @@ module rasterizer #(
     assign read_addr0 = (buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
     assign read_addr1 = (~buf_sel)? x_iter + y_iter*WIDTH: hcount_in_pipe[STAGES-1] + vcount_in_pipe[STAGES-1]*WIDTH;
     assign read_out = (buf_sel)? read_out1[16:9]: read_out0[16:9]; // buffer being outputted
-    // assign write_addr0 = (buf_sel)? write_addr: ;
-    // assign write_addr1 = (~buf_sel)? write_addr: ;
+    assign write_addr0 = write_addr;
+    assign write_addr1 = write_addr;
 
     logic in_tri_v_in, in_tri_out, in_tri_v_out;
 
@@ -131,7 +132,8 @@ module rasterizer #(
                 RECEIVE: begin
                     if (valid_tri) begin
                         state <= ITER;
-                    end
+                        ready_out <= 0;
+                    end else ready_out <= 1;
                     x_iter <= x_min-1;
                     y_iter <= y_min-1;
                     wea0 <= 0;
