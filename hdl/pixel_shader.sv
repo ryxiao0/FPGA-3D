@@ -93,7 +93,7 @@ module pixel_shader(
     logic [31:0] sec_squared;
     logic [31:0] cos_squared;
     logic [31:0] to_round;
-    logic [31:0] table_index;
+    logic [15:0] table_index;
     logic [7:0] final_calc_color;
 
 
@@ -123,7 +123,7 @@ module pixel_shader(
 
     logic [31:0] rec_in;
     logic rec_valid_in;
-    logic [31:0] rec_out;
+    logic [15:0] rec_out;
     logic rec_valid_out;
 
     reciprocal rec (
