@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date             : Thu Dec 14 02:04:27 2023
+| Date             : Thu Dec 14 05:41:21 2023
 | Host             : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command          : report_power -file obj/post_route_power.rpt
 | Design           : top_level
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.432        |
+| Total On-Chip Power (W)  | 0.461        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.360        |
+| Dynamic (W)              | 0.387        |
 | Device Static (W)        | 0.073        |
 | Effective TJA (C/W)      | 4.9          |
-| Max Ambient (C)          | 82.9         |
-| Junction Temperature (C) | 27.1         |
+| Max Ambient (C)          | 82.7         |
+| Junction Temperature (C) | 27.3         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -52,21 +52,21 @@ Table of Contents
 +-------------------------+-----------+----------+-----------+-----------------+
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
-| Clocks                  |     0.011 |        6 |       --- |             --- |
-| Slice Logic             |     0.012 |     7046 |       --- |             --- |
-|   LUT as Logic          |     0.008 |     1863 |     32600 |            5.71 |
-|   LUT as Shift Register |     0.002 |      251 |      9600 |            2.61 |
-|   Register              |     0.001 |     3364 |     65200 |            5.16 |
-|   CARRY4                |    <0.001 |      225 |      8150 |            2.76 |
-|   F7/F8 Muxes           |    <0.001 |       11 |     32600 |            0.03 |
-|   Others                |     0.000 |      578 |       --- |             --- |
-| Signals                 |     0.019 |     5315 |       --- |             --- |
-| Block RAM               |     0.005 |        8 |        75 |           10.67 |
+| Clocks                  |     0.015 |        6 |       --- |             --- |
+| Slice Logic             |     0.016 |     9794 |       --- |             --- |
+|   LUT as Logic          |     0.011 |     2542 |     32600 |            7.80 |
+|   LUT as Shift Register |     0.002 |      277 |      9600 |            2.89 |
+|   Register              |     0.002 |     4874 |     65200 |            7.48 |
+|   CARRY4                |    <0.001 |      270 |      8150 |            3.31 |
+|   F7/F8 Muxes           |    <0.001 |        7 |     32600 |            0.02 |
+|   Others                |     0.000 |      855 |       --- |             --- |
+| Signals                 |     0.026 |     7532 |       --- |             --- |
+| Block RAM               |     0.018 |       19 |        75 |           25.33 |
 | MMCM                    |     0.105 |        1 |         5 |           20.00 |
-| DSPs                    |     0.029 |       39 |       120 |           32.50 |
+| DSPs                    |     0.030 |       45 |       120 |           37.50 |
 | I/O                     |     0.178 |       42 |       210 |           20.00 |
 | Static Power            |     0.073 |          |           |                 |
-| Total                   |     0.432 |          |           |                 |
+| Total                   |     0.461 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -76,7 +76,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.089 |       0.079 |      0.010 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.116 |       0.105 |      0.011 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.073 |       0.060 |      0.013 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.053 |       0.052 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -85,7 +85,7 @@ Table of Contents
 | Vcco135   |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vcco12    |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
 | Vccaux_io |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
-| Vccbram   |       1.000 |     0.001 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccbram   |       1.000 |     0.002 |       0.001 |      0.001 |       NA    | Unspecified | NA         |
 | Vccadc    |       1.800 |     0.020 |       0.000 |      0.020 |       NA    | Unspecified | NA         |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 
@@ -143,35 +143,48 @@ Table of Contents
 3.1 By Hierarchy
 ----------------
 
-+---------------+-----------+
-| Name          | Power (W) |
-+---------------+-----------+
-| top_level     |     0.360 |
-|   mhdmicw     |     0.105 |
-|   rast        |     0.018 |
-|     intri     |     0.010 |
-|     z_buffer0 |     0.007 |
-|   tp1         |     0.019 |
-|     pro       |     0.005 |
-|       inst    |     0.005 |
-|     rec       |     0.011 |
-|       inst    |     0.011 |
-|     round     |     0.002 |
-|       inst    |     0.002 |
-|   tp2         |     0.018 |
-|     pro       |     0.005 |
-|       inst    |     0.005 |
-|     rec       |     0.011 |
-|       inst    |     0.011 |
-|     round     |     0.002 |
-|       inst    |     0.002 |
-|   tp3         |     0.018 |
-|     pro       |     0.005 |
-|       inst    |     0.005 |
-|     rec       |     0.011 |
-|       inst    |     0.011 |
-|     round     |     0.002 |
-|       inst    |     0.002 |
-+---------------+-----------+
++-----------------+-----------+
+| Name            | Power (W) |
++-----------------+-----------+
+| top_level       |     0.387 |
+|   gv            |     0.015 |
+|     facet_inst  |     0.002 |
+|     vertex_inst |     0.011 |
+|   mhdmicw       |     0.105 |
+|   rast          |     0.021 |
+|     intri       |     0.010 |
+|     z_buffer0   |     0.006 |
+|     z_buffer1   |     0.004 |
+|   tf1           |     0.003 |
+|     add         |     0.002 |
+|       inst      |     0.002 |
+|   tf2           |     0.002 |
+|     add         |     0.002 |
+|       inst      |     0.002 |
+|   tf3           |     0.002 |
+|     add         |     0.002 |
+|       inst      |     0.002 |
+|   tp1           |     0.019 |
+|     pro         |     0.004 |
+|       inst      |     0.004 |
+|     rec         |     0.011 |
+|       inst      |     0.011 |
+|     round       |     0.002 |
+|       inst      |     0.002 |
+|   tp2           |     0.019 |
+|     pro         |     0.005 |
+|       inst      |     0.005 |
+|     rec         |     0.011 |
+|       inst      |     0.011 |
+|     round       |     0.002 |
+|       inst      |     0.002 |
+|   tp3           |     0.019 |
+|     pro         |     0.004 |
+|       inst      |     0.004 |
+|     rec         |     0.011 |
+|       inst      |     0.011 |
+|     round       |     0.002 |
+|       inst      |     0.002 |
++-----------------+-----------+
 
 

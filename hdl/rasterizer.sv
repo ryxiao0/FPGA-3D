@@ -1,3 +1,9 @@
+`ifdef SYNTHESIS
+`define FPATH(X) `"X`"
+`else /* ! SYNTHESIS */
+`define FPATH(X) `"data/X`"
+`endif  /* ! SYNTHESIS */
+
 module rasterizer #(
     parameter WIDTH = 360,
     parameter HEIGHT = 360,
@@ -151,22 +157,20 @@ module rasterizer #(
                 CHECK: begin
                     if (in_tri_v_out) begin
                         if (in_tri_out) begin
-                            if (depth <= read_out_w[8:0]) begin
+                            // if (depth <= read_out_w[8:0]) begin
                                 write_addr <= x_iter + y_iter*WIDTH;
                                 write_in <= {COLOR, depth};
                                 if (buf_sel) wea0 <= 1;
                                 else wea1 <= 1;
-                            end else begin
-                                wea0 <= 0;
-                                wea1 <= 0;
-                            end
+                            // end else begin
+                            //     wea0 <= 0;
+                            //     wea1 <= 0;
+                            // end
                         end
 
                         if (y_iter > y_max) state <= SEND;
                         else state <= ITER;
-
-                        in_tri_v_in <= 0;
-                    end
+                    end else in_tri_v_in <= 0;
                 end
                 SEND: begin // need to figure out timing
                     state <= RECEIVE;
@@ -183,7 +187,8 @@ module rasterizer #(
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)
-        .RAM_DEPTH(WIDTH*HEIGHT))
+        .RAM_DEPTH(WIDTH*HEIGHT),
+        .INIT_FILE(`FPATH(zbuffer_init.mem)))
         z_buffer0 (
         .addra(write_addr0), // rasterizer output
         .clka(clk_in),
@@ -205,7 +210,8 @@ module rasterizer #(
 
     xilinx_true_dual_port_read_first_2_clock_ram #(
         .RAM_WIDTH(17), // most sig 8 is color, least sig 8 is depth (z)
-        .RAM_DEPTH(WIDTH*HEIGHT))
+        .RAM_DEPTH(WIDTH*HEIGHT),
+        .INIT_FILE(`FPATH(zbuffer_init.mem)))
         z_buffer1 (
         .addra(write_addr1), // rasterizer output
         .clka(clk_in),
