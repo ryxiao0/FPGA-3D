@@ -77,7 +77,7 @@ module pixel_shader(
     assign light_source[1] = 0;
     assign light_source[2] = 32'b10111111100000000000000000000000;
 
-    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_MULT, NORMAL_CALC_ADD, SQUARE_NORMAL, MAGNITUDE, SEC_SQUARED, COS_SQUARED, MULT_16, ROUND, COLOR} state;
+    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_MULT, NORMAL_CALC_ADD, SQUARE_NORMAL, MAGNITUDE, RECIP, COS_SQUARED, ROUND, COLOR} state;
 
 
 
@@ -88,9 +88,9 @@ module pixel_shader(
     logic  [31:0] norm [2:0]; 
 
     logic  [31:0] squares [2:0]; 
-    logic [31:0] recip; 
     logic [31:0] mag;
-    logic [31:0] sec_squared;
+    logic [31:0] mag_recip;
+    logic [31:0] dot_product_times_16;
     logic [31:0] cos_squared;
     logic [31:0] to_round;
     logic [15:0] table_index;
@@ -135,8 +135,6 @@ module pixel_shader(
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(rec_valid_out)
     );
-
-    
 
     multiplier ei_mult (  //multiplies e and i 
         .aclk(clk_in),
@@ -517,9 +515,6 @@ module pixel_shader(
                         a1_valid_in <= 1;
                         a1_in_1 <= ei_out;
                         a1_in_2 <= fg_out;
-
-                        rec_valid_in <= 1;
-                        rec_in <= dh_out;
                     end
 
                     // squares[0] <= norm[0]*norm[0];
@@ -541,59 +536,50 @@ module pixel_shader(
                     end
                     if(a2_valid_out) begin
                         mag <= a2_out;
-                        magnitude_done <= 1;
-                    end
-                    if(rec_valid_out) begin
-                        recip <= rec_out;
-                        recip_done <= 1;
-                    end
+                        
+                        state <= RECIP;
+                        rec_in <= a2_out;
+                        rec_valid_in <= 1;
 
-                    if(magnitude_done && recip_done) begin
-                        state <= SEC_SQUARED;
-                        magnitude_done <= 0;
-                        recip_done <= 0; 
+                        mult_valid_in <= 1;
+                        e_in <= squares[2];
+                        i_in <= 32'b01000001100000000000000000000000;
 
-                        // set up for next stage 
-                        e_in <= mag;
-                        i_in <= recip;
-                        mult_valid_in <= 1; 
                     end
                     
                 end
-                SEC_SQUARED: begin
-                    mult_valid_in <= 0; 
+                RECIP: begin
+                    rec_valid_in <= 0;
+                    if(rec_valid_out) begin
+                        mag_recip <= rec_out;
+                        recip_done <= 1;
+                    end
                     if(ei_valid_out) begin
-                        sec_squared <= ei_out;
-                        rec_valid_in <= 1;
-                        rec_in <= ei_out;
+                        dot_product_times_16 <= ei_out;
+                        magnitude_done <= 1;
+                    end
+                    if(magnitude_done && recip_done) begin
+                        recip_done <= 0;
+                        magnitude_done <= 0;
+
                         state <= COS_SQUARED;
+                        mult_valid_in <= 1;
+                        e_in <= mag_recip;
+                        i_in <= dot_product_times_16;
                     end
 
                 end
-                COS_SQUARED: begin 
-                    rec_valid_in <= 0;
-                    if(rec_valid_out) begin
-                        cos_squared <= rec_out;
-
-                        mult_valid_in <= 1;
-                        e_in <= rec_out;
-                        i_in <= 32'b01000001100000000000000000000000;
-                        state <= MULT_16;
-
-                    end 
-
-                end
-                MULT_16: begin
-                    mult_valid_in <= 0;
+                COS_SQUARED: begin
+                    mult_valid_in <= 0; 
                     if(ei_valid_out) begin
-                        to_round <= ei_out;
+                        cos_squared <= ei_out;
 
+                        state <= MULT_16;
                         round_valid_in <= 1;
                         round_in <= ei_out;
                         state <= ROUND;
-
-
                     end
+
                 end
                 ROUND: begin 
                     round_valid_in <= 0;
@@ -604,7 +590,6 @@ module pixel_shader(
                     end
 
                 end
-                // TODO: map that  (cos(angle)) to a color 
                 COLOR: begin 
                     map_data_valid_in <= 0;
 
