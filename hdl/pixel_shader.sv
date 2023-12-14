@@ -330,10 +330,10 @@ module pixel_shader(
 
     add_subtract a6(
         .s_axis_a_tdata(a6_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a6_valid_in),
         .s_axis_b_tdata(a6_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a6_valid_in),
         .s_axis_operation_tdata(a6_op),
         .s_axis_operation_tready(),
