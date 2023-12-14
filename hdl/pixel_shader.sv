@@ -231,6 +231,21 @@ module pixel_shader(
     logic [31:0] a3_out;
     logic a3_valid_in;
     logic a3_valid_out;
+    logic [31:0] a4_in_1;
+    logic [31:0] a4_in_2;
+    logic [31:0] a4_out;
+    logic a4_valid_in;
+    logic a4_valid_out;
+    logic [31:0] a5_in_1;
+    logic [31:0] a5_in_2;
+    logic [31:0] a5_out;
+    logic a5_valid_in;
+    logic a5_valid_out;
+    logic [31:0] a6_in_1;
+    logic [31:0] a6_in_2;
+    logic [31:0] a6_out;
+    logic a6_valid_in;
+    logic a6_valid_out;
 
 
     adder a1(
@@ -270,6 +285,45 @@ module pixel_shader(
         .m_axis_result_tdata(a3_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a3_valid_out)
+    );
+
+    adder a4(
+        .s_axis_a_tdata(a4_in_1),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(a4_valid_in),
+        .s_axis_b_tdata(a4_in_2),
+        .s_axis_b_tready(1),
+        .s_axis_b_tvalid(a4_valid_in),
+        .aclk(clk_in),
+        .m_axis_result_tdata(a4_out),
+        .m_axis_result_tready(1),
+        .m_axis_result_tvalid(a4_valid_out)
+    );
+
+    adder a3(
+        .s_axis_a_tdata(a5_in_1),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(a5_valid_in),
+        .s_axis_b_tdata(a5_in_2),
+        .s_axis_b_tready(1),
+        .s_axis_b_tvalid(a5_valid_in),
+        .aclk(clk_in),
+        .m_axis_result_tdata(a5_out),
+        .m_axis_result_tready(1),
+        .m_axis_result_tvalid(a5_valid_out)
+    );
+
+    adder a3(
+        .s_axis_a_tdata(a6_in_1),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(a6_valid_in),
+        .s_axis_b_tdata(a6_in_2),
+        .s_axis_b_tready(1),
+        .s_axis_b_tvalid(a6_valid_in),
+        .aclk(clk_in),
+        .m_axis_result_tdata(a6_out),
+        .m_axis_result_tready(1),
+        .m_axis_result_tvalid(a6_valid_out)
     );
 
     logic recip_done;
@@ -316,13 +370,35 @@ module pixel_shader(
                 RECEIVE: begin
                     valid_out <= 0;
                     if (data_valid_in) begin
+
+                        // got a triangle, need to get vectors
+
+                        a1_valid_in <= 1; 
+                        a2_valid_in <= 1;
+                        a3_valid_in <= 1;
+                        a4_valid_in <= 1; 
+                        a5_valid_in <= 1;
+                        a6_valid_in <= 1;
                         
-                        logic [31:0] d_in <= triangle[0][0]; //given that triangles are 3 verticies with x,y,z,1
-                        logic [31:0] e_in <= triangle[0][1];
-                        logic [31:0] f_in <= triangle[0][2];
-                        logic [31:0] g_in <= triangle[1][0];
-                        logic [31:0] h_in <= triangle[1][1];
-                        logic [31:0] i_in <= triangle[1][2];
+                        a1_in_1 <= triangle[1][0];
+                        a1_in_2 <= {~triangle[0][0][31], triangle[0][0][30:0]};
+                        a2_in_1 <= triangle[1][1];
+                        a2_in_2 <= {~triangle[0][1][31], triangle[0][1][30:0]};
+                        a3_in_1 <= triangle[1][2];
+                        a3_in_2 <= {~triangle[0][2][31], triangle[0][2][30:0]};
+                        a4_in_1 <= triangle[2][0];
+                        a4_in_2 <= {~triangle[0][0][31], triangle[0][0][30:0]};
+                        a5_in_1 <= triangle[2][1];
+                        a5_in_2 <= {~triangle[0][1][31], triangle[0][1][30:0]};
+                        a6_in_1 <= triangle[2][2];
+                        a6_in_2 <= {~triangle[0][2][31], triangle[0][2][30:0]};
+
+                        // logic [31:0] d_in <= triangle[0][0]; //given that triangles are 3 verticies with x,y,z,1
+                        // logic [31:0] e_in <= triangle[0][1];
+                        // logic [31:0] f_in <= triangle[0][2];
+                        // logic [31:0] g_in <= triangle[1][0];
+                        // logic [31:0] h_in <= triangle[1][1];
+                        // logic [31:0] i_in <= triangle[1][2];
 
                         // vect1[2] <= vert2[2]-vert1[2];
                         // vect1[1] <= vert2[1]-vert1[1];
@@ -333,9 +409,23 @@ module pixel_shader(
                         // vect2[0] <= vert3[0]-vert1[0];
 
                         mult_valid_in <= 1;
-                        state <= NORMAL_CALC_1;
+                        state <= VECTOR_CALC;
 
                     end
+
+                end
+                VECTOR_CALC: begin
+                    if(a2_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
+
+                        d_in <= a1_out; //given that triangles are 3 verticies with x,y,z,1
+                        e_in <= a2_out;
+                        f_in <= a3_out;
+                        g_in <= a4_out;
+                        h_in <= a5_out;
+                        i_in <= a6_out;
+                        state <= NORMAL_CALC_1;
+                    end
+
 
                 end
                 // find the normal vector to the triangle
@@ -343,11 +433,11 @@ module pixel_shader(
                         mult_valid_in <= 0;
                         if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
                             normal_calc[0][0] <= ei_out;
-                            normal_calc[0][1] <= {1, fh_out[30:0]};
+                            normal_calc[0][1] <= {~fh_out[31], fh_out[30:0]};
                             normal_calc[0][2] <= fg_out;
-                            normal_calc[1][0] <= {1, di_out[30:0]}; 
+                            normal_calc[1][0] <= {~di_out[31], di_out[30:0]}; 
                             normal_calc[1][1] <= dh_out;
-                            normal_calc[1][2] <= {1, eg_out[30:0]};  
+                            normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
                             mult_valid_in <= 0;
                             state <= NORMAL_CALC_2;
 
@@ -468,13 +558,11 @@ module pixel_shader(
                     if(ei_valid_out) begin
                         sec_squared <= ei_out;
                     end
-                    // get the reciprocal 
 
 
                 end
                 ANGLE_CALC_4: begin
                     state <= COLOR;
-                    // multiply to get cos theta
 
                 end
                 // TODO: map that  (cos(angle)) to a color 
