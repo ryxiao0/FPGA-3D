@@ -218,7 +218,7 @@ module top_level(
     // assign tf_pos_in_3[1] = 32'h40200000; // from 0 units away
 
     // assign tf_valid_in = 1;
-    // assign tf_obj_done_in = new_frame;
+    // assign tf_obj_done_in = 1;
 
     assign tf_dist = 32'h41f00000; // 30 units away
 
@@ -371,7 +371,7 @@ module top_level(
     // assign tp_coor_in_3[1] = 32'h41200000; // from 10 units away
 
     // assign tp_valid_in = 1;
-    // assign tp_obj_done_in = new_frame;
+    // assign tp_obj_done_in = 1;
 
     assign tp_coor_in_1 = tf_pos_out_1;
     assign tp_coor_in_2 = tf_pos_out_2;
@@ -438,7 +438,7 @@ module top_level(
     // assign v3_rast[2] = 40;
     // assign v3_rast[1] = 20;
     // assign v3_rast[0] = 30;
-    // assign rast_obj_done_in = new_frame;
+    // assign rast_obj_done_in = 1;
 
     logic [7:0] c;
     assign c = (sw[0])? gray: 8'hCC;

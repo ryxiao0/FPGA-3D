@@ -17,7 +17,7 @@ module transformation
         input wire ready_in
     );
 
-    enum {READY, TOVIEW} state;
+    enum {READY, MED, TOVIEW} state;
 
     logic [31:0] add_a_in, add_b_in, add_out;
     logic add_v_in, add_v_out;
@@ -57,6 +57,7 @@ module transformation
         if (rst_in) begin
             valid_out <= 0;
             state <= READY;
+            ready_out <= 1;
         end else begin
             case (state)
                 READY: begin

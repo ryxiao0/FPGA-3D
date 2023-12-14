@@ -144,6 +144,7 @@ module rasterizer #(
             state <= RECEIVE;
             in_tri_v_in <= 0;
             buf_sel <= 0;
+            ready_out = 1;
         end else begin
             case (state)
                 RECEIVE: begin
