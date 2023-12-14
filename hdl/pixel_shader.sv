@@ -36,40 +36,38 @@ module pixel_shader(
 
         PIPELINE;
         RECEIVE 
-        VECTORS: do the subtraction between points to get two vectors. 
+        VECTOR_CALC: do the subtraction between points to get two vectors. 
 
-        NORMAL CALC 1: multiplication. 
+        NORMAL_CALC_MULT: multiplication. 
             normal_calc = [ei, fh, fg, di, dh, eg]
 
-        NORMAL CALC 2: subtraction
+        NORMAL_CALC_ADD: subtraction
             norm = [ei - fh, fg - di, dh - eg]
             (norm[0] = normal_calc[1] - normal_calc[0])
 
-        ANGLE CALC 1: squares 
+        SQUARE_NORMAL: squares 
             sqares = [(ei - fh)^2, (fg - di)^2, (dh - eg)^2]
 
-        ANGLE CALC 2: reciprocal 
+        MAGNITUDE: reciprocal and magnitudes
             recip = (1/(eg  - dh)^2)
             mag = (ei-fh)^2 + (fg-di)^2 + (dh-eg)^2)
 
-        ANGLE CACL 3: multiply. 
-            recip_cos_squared = mag * recip
+        SEC_SQUARED: multiply. 
+            sec_squared = mag * recip
+
+        COS_SQUARED: reciprocal
+            cos_squared = 1/sec_squared
+
+        MULT_16: multiply by 16
+
+        ROUND: round to the nearest integer to get an index for the lookup table 
+
+        COLOR: look up in the table and return the value. d
         
-        MAP: map that to a table of 1/cos^2 values from 0 to 90
-            use binary search to determine where to map this value to in the table (a table of 32 sec^2 values in the 0 to pi/2 range)
 
-
-        FINAL_CALC: if (dh - eg) < 0, result is 180 - ANGLE. 
-
-        COLOR_MAP: now we have an angle in (0, 180). just use that as the grayscale color. 
-            convert to a diff format? 
         
-        REQUIRED IPS: 6 multipliers, 3 adders/subtractors, 1 reciprocal 
+        REQUIRED IPS: 6 multipliers, 6 adders/subtractors, 1 reciprocal, 1 float to fixed 
 
-        TODO: 
-        set up a table of sec^2 values 
-        figure out how to compare floats lol 
-        implement each pipeline stage
     */
     
 
@@ -79,7 +77,7 @@ module pixel_shader(
     assign light_source[1] = 0;
     assign light_source[2] = 32'b10111111100000000000000000000000;
 
-    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_1, NORMAL_CALC_2, ANGLE_CALC_1, ANGLE_CALC_2, ANGLE_CALC_3, COLOR, SEND} state;
+    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_MULT, NORMAL_CALC_ADD, SQUARE_NORMAL, MAGNITUDE, SEC_SQUARED, COS_SQUARED, MULT_16, ROUND, COLOR} state;
 
 
 
@@ -93,7 +91,10 @@ module pixel_shader(
     logic [31:0] recip; 
     logic [31:0] mag;
     logic [31:0] sec_squared;
-    logic [31:0] final_angle;
+    logic [31:0] cos_squared;
+    logic [31:0] to_round;
+    logic [31:0] table_index;
+    logic [7:0] final_calc_color;
 
 
 
@@ -329,16 +330,20 @@ module pixel_shader(
     logic recip_done;
     logic magnitude_done;
 
+    logic [31:0] round_in;
+    logic round_valid_in;
+    logic [31:0] round_out;
+    logic round_valid_out;
 
-    // float_to_fixed round (
-    //     .aclk(clk_in),
-    //     .s_axis_a_tdata(round_in),
-    //     .s_axis_a_tready(),
-    //     .s_axis_a_tvalid(round_v_in),
-    //     .m_axis_result_tdata(round_out),
-    //     .m_axis_result_tready(1'b1),
-    //     .m_axis_result_tvalid(round_v_out)
-    // );
+    float_to_fixed round (
+        .aclk(clk_in),
+        .s_axis_a_tdata(round_in),
+        .s_axis_a_tready(1),
+        .s_axis_a_tvalid(round_valid_in),
+        .m_axis_result_tdata(round_out),
+        .m_axis_result_tready(1'b1),
+        .m_axis_result_tvalid(round_valid_out)
+    );
 
 
 
@@ -346,23 +351,19 @@ module pixel_shader(
     always_ff @(posedge clk_in) begin
         if (rst_in) begin
             
-            // vect1[0] <= 0;
-            // vect2[0] <= 0;
-            // vect1[1] <= 0;
-            // vect2[1] <= 0;
-            // vect1[2] <= 0;
-            // vect2[2] <= 0;
-            // tri_normal[0] <= 0;
-            // tri_normal[1] <= 0;
-            // tri_normal[2] <= 0;
-            // normal_cross_light[0] <= 0;
-            // normal_cross_light[1] <= 0;
-            // normal_cross_light[2] <= 0;
+            mult_valid_in <= 0;
+            a1_valid_in <= 0;
+            a2_valid_in <= 0;
+            a3_valid_in <= 0;
+            a4_valid_in <= 0;
+            a5_valid_in <= 0;
+            a6_valid_in <= 0;
+            rec_valid_in <= 0;
+            round_valid_in <= 0; 
             recip_done <= 0;
             magnitude_done <= 0;
-
-            
-            angle <= 0;
+            color_out <= 0;
+            final_calc_color <= 0;
             state <= RECEIVE;
             valid_out <= 0;
         end else begin
@@ -429,7 +430,7 @@ module pixel_shader(
 
                 end
                 // find the normal vector to the triangle
-                NORMAL_CALC_1: begin
+                NORMAL_CALC_MULT: begin
                         mult_valid_in <= 0;
                         if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
                             normal_calc[0][0] <= ei_out;
@@ -446,7 +447,7 @@ module pixel_shader(
                         // NORMAL CALC 1: multiplication. 
                         //     normal_calc = [ei, fh, fg, di, dh, eg]
                 end
-                NORMAL_CALC_2: begin
+                NORMAL_CALC_ADD: begin
                     if(~a1_valid_in) begin
                         a1_valid_in <= 1; 
                         a2_valid_in <= 1;
@@ -487,7 +488,7 @@ module pixel_shader(
                 end
                 // find the angle between the normal vector and the light source
                 // cos(theta) = (dot product a, b) / |a| * |b|
-                ANGLE_CALC_1: begin
+                SQUARE_NORMAL: begin
                     mult_valid_in <= 0;
 
                     // mult_valid_in <= 1; 
@@ -521,7 +522,7 @@ module pixel_shader(
 
                     // light source magnitude is 1
                 end
-                ANGLE_CALC_2: begin
+                MAGNTIDUE: begin
 
                     a1_valid_in <= 0;
                     a2_valid_in <= 0;
@@ -553,11 +554,46 @@ module pixel_shader(
                     end
                     
                 end
-                ANGLE_CALC_3: begin
+                SEC_SQUARED: begin
                     mult_valid_in <= 0; 
                     if(ei_valid_out) begin
                         sec_squared <= ei_out;
-                        state <= COLOR;
+                        rec_valid_in <= 1;
+                        rec_in <= ei_out;
+                        state <= ANGLE_CALC_4;
+                    end
+
+                end
+                COS_SQUARED: begin 
+                    rec_valid_in <= 0;
+                    if(rec_valid_out) begin
+                        cos_squared <= rec_out;
+
+                        mult_valid_in <= 1;
+                        e_in <= rec_out;
+                        i_in <= 32'b01000001100000000000000000000000;
+                        state <= MULT_16;
+
+                    end 
+
+                end
+                MULT_16: begin
+                    mult_valid_in <= 0;
+                    if(ei_valid_out) begin
+                        to_round <= ei_out;
+
+                        round_valid_in <= 1;
+                        round_in <= ei_out;
+                        state <= ROUND;
+
+
+                    end
+                end
+                ROUND: begin 
+                    round_valid_in <= 0;
+                    if(round_valid_out) begin
+                        table_index <= round_out; 
+                        final_calc_color <= color_map(round_out);
                     end
 
                 end
@@ -566,17 +602,16 @@ module pixel_shader(
 
                     if(norm[2][31]) begin 
                         // the normal vector is pointing away from the screen - the color shouldn't be visible 
-                        color <= 8'b1111_1111;
-                        state <= SEND;
+                        color_out <= 8'b1111_1111;
+                        valid_out <= 1;
+                        state <= RECEIVE;
                     end else begin 
                         // the angle is positive and needs to be mapped 
+                        color_out <= final_calc_color;
+                        valid_out <= 1;
+                        state <= RECEIVE;
 
                     end
-                end
-                SEND: begin // need to figure out timing
-                    valid_out <= 1; 
-                    color_out <= color;
-                    state <= RECEIVE;
                 end
             endcase;
         end
