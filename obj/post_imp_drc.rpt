@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (lin64) Build 3865809 Sun May  7 15:04:56 MDT 2023
-| Date         : Thu Dec 14 11:53:03 2023
+| Date         : Thu Dec 14 18:51:44 2023
 | Host         : worker running 64-bit Ubuntu 20.04.6 LTS
 | Command      : report_drc -file obj/post_imp_drc.rpt
 | Design       : top_level
@@ -24,11 +24,11 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 29
+             Violations found: 27
 +-----------+----------+-------------------------------------------------------------------+------------+
 | Rule      | Severity | Description                                                       | Violations |
 +-----------+----------+-------------------------------------------------------------------+------------+
-| DPIP-1    | Warning  | Input pipelining                                                  | 14         |
+| DPIP-1    | Warning  | Input pipelining                                                  | 12         |
 | AVAL-4    | Advisory | enum_USE_DPORT_FALSE_enum_DREG_ADREG_0_connects_CED_CEAD_RSTD_GND | 12         |
 | REQP-1725 | Advisory | DSP_Abus_sign_bit_alert                                           | 3          |
 +-----------+----------+-------------------------------------------------------------------+------------+
@@ -93,16 +93,6 @@ Related violations: <none>
 DPIP-1#12 Warning
 Input pipelining  
 DSP rast/intri/detvv2_reg input rast/intri/detvv2_reg/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#13 Warning
-Input pipelining  
-DSP rast/read_addr00 input rast/read_addr00/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#14 Warning
-Input pipelining  
-DSP rast/read_addr00 input rast/read_addr00/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 AVAL-4#1 Advisory

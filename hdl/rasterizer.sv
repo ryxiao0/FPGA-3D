@@ -35,7 +35,7 @@ module rasterizer #(
     ///Rasterizer///
     ////////////////
 
-    enum {RECEIVE, ITER, CHECK, SEND} state;
+    enum {ERASE, NEXT, RECEIVE, ITER, CHECK, SEND} state;
 
     // calculate rom address
     localparam STAGES = 2;
@@ -122,6 +122,11 @@ module rasterizer #(
 
     logic obj_done_med;
 
+    logic [7:0] x_erase;
+    logic [7:0] y_erase;
+
+    logic [7:0] c;
+
     in_triangle intri (
         .clk_in(clk_in),
         .rst_in(rst_in),
@@ -145,14 +150,40 @@ module rasterizer #(
             in_tri_v_in <= 0;
             buf_sel <= 0;
             ready_out = 1;
+            c <= 8'h0F;
+            x_erase <= 0;
+            y_erase <= 0;
         end else begin
             case (state)
+                ERASE: begin
+                    write_addr <= x_erase + y_erase*WIDTH;
+                    write_in <= 9'h000ff;
+                    if (buf_sel) wea0 <= 1;
+                    else wea1 <= 1;
+                    state <= NEXT;
+                end
+                NEXT: begin
+                    if (x_erase == WIDTH) begin
+                        if (y_erase == HEIGHT) state <= RECEIVE;
+                        else begin
+                            y_erase <= y_erase + 1;
+                            x_erase <= 0;
+                            state <= ERASE;
+                        end
+                    end else begin
+                        x_erase <= x_erase + 1;
+                        state <= ERASE;
+                    end
+                end
                 RECEIVE: begin
                     if (valid_tri) begin
                         state <= ITER;
                         ready_out <= 0;
                         obj_done_med <= obj_done;
+                        c <= c + 8'h10;
                     end else ready_out <= 1;
+                    x_erase <= 0;
+                    y_erase <= 0;
                     x_iter <= x_min-1;
                     y_iter <= y_min-1;
                     wea0 <= 0;
@@ -173,7 +204,7 @@ module rasterizer #(
                     if (in_tri_v_out) begin
                         if (in_tri_out) begin
                             write_addr <= x_iter + y_iter*WIDTH;
-                            write_in <=  (depth <= read_out_w[8:0])? {COLOR, depth}: read_out_w;
+                            write_in <=  (depth <= read_out_w[8:0])? {c, depth}: read_out_w;
                             if (buf_sel) wea0 <= 1;
                             else wea1 <= 1;
                         end
@@ -183,8 +214,10 @@ module rasterizer #(
                     end else in_tri_v_in <= 0;
                 end
                 SEND: begin // need to figure out timing
-                    if (obj_done_med) buf_sel <= ~buf_sel;
-                    state <= RECEIVE;
+                    if (obj_done_med) begin
+                        buf_sel <= ~buf_sel;
+                        state <= ERASE;
+                    end else state <= RECEIVE;
                 end
             endcase;
         end

@@ -11,7 +11,8 @@ module top_level(
     output logic hdmi_clk_p, hdmi_clk_n //differential hdmi clock
 );
 
-    parameter NF=1570; // get number of facets from python
+    parameter NF=1570;//12;//1368;// // get number of facets from python
+    // parameter TPSTAGES=32, TFSTAGES=60;
 
     assign led = sw;
     logic sys_rst;
@@ -143,6 +144,29 @@ module top_level(
         .valid_addr_out(valid_addr_scaled)
     );
 
+    logic clean1, clean2, clean3;
+
+    debouncer db1 (
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .dirty_in(btn[1]),
+        .clean_out(clean1)
+    );
+
+    debouncer db2 (
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .dirty_in(btn[2]),
+        .clean_out(clean2)
+    );
+
+    debouncer db3 (
+        .clk_in(clk_pixel),
+        .rst_in(sys_rst),
+        .dirty_in(btn[3]),
+        .clean_out(clean3)
+    );
+
     get_vertices #(
         .NUM_FACETS(NF)
         ) gv (
@@ -220,7 +244,7 @@ module top_level(
     // assign tf_valid_in = 1;
     // assign tf_obj_done_in = 1;
 
-    assign tf_dist = 32'h450ca000;//41f00000; // 30 units away
+    assign tf_dist = 32'h450ca000;//32'h41200000;//41f00000; // 30 units away
 
     assign tf_pos_in_1 = gv_v1_out;
     assign tf_pos_in_2 = gv_v2_out;
@@ -237,9 +261,9 @@ module top_level(
             tf_yaw <= 0;
             tf_roll <= 0;
         end else begin
-            if (btn[1]) tf_pitch <= tf_pitch + 1;
-            // if (btn[2]) tf_yaw <= tf_yaw + 1;
-            // if (btn[3]) tf_roll <= tf_roll + 1;
+            if (clean1) tf_pitch <= tf_pitch + 1;
+            if (clean2) tf_yaw <= tf_yaw + 1;
+            if (clean3) tf_roll <= tf_roll + 1;
         end
     end
 
@@ -385,15 +409,18 @@ module top_level(
     // assign tp_valid_in = 1;
     // assign tp_obj_done_in = 1;
 
-    // logic [10:0] hcount_in_pipe [STAGES-1:0];
-    // logic [9:0] vcount_in_pipe [STAGES-1:0];
+    // logic [31:0] tp_coor_1_pipe [TPSTAGES-1:0] [3:0];
+    // logic [31:0] tp_coor_2_pipe [TPSTAGES-1:0] [3:0];
+    // logic [31:0] tp_coor_3_pipe [TPSTAGES-1:0] [3:0];
 
     // always_ff @(posedge clk_in) begin
-    //     hcount_in_pipe[0] <= hcount;
-    //     vcount_in_pipe[0] <= vcount;
-    //     for (int i=1;i<STAGES;i=i+1) begin // 2 3 or 4 stages
-    //         hcount_in_pipe[i] <= hcount_in_pipe[i-1];
-    //         vcount_in_pipe[i] <= vcount_in_pipe[i-1];
+    //         tp_coor_in_1 <= tf_pos_out_1;
+    //         tp_coor_in_2 <= tf_pos_out_2;
+    //         tp_coor_in_3 <= tf_pos_out_3; 
+    //     for (int i=1;i<TPSTAGES;i=i+1) begin
+    //         tp_coor_1_pipe[i] <= tp_coor_1_pipe[i-1];
+    //         tp_coor_2_pipe[i] <= tp_coor_2_pipe[i-1];
+    //         tp_coor_3_pipe[i] <= tp_coor_3_pipe[i-1];
     //     end
     // end
 
@@ -476,6 +503,28 @@ module top_level(
 
     assign rast_obj_done_in = tp_obj_done_out_1;
 
+    localparam STAGES = 194;
+
+
+    // CHANGE - pipelined incorrectly, should pipeline color
+    // logic [$clog2(WIDTH*HEIGHT)-1:0] image_addr;
+    logic [10:0] hcount_in_pipe [STAGES-1:0];
+    logic [9:0] vcount_in_pipe [STAGES-1:0];
+    logic valid_addr_pipe [STAGES-1:0];
+    // logic [5:0] hcount_in_pipe [STAGES-1:0];
+    // logic [5:0] vcount_in_pipe [STAGES-1:0];
+
+    always_ff @(posedge clk_pixel) begin
+        hcount_in_pipe[0] <= hcount_scaled;
+        vcount_in_pipe[0] <= vcount_scaled;
+        valid_addr_pipe[0] <= valid_addr_scaled;
+        for (int i=1;i<STAGES;i=i+1) begin // 2 3 or 4 stages
+            hcount_in_pipe[i] <= hcount_in_pipe[i-1];
+            vcount_in_pipe[i] <= vcount_in_pipe[i-1];
+            valid_addr_pipe[i] <= valid_addr_pipe[i-1];
+        end
+    end
+
     rasterizer rast (
         .clk_in(clk_pixel),
         .rst_in(sys_rst),
@@ -485,9 +534,9 @@ module top_level(
         .valid_tri(rast_valid_in),
         .obj_done(rast_obj_done_in),
         .new_frame(new_frame),
-        .hcount(hcount_scaled),
-        .vcount(vcount_scaled),
-        .count_valid(valid_addr_scaled),
+        .hcount(hcount_in_pipe[STAGES-1]),
+        .vcount(vcount_in_pipe[STAGES-1]),
+        .count_valid(valid_addr_pipe[STAGES-1]),
         .color_out(gray),
         .ready_out(rast_ready_out)
     );

@@ -1,5 +1,7 @@
 import sys
 import struct
+import numpy as np
+import math
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
@@ -21,7 +23,7 @@ if __name__ == "__main__":
                             val = ""
                         else:
                             val += l[i]
-                    vertices.append(tuple(coor))
+                    vertices.append(coor)
                 elif l[0] == "f":
                     ind = []
                     val = ""
@@ -63,9 +65,14 @@ if __name__ == "__main__":
         print(max([c[2] for c in vertices]))
         print(max([c[1] for c in vertices]))
         print(min([c[0] for c in vertices]))
+        print(len(vertices))
 
         vert_str = []
         vert = [(a[0]-xCOM, a[1]-yCOM, a[2]-zCOM) for a in vertices]
+        pitch = math.pi / 2
+        # rot_vert = [(b[0], b[1]*math.cos(pitch) + b[2]*math.sin(pitch), -1*b[1]*math.sin(pitch) + b[2]*math.cos(pitch)) for b in vert]
+        # rot_vert = [(b[0]*math.cos(pitch) + -1*b[2]*math.sin(pitch), b[1], b[0]*math.sin(pitch) + b[2]*math.cos(pitch)) for b in vert]
+        # rot_vert = [(b[0]*math.cos(pitch) + b[1]*math.sin(pitch), -1*b[0]*math.sin(pitch) + b[1]*math.cos(pitch), b[2]) for b in vert]
         # print(vert)
         for v in vert:
             xVal = hex((struct.unpack("i", struct.pack("f", v[0]))[0] + (1 << 32)) % (1 << 32))
