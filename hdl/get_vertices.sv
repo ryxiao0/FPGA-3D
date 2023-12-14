@@ -128,12 +128,12 @@ module get_vertices#(
         .INIT_FILE(`FPATH(cube_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) vertex_inst (
         .addra(vertex_read),     // Address bus, width determined from RAM_DEPTH
-        .dina(0),       // RAM input data, width determined from RAM_WIDTH
+        .dina(1'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
-        .wea(0),         // Write enable
-        .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
+        .wea(1'b0),         // Write enable
+        .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
         .rsta(rst_in),       // Output reset (does not affect memory contents)
-        .regcea(1),   // Output register enable
+        .regcea(1'b1),   // Output register enable
         .douta({x, y, z})      // RAM output data, width determined from RAM_WIDTH
     );
 
@@ -144,12 +144,12 @@ module get_vertices#(
         .INIT_FILE(`FPATH(cube_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) facet_inst (
         .addra(facet_read),     // Address bus, width determined from RAM_DEPTH
-        .dina(0),       // RAM input data, width determined from RAM_WIDTH
+        .dina(1'b0),       // RAM input data, width determined from RAM_WIDTH
         .clka(clk_in),       // Clock
-        .wea(0),         // Write enable
-        .ena(1),         // RAM Enable, for additional power savings, disable port when not in use
+        .wea(1'b0),         // Write enable
+        .ena(1'b1),         // RAM Enable, for additional power savings, disable port when not in use
         .rsta(rst_in),       // Output reset (does not affect memory contents)
-        .regcea(1),   // Output register enable
+        .regcea(1'b1),   // Output register enable
         .douta({f1, f2, f3})      // RAM output data, width determined from RAM_WIDTH
     );
 

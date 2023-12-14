@@ -1,0 +1,7 @@
+Running: xsim.dir/get_vertices_tb_behav/xsimk -simmode gui -wdb get_vertices_tb_behav.wdb -simrunnum 0 -socket 59347
+Design successfully loaded
+Design Loading Memory Usage: 23708 KB (Peak: 24048 KB)
+Design Loading CPU Usage: 10 ms
+Simulation completed
+Simulation Memory Usage: 106292 KB (Peak: 162976 KB)
+Simulation CPU Usage: 10 ms

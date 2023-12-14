@@ -1,0 +1,14 @@
+Time resolution is 1 ps
+WARNING: File data/cube_vertices.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/cube_facets.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/zbuffer_init.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/zbuffer_init.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+Starting Sim
+WARNING: File data/cube_vertices.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/cube_facets.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/zbuffer_init.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/zbuffer_init.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v at line 107 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+ERROR: Could not open vcd file mega_tb.vcd. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
+Starting Sim
+Finishing Sim
+$finish called at time : 40025 ns : File "/home/ryxiao/FPGA-3D/sim/mega_tb.sv" Line 46

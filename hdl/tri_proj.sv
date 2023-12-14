@@ -15,9 +15,9 @@ module tri_proj
         input wire ready_in
 );
 
-    parameter M=32'h42f00000; // 120
+    parameter M=32'h41200000; // 120
 
-    enum {IDLE, DIV, REC, X, Y, MULTX, ROUNDX, MULTY, ROUNDY, MULTZ, ROUNDZ} state;
+    enum {IDLE, DIV, REC, X, Y, MULTX, ROUNDX, MULTY, ROUNDY, MULTZ, ROUNDZ, OUT} state;
 
     logic [31:0] rec_in, rec_out;
     logic rec_v_in, rec_v_out;
@@ -34,7 +34,7 @@ module tri_proj
     assign z_f = coor_in[1];
 
     logic [9:0] shift;
-    assign shift = round_out[15:6] + 120;
+    assign shift = round_out[15:6] + 10;
 
     logic [8:0] x, y, z;
     assign coor_out[2] = x;
@@ -90,9 +90,8 @@ module tri_proj
                         state <= DIV;
                         ready_out <= 0;
                         obj_done_med <= obj_done_in;
-                    end else ready_out <= 1;
+                    end
                     valid_out <= 0;
-
                 end
                 DIV: begin // z/d
                     if (mult_v_out) begin
@@ -165,12 +164,16 @@ module tri_proj
                 end
                 ROUNDZ: begin
                     if (round_v_out) begin
-                        if (ready_in) begin
-                            z <= shift[8:0]; // drop sign
-                            valid_out <= 1;
-                            obj_done_out <= obj_done_med;
-                            state <= IDLE;
-                        end
+                        z <= shift[8:0]; // drop sign
+                        state <= OUT;
+                    end else round_v_in <= 0;
+                end
+                OUT: begin
+                    if (round_v_out) begin
+                        valid_out <= 1;
+                        obj_done_out <= obj_done_med;
+                        state <= IDLE;
+                        ready_out <= 1;
                     end else round_v_in <= 0;
                 end
             endcase;

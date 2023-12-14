@@ -1,0 +1,13 @@
+Time resolution is 1 ps
+WARNING: File data/cube_vertices.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v at line 68 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/cube_facets.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v at line 68 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+Starting Sim
+INFO: HDL object /get_vertices_tb/v1 is an unpacked array. VCD does not support unpacked array type according to IEEE LRM 1800-2009, section21.7.5.
+INFO: HDL object /get_vertices_tb/v2 is an unpacked array. VCD does not support unpacked array type according to IEEE LRM 1800-2009, section21.7.5.
+INFO: HDL object /get_vertices_tb/v3 is an unpacked array. VCD does not support unpacked array type according to IEEE LRM 1800-2009, section21.7.5.
+WARNING: File data/cube_vertices.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v at line 68 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File data/cube_facets.mem referenced on /home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v at line 68 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+ERROR: Could not open vcd file get_vertices_tb.vcd. A VCD file by name dump.vcd has already been opened. Only one VCD file is allowed to be open.
+Starting Sim
+Finishing Sim
+$finish called at time : 10025 ns : File "/home/ryxiao/FPGA-3D/sim/get_vertices_tb.sv" Line 62

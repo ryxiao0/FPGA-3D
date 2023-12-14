@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module xilinx_single_port_ram_read_first
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/get_vertices.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module get_vertices
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/sim/get_vertices_tb.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module get_vertices_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/get_vertices_tb/get_vertices_tb.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

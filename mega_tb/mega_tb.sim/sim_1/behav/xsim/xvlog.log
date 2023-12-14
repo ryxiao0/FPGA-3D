@@ -1,0 +1,28 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/float_to_fixed/ip/float_to_fixed/sim/float_to_fixed.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module float_to_fixed
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/multiplier/ip/multiplier/sim/multiplier.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module multiplier
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/reciprocal/ip/reciprocal/sim/reciprocal.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module reciprocal
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/ip/adder/ip/adder/sim/adder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module adder
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module xilinx_single_port_ram_read_first
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/hdl/xilinx_true_dual_port_read_first_2_clock_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module xilinx_true_dual_port_read_first_2_clock_ram
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/get_vertices.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module get_vertices
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/in_triangle.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module in_triangle
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/mega.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mega
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/rasterizer.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rasterizer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/transformation.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module transformation
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/hdl/tri_proj.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tri_proj
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/ryxiao/FPGA-3D/sim/mega_tb.sv" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mega_tb
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/ryxiao/FPGA-3D/mega_tb/mega_tb.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

@@ -7,7 +7,7 @@
 <Project Product="Vivado" Version="7" Minor="63" Path="/home/ryxiao/FPGA-3D/tri_proj_tb/tri_proj_tb.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
-    <Option Name="Id" Val="e6804a909b844986a0c0f615899eae90"/>
+    <Option Name="Id" Val="432ac860e0544fa28e2c37dc78b24c8c"/>
     <Option Name="Part" Val="xc7s50csga324-1"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>

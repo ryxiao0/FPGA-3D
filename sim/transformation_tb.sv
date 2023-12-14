@@ -11,6 +11,9 @@ module transformation_tb;
     logic [31:0] new_pos [3:0];
     logic [31:0] x, y, z, w;
     logic v_out;
+    logic [31:0] distance;
+    logic ready_out, ready_in;
+    logic obj_done_in, obj_done_out;
 
     assign x = new_pos[3];
     assign y = new_pos[2];
@@ -26,9 +29,14 @@ module transformation_tb;
         .clk_in(clk),
         .rst_in(rst),
         .pos(pos),
+        .distance(distance),
+        .obj_done_in(obj_done_in),
         .valid_in(v_in),
         .valid_out(v_out),
-        .new_pos(new_pos)
+        .obj_done_out(obj_done_out),
+        .new_pos(new_pos),
+        .ready_out(ready_out),
+        .ready_in(ready_in)
     );
 
     always begin
@@ -50,7 +58,10 @@ module transformation_tb;
         x_in = 32'h3f800000;
         y_in = 32'h3f800000;
         z_in = 32'h3f800000;
+        distance = 32'h41200000;
+        obj_done_in = 1;
         v_in = 1;
+        ready_in = 1;
         #10;
         v_in = 0;
         #1000;

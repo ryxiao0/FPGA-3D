@@ -1,0 +1,13 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../../hdl/xilinx_single_port_ram_read_first.v" \
+
+sv xil_defaultlib  \
+"../../../../../hdl/get_vertices.sv" \
+"../../../../../sim/get_vertices_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

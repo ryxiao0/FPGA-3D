@@ -1,4 +1,4 @@
-Running: xsim.dir/tri_proj_tb_behav/xsimk -simmode gui -wdb tri_proj_tb_behav.wdb -simrunnum 0 -socket 34667
+Running: xsim.dir/tri_proj_tb_behav/xsimk -simmode gui -wdb tri_proj_tb_behav.wdb -simrunnum 0 -socket 40397
 Design successfully loaded
 Design Loading Memory Usage: 31796 KB (Peak: 31804 KB)
 Design Loading CPU Usage: 10 ms

@@ -1,6 +1,5 @@
 # compile verilog/system verilog design source files
 verilog xil_defaultlib  \
-"../../../../../ip/multiplier/ip/multiplier/sim/multiplier.v" \
 "../../../../../ip/adder/ip/adder/sim/adder.v" \
 
 sv xil_defaultlib  \

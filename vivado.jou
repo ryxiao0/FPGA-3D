@@ -3,13 +3,13 @@
 # SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Wed Dec 13 20:03:26 2023
-# Process ID: 3003548
+# Start of session at: Thu Dec 14 05:32:28 2023
+# Process ID: 3201623
 # Current directory: /home/ryxiao/FPGA-3D
-# Command line: vivado -mode batch -source xsim_run_tri_proj.tcl
+# Command line: vivado -mode batch -source xsim_run_mega.tcl
 # Log file: /home/ryxiao/FPGA-3D/vivado.log
 # Journal file: /home/ryxiao/FPGA-3D/vivado.jou
-# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 799.726 MHz, CPU Physical cores: 16, Host memory: 33318 MB
+# Running On: eecs-digital-33, OS: Linux, CPU Frequency: 3529.098 MHz, CPU Physical cores: 16, Host memory: 33318 MB
 #-----------------------------------------------------------
-source xsim_run_tri_proj.tcl
-source tri_proj_tb.tcl
+source xsim_run_mega.tcl
+source mega_tb.tcl

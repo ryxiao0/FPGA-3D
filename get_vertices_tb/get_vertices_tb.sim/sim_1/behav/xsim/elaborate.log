@@ -1,0 +1,30 @@
+Vivado Simulator v2023.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: /tools/Xilinx/Vivado/2023.1/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L uvm -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot get_vertices_tb_behav xil_defaultlib.get_vertices_tb xil_defaultlib.glbl -log elaborate.log 
+Using 8 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 96 for port 'dina' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:119]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'wea' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:121]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'ena' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:122]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'regcea' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:124]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 48 for port 'dina' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:135]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'wea' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:137]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'ena' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:138]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'regcea' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:140]
+WARNING: [VRFC 10-3091] actual bit length 36 differs from formal bit length 48 for port 'douta' [/home/ryxiao/FPGA-3D/hdl/get_vertices.sv:141]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" Line 10. Module xilinx_single_port_ram_read_first(RAM_WIDTH=96,RAM_DEPTH=4096,INIT_FILE="data/cube_vertices.mem") doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" Line 10. Module xilinx_single_port_ram_read_first(RAM_WIDTH=48,RAM_DEPTH=4096,INIT_FILE="data/cube_facets.mem") doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" Line 10. Module xilinx_single_port_ram_read_first(RAM_WIDTH=96,RAM_DEPTH=4096,INIT_FILE="data/cube_vertices.mem") doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "/home/ryxiao/FPGA-3D/hdl/xilinx_single_port_ram_read_first.v" Line 10. Module xilinx_single_port_ram_read_first(RAM_WIDTH=48,RAM_DEPTH=4096,INIT_FILE="data/cube_facets.mem") doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.xilinx_single_port_ram_read_firs...
+Compiling module xil_defaultlib.xilinx_single_port_ram_read_firs...
+Compiling module xil_defaultlib.get_vertices
+Compiling module xil_defaultlib.get_vertices_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot get_vertices_tb_behav
