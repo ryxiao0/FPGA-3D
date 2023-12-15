@@ -105,11 +105,11 @@ module system_inputs#(
                 end else if(sw[13]) begin 
                     translate[1] <= (current_translate[1] - 1) % translate_max;
                 end
-                if (sw[14]) begin
-                    translate[2] <= (current_translate[2] + 1) % translate_max;
-                end else if(sw[15]) begin 
-                    translate[2] <= (current_translate[2] - 1) % translate_max;
-                end
+                // if (sw[14]) begin
+                //     translate[2] <= (current_translate[2] + 1) % translate_max;
+                // end else if(sw[15]) begin 
+                //     translate[2] <= (current_translate[2] - 1) % translate_max;
+                // end
             end
             if(adder_valid_out) begin
                 scale <= adder_out;
