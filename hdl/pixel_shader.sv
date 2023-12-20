@@ -7,10 +7,15 @@ module pixel_shader(
     input wire clk_in,
     input wire rst_in,
     input wire data_valid_in, 
-    // input wire [8:0] v1 [2:0],
-    // input wire [8:0] v2 [2:0],
-    // input wire [8:0] v3 [2:0],
-    input wire [31:0] triangle [3:0] [2:0],
+    input wire [31:0] triangle [2:0] [3:0],
+    // output logic [31:0] test_out,
+    // output logic [31:0] mag_out,
+    // output logic [31:0] mag_recip_out, 
+    // output logic [31:0] dot_prod_out, 
+    // output logic [31:0] vector_out [5:0],
+    // output logic [31:0] norm_calc_mult [5:0],
+    // output logic [31:0] norm_out [2:0],
+    // output logic [31:0] squares_out [2:0],
     output logic valid_out, 
     output logic [7:0] color_out
 );
@@ -48,22 +53,19 @@ module pixel_shader(
         SQUARE_NORMAL: squares 
             sqares = [(ei - fh)^2, (fg - di)^2, (dh - eg)^2]
 
-        MAGNITUDE: reciprocal and magnitudes
-            recip = (1/(eg  - dh)^2)
+        MAGNITUDE: magnitudes
             mag = (ei-fh)^2 + (fg-di)^2 + (dh-eg)^2)
 
-        SEC_SQUARED: multiply. 
-            sec_squared = mag * recip
+        RECIP: reciprocal of the magnitude. 
+            mag_recip = 1 / magnitude
+            at the same time dot_product_squared_times_16 = squares[2] * 16 
 
-        COS_SQUARED: reciprocal
-            cos_squared = 1/sec_squared
-
-        MULT_16: multiply by 16
+        COS_SQUARED (*16): 
+            cos_squared = mag_recip * dot_product_squared_times_16
 
         ROUND: round to the nearest integer to get an index for the lookup table 
 
-        COLOR: look up in the table and return the value. d
-        
+        COLOR: look up in the table and return the value. if the z coordinate of the normal vector is 0, then this should be just 0. 
 
         
         REQUIRED IPS: 6 multipliers, 6 adders/subtractors, 1 reciprocal, 1 float to fixed 
@@ -77,7 +79,7 @@ module pixel_shader(
     assign light_source[1] = 0;
     assign light_source[2] = 32'b10111111100000000000000000000000;
 
-    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_MULT, NORMAL_CALC_ADD, SQUARE_NORMAL, MAGNITUDE, SEC_SQUARED, COS_SQUARED, MULT_16, ROUND, COLOR} state;
+    enum {RECEIVE, VECTOR_CALC, NORMAL_CALC_MULT, NORMAL_CALC_ADD, SQUARE_NORMAL, MAGNITUDE, RECIP, COS_SQUARED, ROUND, COLOR} state;
 
 
 
@@ -88,9 +90,9 @@ module pixel_shader(
     logic  [31:0] norm [2:0]; 
 
     logic  [31:0] squares [2:0]; 
-    logic [31:0] recip; 
     logic [31:0] mag;
-    logic [31:0] sec_squared;
+    logic [31:0] mag_recip;
+    logic [31:0] dot_product_squared_times_16;
     logic [31:0] cos_squared;
     logic [31:0] to_round;
     logic [15:0] table_index;
@@ -117,8 +119,6 @@ module pixel_shader(
     logic ei_valid_out, fh_valid_out, fg_valid_out, di_valid_out, dh_valid_out, eg_valid_out; //multiplier valid signals
     logic mult_valid_in; //signal to begin multiplication
 
-    logic signed [31:0] dot_product_signed;
-
     //END NEW VARIABLES
 
     logic [31:0] rec_in;
@@ -129,22 +129,20 @@ module pixel_shader(
     reciprocal rec (
         .aclk(clk_in),
         .s_axis_a_tdata(rec_in),
-        .s_axis_a_tready(1'b1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(rec_valid_in),
         .m_axis_result_tdata(rec_out),
         .m_axis_result_tready(1'b1),
         .m_axis_result_tvalid(rec_valid_out)
     );
 
-    
-
     multiplier ei_mult (  //multiplies e and i 
         .aclk(clk_in),
         .s_axis_a_tdata(e_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(i_in),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(ei_out),
         .m_axis_result_tready(1'b1),
@@ -154,10 +152,10 @@ module pixel_shader(
     multiplier fh_mult (  //multiplies f and h 
         .aclk(clk_in),
         .s_axis_a_tdata(f_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(h_in),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(fh_out),
         .m_axis_result_tready(1'b1),
@@ -168,10 +166,10 @@ module pixel_shader(
     multiplier fg_mult (  //multiplies f and g 
         .aclk(clk_in),
         .s_axis_a_tdata(f_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(g_in),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(fg_out),
         .m_axis_result_tready(1'b1),
@@ -181,10 +179,10 @@ module pixel_shader(
     multiplier di_mult (  //multiplies d and i 
         .aclk(clk_in),
         .s_axis_a_tdata(d_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(i_in),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(di_out),
         .m_axis_result_tready(1'b1),
@@ -194,10 +192,10 @@ module pixel_shader(
     multiplier dh_mult (  //multiplies d and h 
         .aclk(clk_in),
         .s_axis_a_tdata(d_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(h_in),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(dh_out),
         .m_axis_result_tready(1'b1),
@@ -207,10 +205,10 @@ module pixel_shader(
     multiplier eg_mult (  //multiplies e and g 
         .aclk(clk_in),
         .s_axis_a_tdata(e_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(mult_valid_in),
         .s_axis_b_tdata(g_in),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(mult_valid_in),
         .m_axis_result_tdata(eg_out),
         .m_axis_result_tready(1'b1),
@@ -247,80 +245,99 @@ module pixel_shader(
     logic [31:0] a6_out;
     logic a6_valid_in;
     logic a6_valid_out;
+    logic [7:0] a1_op, a2_op, a3_op, a4_op, a5_op, a6_op;
 
 
-    adder a1(
+    add_subtract a1(
         .s_axis_a_tdata(a1_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a1_valid_in),
         .s_axis_b_tdata(a1_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a1_valid_in),
+        .s_axis_operation_tdata(a1_op),
+        .s_axis_operation_tready(),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a1_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a1_valid_out)
     );
 
-    adder a2(
+    add_subtract a2(
         .s_axis_a_tdata(a2_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a2_valid_in),
         .s_axis_b_tdata(a2_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a2_valid_in),
+        .s_axis_operation_tdata(a2_op),
+        .s_axis_operation_tready(),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a2_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a2_valid_out)
     );
 
-    adder a3(
+    add_subtract a3(
         .s_axis_a_tdata(a3_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a3_valid_in),
         .s_axis_b_tdata(a3_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a3_valid_in),
+        .s_axis_operation_tdata(a3_op),
+        .s_axis_operation_tready(),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a3_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a3_valid_out)
     );
 
-    adder a4(
+    add_subtract a4(
         .s_axis_a_tdata(a4_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a4_valid_in),
         .s_axis_b_tdata(a4_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a4_valid_in),
+        .s_axis_operation_tdata(a4_op),
+        .s_axis_operation_tready(),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a4_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a4_valid_out)
     );
 
-    adder a5(
+    add_subtract a5(
         .s_axis_a_tdata(a5_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a5_valid_in),
         .s_axis_b_tdata(a5_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a5_valid_in),
+        .s_axis_operation_tdata(a5_op),
+        .s_axis_operation_tready(),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a5_out),
         .m_axis_result_tready(1),
         .m_axis_result_tvalid(a5_valid_out)
     );
 
-    adder a6(
+    add_subtract a6(
         .s_axis_a_tdata(a6_in_1),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(a6_valid_in),
         .s_axis_b_tdata(a6_in_2),
-        .s_axis_b_tready(1),
+        .s_axis_b_tready(),
         .s_axis_b_tvalid(a6_valid_in),
+        .s_axis_operation_tdata(a6_op),
+        .s_axis_operation_tready(),
+        .s_axis_operation_tvalid(1),
         .aclk(clk_in),
         .m_axis_result_tdata(a6_out),
         .m_axis_result_tready(1),
@@ -338,7 +355,7 @@ module pixel_shader(
     float_to_fixed round (
         .aclk(clk_in),
         .s_axis_a_tdata(round_in),
-        .s_axis_a_tready(1),
+        .s_axis_a_tready(),
         .s_axis_a_tvalid(round_valid_in),
         .m_axis_result_tdata(round_out),
         .m_axis_result_tready(1'b1),
@@ -369,7 +386,6 @@ module pixel_shader(
             recip_done <= 0;
             magnitude_done <= 0;
             color_out <= 0;
-            final_calc_color <= 0;
             state <= RECEIVE;
             valid_out <= 0;
         end else begin
@@ -388,102 +404,118 @@ module pixel_shader(
                         a6_valid_in <= 1;
                         
                         a1_in_1 <= triangle[1][0];
-                        a1_in_2 <= {~triangle[0][0][31], triangle[0][0][30:0]};
+                        a1_in_2 <= triangle[0][0];
+                        a1_op <= 1;
                         a2_in_1 <= triangle[1][1];
-                        a2_in_2 <= {~triangle[0][1][31], triangle[0][1][30:0]};
+                        a2_in_2 <= triangle[0][1];
+                        a2_op <= 1;
                         a3_in_1 <= triangle[1][2];
-                        a3_in_2 <= {~triangle[0][2][31], triangle[0][2][30:0]};
+                        a3_in_2 <= triangle[0][2];
+                        a3_op <= 1;
                         a4_in_1 <= triangle[2][0];
-                        a4_in_2 <= {~triangle[0][0][31], triangle[0][0][30:0]};
+                        a4_in_2 <= triangle[0][0];
+                        a4_op <= 1;
                         a5_in_1 <= triangle[2][1];
-                        a5_in_2 <= {~triangle[0][1][31], triangle[0][1][30:0]};
+                        a5_in_2 <= triangle[0][1];
+                        a5_op <= 1;
                         a6_in_1 <= triangle[2][2];
-                        a6_in_2 <= {~triangle[0][2][31], triangle[0][2][30:0]};
+                        a6_in_2 <= triangle[0][2];
+                        a6_op <= 1;
 
-                        // logic [31:0] d_in <= triangle[0][0]; //given that triangles are 3 verticies with x,y,z,1
-                        // logic [31:0] e_in <= triangle[0][1];
-                        // logic [31:0] f_in <= triangle[0][2];
-                        // logic [31:0] g_in <= triangle[1][0];
-                        // logic [31:0] h_in <= triangle[1][1];
-                        // logic [31:0] i_in <= triangle[1][2];
+                        
 
-                        // vect1[2] <= vert2[2]-vert1[2];
-                        // vect1[1] <= vert2[1]-vert1[1];
-                        // vect1[0] <= vert2[0]-vert1[0];
-
-                        // vect1[2] <= vert3[2]-vert1[2];
-                        // vect2[1] <= vert3[1]-vert1[1];
-                        // vect2[0] <= vert3[0]-vert1[0];
-
-                        mult_valid_in <= 1;
                         state <= VECTOR_CALC;
 
                     end
 
                 end
                 VECTOR_CALC: begin
-                    if(a2_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
-
-                        d_in <= a1_out; //given that triangles are 3 verticies with x,y,z,1
+                    a1_valid_in <= 0;
+                    a2_valid_in <= 0;
+                    a3_valid_in <= 0;
+                    a4_valid_in <= 0;
+                    a5_valid_in <= 0;
+                    a6_valid_in <= 0;
+                    if(a1_valid_out) begin // hypothetically all of the adders will finish at the same time because they're fixed cycle
+                        d_in <= a1_out; //(d, e, f) is vector 1
                         e_in <= a2_out;
                         f_in <= a3_out;
-                        g_in <= a4_out;
+                        g_in <= a4_out; // (g, h, i) is vector 2
                         h_in <= a5_out;
                         i_in <= a6_out;
+
+                        // vector_out[0] <= a1_out; //(d, e, f) is vector 1
+                        // vector_out[1] <= a2_out;
+                        // vector_out[2] <= a3_out;
+                        // vector_out[3] <= a4_out; // (g, h, i) is vector 2
+                        // vector_out[4] <= a5_out;
+                        // vector_out[5] <= a6_out;
+                        
+
                         state <= NORMAL_CALC_MULT;
+                        mult_valid_in <= 1;
                     end
 
 
                 end
                 // find the normal vector to the triangle
                 NORMAL_CALC_MULT: begin
-                        mult_valid_in <= 0;
-                        if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
-                            normal_calc[0][0] <= ei_out;
-                            normal_calc[0][1] <= {~fh_out[31], fh_out[30:0]};
-                            normal_calc[0][2] <= fg_out;
-                            normal_calc[1][0] <= {~di_out[31], di_out[30:0]}; 
-                            normal_calc[1][1] <= dh_out;
-                            normal_calc[1][2] <= {~eg_out[31], eg_out[30:0]};  
-                            mult_valid_in <= 0;
-                            state <= NORMAL_CALC_ADD;
+                    mult_valid_in <= 0;
+                    if(ei_valid_out) begin  //all multipliers are fixed 12 cycles and start at the same time, so if one is done, all are done
+                        
+
+                        state <= NORMAL_CALC_ADD;
+                        // norm_calc_mult[0] <= ei_out;
+                        // norm_calc_mult[1] <= fh_out;
+                        // norm_calc_mult[2] <= fg_out;
+                        // norm_calc_mult[3] <= di_out;
+                        // norm_calc_mult[4] <= dh_out;
+                        // norm_calc_mult[5] <= eg_out;
 
 
-                        end
-                        // NORMAL CALC 1: multiplication. 
-                        //     normal_calc = [ei, fh, fg, di, dh, eg]
-                end
-                NORMAL_CALC_ADD: begin
-                    if(~a1_valid_in) begin
+                        a1_in_1 <= ei_out; // subtracting to get the normal vector coordinates
+                        a1_in_2 <= fh_out;
+                        a1_op <= 1;
+
+                        a2_in_1 <= fg_out;
+                        a2_in_2 <= di_out;
+                        a2_op <= 1;
+
+                        a3_in_1 <= dh_out;
+                        a3_in_2 <= eg_out;  
+                        a3_op <= 1;
+
                         a1_valid_in <= 1; 
                         a2_valid_in <= 1;
                         a3_valid_in <= 1;
 
-                        a1_in_1 <= normal_calc[0][0];
-                        a1_in_2 <= normal_calc[0][1];
-                        a2_in_1 <= normal_calc[0][2];
-                        a2_in_2 <= normal_calc[1][0];
-                        a3_in_1 <= normal_calc[1][1];
-                        a3_in_2 <= normal_calc[1][2];
-                    end else begin 
+
+                    end
+                        // NORMAL CALC 1: multiplication. 
+                        //     normal_calc = [ei, fh, fg, di, dh, eg]
+                end
+                NORMAL_CALC_ADD: begin
                         a1_valid_in <= 0; 
                         a2_valid_in <= 0;
                         a3_valid_in <= 0;
                         
-                    end
 
                     if(a1_valid_out) begin
                         // all adders should be done here 
+
                         norm[0] <= a1_out;
                         norm[1] <= a2_out;
                         norm[2] <= a3_out;
+                        // norm_out[0] <= a1_out;
+                        // norm_out[1] <= a2_out;
+                        // norm_out[2] <= a3_out;
                         state <= SQUARE_NORMAL; 
 
 
                         // set up for next state 
                         mult_valid_in <= 1; 
 
-                        e_in <= a1_out;
+                        e_in <= a1_out; // squaring each coordinate of the normal vector
                         i_in <= a1_out;
                         f_in <= a2_out;
                         g_in <= a2_out;
@@ -496,6 +528,7 @@ module pixel_shader(
                 // cos(theta) = (dot product a, b) / |a| * |b|
                 SQUARE_NORMAL: begin
                     mult_valid_in <= 0;
+                
 
                     // mult_valid_in <= 1; 
 
@@ -507,19 +540,21 @@ module pixel_shader(
                     // h_in <= norm[2];
 
                     if(ei_valid_out) begin
+                        mult_valid_in <= 0;
                         // mult finished 
                         squares[0] <= ei_out;
                         squares[1] <= fg_out;
                         squares[2] <= dh_out;
+                        // squares_out[0] <= ei_out;
+                        // squares_out[1] <= fg_out;
+                        // squares_out[2] <= dh_out;
                         state <= MAGNITUDE;
 
                         // set up for next state 
                         a1_valid_in <= 1;
-                        a1_in_1 <= ei_out;
+                        a1_op <= 0;
+                        a1_in_1 <= ei_out; // square[0] + squares[1]
                         a1_in_2 <= fg_out;
-
-                        rec_valid_in <= 1;
-                        rec_in <= dh_out;
                     end
 
                     // squares[0] <= norm[0]*norm[0];
@@ -530,81 +565,78 @@ module pixel_shader(
                 end
                 MAGNITUDE: begin
 
-                    a1_valid_in <= 0;
-                    a2_valid_in <= 0;
-                    rec_in <= 0; 
-
+                        a1_valid_in <= 0;
                     if(a1_valid_out) begin
                         a2_in_1 <= a1_out;
+                        a1_op <= 1;
+                        a2_op <= 0;
                         a2_in_2 <= squares[2];
-                        a2_valid_in <= 1;
+                        a2_valid_in <= 1; // (squares[0] +squares[1]) + squares[2]
                     end
                     if(a2_valid_out) begin
+                        // test_out <= 32'b01000010100010100000000000000000;
+                        // mag_out <= a2_out;
+
+                        a2_valid_in <= 0;
+                        a2_op <= 1;
                         mag <= a2_out;
-                        magnitude_done <= 1;
-                    end
-                    if(rec_valid_out) begin
-                        recip <= rec_out;
-                        recip_done <= 1;
-                    end
+                        
+                        state <= RECIP; // 1/magntidue
+                        rec_in <= a2_out;
+                        rec_valid_in <= 1;
 
-                    if(magnitude_done && recip_done) begin
-                        state <= SEC_SQUARED;
-                        magnitude_done <= 0;
-                        recip_done <= 0; 
+                        mult_valid_in <= 1; // dot_product_squared_times_16
+                        e_in <= squares[2];
+                        i_in <= 32'b01000001100000000000000000000000;
 
-                        // set up for next stage 
-                        e_in <= mag;
-                        i_in <= recip;
-                        mult_valid_in <= 1; 
                     end
                     
                 end
-                SEC_SQUARED: begin
-                    mult_valid_in <= 0; 
+                RECIP: begin
+                    if(rec_valid_out) begin
+                        rec_valid_in <= 0;
+                        mag_recip <= rec_out;
+                        // mag_recip_out <= rec_out;
+                        recip_done <= 1;
+                    end
                     if(ei_valid_out) begin
-                        sec_squared <= ei_out;
-                        rec_valid_in <= 1;
-                        rec_in <= ei_out;
+                        dot_product_squared_times_16 <= ei_out;
+                        // dot_prod_out <= ei_out;
+                        mult_valid_in <= 0;
+                        magnitude_done <= 1;
+                    end
+                    if(magnitude_done && recip_done) begin
+                        recip_done <= 0;
+                        magnitude_done <= 0;
+
                         state <= COS_SQUARED;
+                        mult_valid_in <= 1;
+                        e_in <= mag_recip;
+                        g_in <= dot_product_squared_times_16;
                     end
 
                 end
-                COS_SQUARED: begin 
-                    rec_valid_in <= 0;
-                    if(rec_valid_out) begin
-                        cos_squared <= rec_out;
-
-                        mult_valid_in <= 1;
-                        e_in <= rec_out;
-                        i_in <= 32'b01000001100000000000000000000000;
-                        state <= MULT_16;
-
-                    end 
-
-                end
-                MULT_16: begin
-                    mult_valid_in <= 0;
-                    if(ei_valid_out) begin
-                        to_round <= ei_out;
+                COS_SQUARED: begin
+                    if(eg_valid_out) begin
+                        mult_valid_in <= 0; 
+                        cos_squared <= eg_out;
 
                         round_valid_in <= 1;
-                        round_in <= ei_out;
+                        round_in <= eg_out;
                         state <= ROUND;
-
-
                     end
+
                 end
+
                 ROUND: begin 
-                    round_valid_in <= 0;
                     if(round_valid_out) begin
+                        round_valid_in <= 0;
                         table_index <= round_out; 
                         map_data_valid_in <= 1;
                         state <= COLOR;
                     end
-
                 end
-                // TODO: map that  (cos(angle)) to a color 
+
                 COLOR: begin 
                     map_data_valid_in <= 0;
 
