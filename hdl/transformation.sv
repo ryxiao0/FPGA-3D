@@ -80,9 +80,6 @@ module transformation
             case (state)
                 READY: begin
                     if (valid_in) begin
-                        // add_a_in <= pos[1];
-                        // add_b_in <= distance;
-                        // add_v_in <= 1;
                         mult_a_in <= pos[2]; // y * cos
                         mult_b_in <= cosp;
                         mult_v_in <= 1;
@@ -112,7 +109,7 @@ module transformation
                 ADDA: begin
                     if (add_v_out) begin
                         new_pos[2] <= add_out;
-                        mult_a_in <= {1, sinp[30:0]}; // y * -sin
+                        mult_a_in <= {~sinp[31], sinp[30:0]}; // y * -sin
                         mult_b_in <= pos[2];
                         mult_v_in <= 1;
                         state <= SINB;
@@ -149,7 +146,7 @@ module transformation
                     if (mult_v_out) begin
                         mult_med <= mult_out;
                         mult_a_in <= new_pos[1];
-                        mult_b_in <= {1, siny[30:0]}; // z * -sin
+                        mult_b_in <= {~siny[31], siny[30:0]}; // z * -sin
                         mult_v_in <= 1;
                         state <= SINC;
                     end else mult_v_in <= 0;
@@ -174,7 +171,7 @@ module transformation
                 SIND: begin
                     if (mult_v_out) begin
                         mult_med <= mult_out;
-                        mult_a_in <= pos[1]; // z * cos
+                        mult_a_in <= new_pos[1]; // z * cos
                         mult_b_in <= cosy;
                         mult_v_in <= 1;
                         state <= COSD;
@@ -201,7 +198,7 @@ module transformation
                 COSE: begin
                     if (mult_v_out) begin
                         mult_med <= mult_out;
-                        mult_a_in <= new_pos[y];
+                        mult_a_in <= new_pos[2];
                         mult_b_in <= sinr; // y * sin
                         mult_v_in <= 1;
                         state <= SINE;
@@ -218,7 +215,7 @@ module transformation
                 ADDE: begin
                     if (add_v_out) begin
                         new_pos[3] <= add_out;
-                        mult_a_in <= {1, sinr[30:0]};
+                        mult_a_in <= {~sinr[31], sinr[30:0]};
                         mult_b_in <= new_pos[3]; // x * -sin
                         mult_v_in <= 1;
                         state <= SINF;
@@ -243,7 +240,8 @@ module transformation
                 end
                 ADDF: begin
                     if (add_v_out) begin
-                        add_a_in <= add_out;
+                        new_pos[2] <= add_out;
+                        add_a_in <= new_pos[1]; // move further on z axis
                         add_b_in <= distance;
                         add_v_in <= 1;
                         state <= MED;
@@ -260,9 +258,7 @@ module transformation
                     if (ready_in) begin
                         valid_out <= 1;
                         obj_done_out <= obj_done_med;
-                        new_pos[3] <= pos[3];
                         new_pos[1] <= add_buf;
-                        new_pos[0] <= pos[0];
                         state <= READY;
                         ready_out <= 1;
                     end

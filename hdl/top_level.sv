@@ -11,7 +11,7 @@ module top_level(
     output logic hdmi_clk_p, hdmi_clk_n //differential hdmi clock
 );
 
-    parameter NF=1570;//12;//1368;// // get number of facets from python
+    parameter NF=12;//12;//1570;1368// // get number of facets from python
     // parameter TPSTAGES=32, TFSTAGES=60;
 
     assign led = sw;
@@ -244,7 +244,7 @@ module top_level(
     // assign tf_valid_in = 1;
     // assign tf_obj_done_in = 1;
 
-    assign tf_dist = 32'h450ca000;//32'h41200000;//41f00000; // 30 units away
+    assign tf_dist = 32'h41f00000;//450ca000;//32'h450ca000;//41f00000; // 30 units away
 
     assign tf_pos_in_1 = gv_v1_out;
     assign tf_pos_in_2 = gv_v2_out;
@@ -503,7 +503,7 @@ module top_level(
 
     assign rast_obj_done_in = tp_obj_done_out_1;
 
-    localparam STAGES = 194;
+    localparam STAGES = 400;
 
 
     // CHANGE - pipelined incorrectly, should pipeline color

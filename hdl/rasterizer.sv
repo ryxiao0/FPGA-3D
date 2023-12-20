@@ -157,7 +157,7 @@ module rasterizer #(
             case (state)
                 ERASE: begin
                     write_addr <= x_erase + y_erase*WIDTH;
-                    write_in <= 9'h000ff;
+                    write_in <= 9'h001ff;
                     if (buf_sel) wea0 <= 1;
                     else wea1 <= 1;
                     state <= NEXT;
@@ -204,7 +204,7 @@ module rasterizer #(
                     if (in_tri_v_out) begin
                         if (in_tri_out) begin
                             write_addr <= x_iter + y_iter*WIDTH;
-                            write_in <=  (depth <= read_out_w[8:0])? {c, depth}: read_out_w;
+                            write_in <=  {c, depth};//(depth <= read_out_w[8:0])? {COLOR, depth}: read_out_w;
                             if (buf_sel) wea0 <= 1;
                             else wea1 <= 1;
                         end

@@ -125,7 +125,7 @@ module get_vertices#(
         .RAM_WIDTH(96),                       // Specify RAM data width
         .RAM_DEPTH(4096),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(Deer_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(cube_vertices.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) vertex_inst (
         .addra(vertex_read),     // Address bus, width determined from RAM_DEPTH
         .dina(1'b0),       // RAM input data, width determined from RAM_WIDTH
@@ -141,7 +141,7 @@ module get_vertices#(
         .RAM_WIDTH(48),                       // Specify RAM data width
         .RAM_DEPTH(4096),                     // Specify RAM depth (number of entries)
         .RAM_PERFORMANCE("HIGH_PERFORMANCE"), // Select "HIGH_PERFORMANCE" or "LOW_LATENCY" 
-        .INIT_FILE(`FPATH(Deer_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
+        .INIT_FILE(`FPATH(cube_facets.mem))          // Specify name/location of RAM initialization file if using one (leave blank if not)
     ) facet_inst (
         .addra(facet_read),     // Address bus, width determined from RAM_DEPTH
         .dina(1'b0),       // RAM input data, width determined from RAM_WIDTH
